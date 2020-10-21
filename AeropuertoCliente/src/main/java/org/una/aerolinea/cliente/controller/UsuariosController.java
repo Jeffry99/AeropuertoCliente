@@ -7,22 +7,23 @@ package org.una.aerolinea.cliente.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuBar;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 
 /**
  * FXML Controller class
  *
  * @author Jeffry
  */
-public class MenuPrincipalController implements Initializable {
+public class UsuariosController implements Initializable {
 
     @FXML
-    private MenuBar menuBar;
+    private TableView<?> tvUsuarios;
     @FXML
-    private AnchorPane apContenedor;
+    private Button btnVolver;
 
     /**
      * Initializes the controller class.
@@ -31,5 +32,9 @@ public class MenuPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void actVolver(ActionEvent event) {
+    }
     
 }
