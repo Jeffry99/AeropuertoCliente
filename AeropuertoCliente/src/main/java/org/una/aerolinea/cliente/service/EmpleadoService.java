@@ -18,10 +18,10 @@ import org.una.aerolinea.cliente.util.Respuesta;
  * @author Pablo-VE
  */
 public class EmpleadoService {
-    public Respuesta crear(EmpleadoDTO rol){
+    public Respuesta crear(EmpleadoDTO empleado){
         try{
             ConexionService conexion = new ConexionService("empleados/crear");
-            conexion.post(rol);
+            conexion.post(empleado);
             if(conexion.isError()){
                 System.out.println("Error creacion de empleado: "+conexion.getError());
                 return new Respuesta(false, conexion.getError(), "No se pudo crear el empleado");
@@ -34,12 +34,12 @@ public class EmpleadoService {
         }
     }
     
-    public Respuesta modificar(Long id, EmpleadoDTO rol){
+    public Respuesta modificar(Long id, EmpleadoDTO empleado){
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             ConexionService conexion = new ConexionService("empleados/modificar", "/{id}", parametros);
-            conexion.put(rol);
+            conexion.put(empleado);
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "No se pudo modificar el empleado");
             }
