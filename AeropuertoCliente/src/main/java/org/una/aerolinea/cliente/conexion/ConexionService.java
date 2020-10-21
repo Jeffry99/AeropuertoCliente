@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.aerolinea.cliente.util;
+package org.una.aerolinea.cliente.conexion;
 
-import java.util.Map;
+
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
@@ -18,26 +18,25 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-
+import org.una.aerolinea.cliente.util.AppContext;
 
 /**
  *
  * @author Pablo-VE
  */
-public class Request {
+public class ConexionService {
     private Client client;
     private Invocation.Builder builder;
     private WebTarget webTarget;
     private Response response;
-    private final String apiUrl = "http://localhost:8989/";
+    private final String apiUrl = "http://localhost:8099/";
     
-    public Request(String direccion){
+    public ConexionService(String direccion){
         this.client = ClientBuilder.newClient();
         setDireccion(direccion);
     }
     
-    public Request(String direccion, String parametros, Map<String, Object> valores){
+    public ConexionService(String direccion, String parametros, Map<String, Object> valores){
         this.client = ClientBuilder.newClient();
         this.webTarget = client.target(apiUrl + direccion).path(parametros).resolveTemplates(valores);
         this.builder = webTarget.request(MediaType.APPLICATION_JSON);
@@ -104,5 +103,4 @@ public class Request {
     public Object readEntity(GenericType<?> genericType) {
         return response.readEntity(genericType);
     }
-    
 }
