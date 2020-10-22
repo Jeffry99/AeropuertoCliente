@@ -17,6 +17,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
+import org.una.aeropuerto.cliente.util.AppContext;
 
 /**
  * FXML Controller class
@@ -28,10 +30,8 @@ public class EmpleadosInformacionController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    final ToggleGroup groupEstado = new ToggleGroup();
-    final ToggleGroup groupJefe = new ToggleGroup();
     
-    private TableView<?> tvSubempleados;
+    
     @FXML
     private Label lblCedula;
     @FXML
@@ -62,53 +62,61 @@ public class EmpleadosInformacionController implements Initializable {
     private RadioButton rbActivo;
     @FXML
     private RadioButton rbInactivo;
-    private Label lblSubempleados;
     @FXML
     private RadioButton rbNo;
     @FXML
     private Label lblFechaCreacion1;
-    private Label lblFechaCreacion2;
     @FXML
     private Label lblFechaModificacion1;
-    private Label lblFechaModificacion2;
     @FXML
-    private ComboBox<?> cbxJefeDirecto;
+    private ComboBox<EmpleadoDTO> cbxJefeDirecto;
+    
+    private String modalidad="";
+    
+    private EmpleadoDTO empleadoEnCuestion = new EmpleadoDTO();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        rbActivo.setToggleGroup(groupEstado);
-        rbInactivo.setToggleGroup(groupEstado);
-        rbSi.setToggleGroup(groupEstado);
-        rbNo.setToggleGroup(groupEstado);
+        modalidad = (String) AppContext.getInstance().get("ModalidadEmpleado");
+        btnGuardar.setVisible(false);
+        btnGuardar.setDisable(true);
         
-    }    
-    public void vistaJefe(int posicion){
+        lblFechaCreacion1.setVisible(false);
+        lblFechaModificacion1.setVisible(false);
         
-        //Falta acomodar bien las posiciones
+        cbxJefeDirecto.setVisible(false);
+        cbxJefeDirecto.setDisable(true);
         
-        tvSubempleados.setVisible(true);
-        lblSubempleados.setVisible(true);
+        if(!modalidad.equals("Ver")){
+            btnGuardar.setVisible(true);
+            btnGuardar.setDisable(false);
+        }
+        if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
+            empleadoEnCuestion = (EmpleadoDTO) AppContext.getInstance().get("EmpleadoEnCuestion");
+            txtNombre.setText(empleadoEnCuestion.getNombre());
+            txtCedula.setText(empleadoEnCuestion.getCedula());
+            txtTelefono.setText(empleadoEnCuestion.getTelefono());
+            txtDireccion.setText(empleadoEnCuestion.getDireccion());  
+            if(empleadoEnCuestion.getJefe()!= null){
+                rbSi.setSelected(true);
+                rbNo.setSelected(false);
+            }else{
+                rbSi.setSelected(false);
+                rbNo.setSelected(true);
+                cbxJefeDirecto.setValue(empleadoEnCuestion.getJefe());
+                cbxJefeDirecto.setVisible(true);
+                cbxJefeDirecto.setDisable(false);
+            }
+            lblFechaCreacion1.setText("Creado el "+empleadoEnCuestion.getFechaRegistro());
+            lblFechaModificacion1.setText("Modificado el "+empleadoEnCuestion.getFechaModificacion());
+        }
         
-        lblCedula.setLayoutX(posicion);
-        lblDireccion.setLayoutX(posicion);
-        lblEstado.setLayoutX(posicion);
-        lblJefe.setLayoutX(posicion);
-        lblNombre.setLayoutX(posicion);
-        lblTelefono.setLayoutX(posicion);
-        lblFechaCreacion1.setLayoutX(posicion);
-        lblFechaModificacion1.setLayoutX(posicion);
         
-        lblFechaCreacion2.setLayoutX(posicion+100);
-        lblFechaModificacion2.setLayoutX(posicion+100);
-        txtCedula.setLayoutX(posicion+150);
-        txtDireccion.setLayoutX(posicion+150);
-        rbActivo.setLayoutX(posicion+150);
-        rbInactivo.setLayoutX(posicion+300);
-        txtNombre.setLayoutX(posicion+150);
-        txtTelefono.setLayoutX(posicion+150);
+        
+        
 
     }
+    
     @FXML
     private void actGuardar(ActionEvent event) {
     }
@@ -119,12 +127,12 @@ public class EmpleadosInformacionController implements Initializable {
 
     @FXML
     private void actEsJefe(ActionEvent event) {
-        vistaJefe(100);
+        
     }
 
     @FXML
     private void actNoEsJefe(ActionEvent event) {
-        vistaJefe(270);
+        
         
        
     }
