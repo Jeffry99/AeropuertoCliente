@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.MenuPrincipalController">
+   <top>
+      <MenuBar fx:id="menuBar" prefHeight="30.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu fx:id="TituloUsuario" mnemonicParsing="false" text="Usuario">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#actVerInformacion" text="Ver información de usuario" />
+                  <MenuItem mnemonicParsing="false" onAction="#actCerrarSesion" text="Cerrar sesión" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Administración">
+            <items>
+              <MenuItem fx:id="btnEmpleados" mnemonicParsing="false" onAction="#actEmpleados" text="Empleados" />
+                  <MenuItem fx:id="btnUsuarios" mnemonicParsing="false" onAction="#actUsuarios" text="Usuarios" />
+                  <MenuItem fx:id="btnRoles" mnemonicParsing="false" onAction="#actRoles" text="Roles" />
+                  <MenuItem fx:id="btnHorarios" mnemonicParsing="false" onAction="#actHorarios" text="Horarios" />
+                  <MenuItem fx:id="btnHoraMarcaje" mnemonicParsing="false" onAction="#actHoraMarcaje" text="Hora de marcaje" />
+                  <MenuItem fx:id="btnTransacciones" mnemonicParsing="false" onAction="#actTransacciones" text="Transacciones" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <StackPane fx:id="Contenedor" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
