@@ -50,6 +50,8 @@ public class EmpleadosController implements Initializable {
      */
     
     private EmpleadoService empleadoService = new EmpleadoService();
+    @FXML
+    private Button btnAgregar;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -169,6 +171,19 @@ public class EmpleadosController implements Initializable {
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadEmpleado", "Modificar");
         AppContext.getInstance().set("EmpleadoEnCuestion", empleado);
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("EmpleadosInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
+    }
+
+    @FXML
+    private void actAgregar(ActionEvent event) {
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadEmpleado", "Agregar");
         try{
             Parent root = FXMLLoader.load(App.class.getResource("EmpleadosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();

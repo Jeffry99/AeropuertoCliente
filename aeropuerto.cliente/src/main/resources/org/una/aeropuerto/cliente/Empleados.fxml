@@ -6,9 +6,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.EmpleadosController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.EmpleadosController">
    <children>
-      <TableView fx:id="tvEmpleados" layoutX="63.0" layoutY="74.0" prefHeight="322.0" prefWidth="874.0">
+      <TableView fx:id="tvEmpleados" layoutX="60.0" layoutY="234.0" prefHeight="322.0" prefWidth="874.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
@@ -17,7 +17,8 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="btnVolver" layoutX="845.0" layoutY="412.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <Button fx:id="btnVolver" layoutX="60.0" layoutY="585.0" mnemonicParsing="false" onAction="#actVolver" prefWidth="90.0" text="Volver" />
       <Label layoutX="63.0" layoutY="33.0" text="Empleados" />
+      <Button fx:id="btnAgregar" layoutX="833.0" layoutY="585.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar" />
    </children>
 </AnchorPane>

@@ -5,11 +5,15 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -17,8 +21,13 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.StackPane;
+import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
+import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Mensaje;
+import org.una.aeropuerto.cliente.util.Respuesta;
 
 /**
  * FXML Controller class
@@ -75,6 +84,7 @@ public class EmpleadosInformacionController implements Initializable {
     
     private EmpleadoDTO empleadoEnCuestion = new EmpleadoDTO();
     
+    private EmpleadoService empleadoService = new EmpleadoService();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         modalidad = (String) AppContext.getInstance().get("ModalidadEmpleado");
@@ -100,18 +110,22 @@ public class EmpleadosInformacionController implements Initializable {
             if(empleadoEnCuestion.getJefe()!= null){
                 rbSi.setSelected(false);
                 rbNo.setSelected(true);
+                esJefe=false;
                 cbxJefeDirecto.setValue(empleadoEnCuestion.getJefe());
                 cbxJefeDirecto.setVisible(true);
                 cbxJefeDirecto.setDisable(false);
             }else{
+                esJefe=true;
                 rbSi.setSelected(true);
                 rbNo.setSelected(false);
                 
             }
             if(empleadoEnCuestion.getEstado()){
+                estado=true;
                 rbActivo.setSelected(true);
                 rbInactivo.setSelected(false);
             }else{
+                estado=false;
                 rbActivo.setSelected(false);
                 rbInactivo.setSelected(true);
             }
@@ -139,32 +153,122 @@ public class EmpleadosInformacionController implements Initializable {
 
     }
     
+    public boolean validar(){
+        if(txtCedula.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la cedula del empleado");
+            return false;
+        }
+        if(txtNombre.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del cliente");
+            return false;
+        }
+        if(estado==null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del empleado");
+            return false;
+        }
+        if(esJefe==null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione si el empleado es jefe o no");
+            return false;
+        }else{
+            if(!esJefe){
+                if(cbxJefeDirecto.getValue()==null){
+                    Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el jefe directo del empleado");
+                    return false; 
+                }
+            } 
+        }
+        return true;
+    }
+    
     @FXML
     private void actGuardar(ActionEvent event) {
+        if(validar()){
+            
+            empleadoEnCuestion.setNombre(txtNombre.getText());
+            empleadoEnCuestion.setCedula(txtCedula.getText());
+            empleadoEnCuestion.setDireccion(txtDireccion.getText());
+            empleadoEnCuestion.setTelefono(txtTelefono.getText());
+            empleadoEnCuestion.setEstado(estado);
+            if(!esJefe){
+                empleadoEnCuestion.setJefe(cbxJefeDirecto.getValue());
+            }
+            
+            if(modalidad.equals("Modificar")){
+                Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
+                if(respuesta.getEstado()){
+                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de empleado", "Se ha modificado el empleado correctamente");
+                    volver();
+                }else{
+                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
+                }
+                
+                
+            }else{
+                if(modalidad.equals("Agregar")){
+                    Respuesta respuesta=empleadoService.crear(empleadoEnCuestion);
+                    if(respuesta.getEstado()){
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de empleado", "Se ha registrado el empleado correctamente");
+                        volver();
+                    }else{
+                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de empleado", respuesta.getMensaje());
+                    }
+                }
+            }
+        }
     }
 
     @FXML
     private void actVolver(ActionEvent event) {
+        volver();
     }
 
+    private Boolean esJefe;
+    
     @FXML
     private void actEsJefe(ActionEvent event) {
+        esJefe = true;
+        rbSi.setSelected(true);
+        rbNo.setSelected(false);
         
+        cbxJefeDirecto.setVisible(false);
+        cbxJefeDirecto.setDisable(true);
     }
 
     @FXML
     private void actNoEsJefe(ActionEvent event) {
+        esJefe = false;
+        rbSi.setSelected(false);
+        rbNo.setSelected(true);
         
-        
-       
+        cbxJefeDirecto.setVisible(true);
+        cbxJefeDirecto.setDisable(false);
     }
 
+    private Boolean estado;
+    
     @FXML
     private void actEstadoActivo(ActionEvent event) {
+        estado = true;
+        rbActivo.setSelected(true);
+        rbInactivo.setSelected(false);
     }
 
     @FXML
     private void actEstadoInactivo(ActionEvent event) {
+        estado = false;
+        rbActivo.setSelected(false);
+        rbInactivo.setSelected(true);
     }
     
+    
+    public void volver() {
+        try{
+            StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+            Parent root = FXMLLoader.load(App.class.getResource("Empleados" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            
+        }
+    }
 }
