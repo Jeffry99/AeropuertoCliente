@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
@@ -30,7 +31,6 @@ public class EmpleadosInformacionController implements Initializable {
     final ToggleGroup groupEstado = new ToggleGroup();
     final ToggleGroup groupJefe = new ToggleGroup();
     
-    @FXML
     private TableView<?> tvSubempleados;
     @FXML
     private Label lblCedula;
@@ -62,18 +62,17 @@ public class EmpleadosInformacionController implements Initializable {
     private RadioButton rbActivo;
     @FXML
     private RadioButton rbInactivo;
-    @FXML
     private Label lblSubempleados;
     @FXML
     private RadioButton rbNo;
     @FXML
     private Label lblFechaCreacion1;
-    @FXML
     private Label lblFechaCreacion2;
     @FXML
     private Label lblFechaModificacion1;
-    @FXML
     private Label lblFechaModificacion2;
+    @FXML
+    private ComboBox<?> cbxJefeDirecto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -126,6 +125,16 @@ public class EmpleadosInformacionController implements Initializable {
     @FXML
     private void actNoEsJefe(ActionEvent event) {
         vistaJefe(270);
+        
+       
+    }
+
+    @FXML
+    private void actEstadoActivo(ActionEvent event) {
+    }
+
+    @FXML
+    private void actEstadoInactivo(ActionEvent event) {
     }
     
 }

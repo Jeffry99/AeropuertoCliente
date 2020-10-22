@@ -27,7 +27,7 @@ public class AutenticacionService {
             }
             AuthenticationResponse usuario = (AuthenticationResponse) conexion.readEntity(AuthenticationResponse.class);
             UsuarioAutenticado.getInstance().setUsuarioLogeado(usuario.getUsuario());
-            UsuarioAutenticado.getInstance().setTokenJwt(usuario.getJwt());
+            UsuarioAutenticado.getInstance().setTokenJwt("bearer "+usuario.getJwt());
             return new Respuesta(true, "Inicio de sesión exitoso");
         }catch(Exception ex){
             System.out.println(ex.getMessage());

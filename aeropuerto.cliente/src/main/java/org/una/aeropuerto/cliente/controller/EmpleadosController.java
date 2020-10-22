@@ -64,15 +64,15 @@ public class EmpleadosController implements Initializable {
     
     public void cargarTabla(ArrayList<EmpleadoDTO> empleados){
         tvEmpleados.getColumns().clear();
-        if(empleados.isEmpty()){
+        if(!empleados.isEmpty()){
             ObservableList items = FXCollections.observableArrayList(empleados);   
             
-            TableColumn colId = new TableColumn("Id");
+            TableColumn <EmpleadoDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
-            TableColumn colNombre = new TableColumn("Nombre");
-            colId.setCellValueFactory(new PropertyValueFactory("nombre"));
-            TableColumn colCedula = new TableColumn("Cedula");
-            colId.setCellValueFactory(new PropertyValueFactory("cedula"));
+            TableColumn <EmpleadoDTO, String>colNombre = new TableColumn("Nombre");
+            colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+            TableColumn <EmpleadoDTO, String>colCedula = new TableColumn("Cedula");
+            colCedula.setCellValueFactory(new PropertyValueFactory("cedula"));
             TableColumn<EmpleadoDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(emp -> {
                 String estadoString;

@@ -17,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
@@ -56,18 +55,14 @@ public class MenuPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         AppContext.getInstance().set("Contenedor", this.Contenedor);
-        
-        
-        
-            
-            TituloUsuario.setText(UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
+        TituloUsuario.setText(UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
         
     }    
 
     @FXML
     private void actEmpleados(ActionEvent event) {
         try{
-            Parent root = FXMLLoader.load(App.class.getClassLoader().getResource("Empleados" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("Empleados" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
