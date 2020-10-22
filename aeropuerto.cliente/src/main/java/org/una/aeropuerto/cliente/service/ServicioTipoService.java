@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.GenericType;
-import org.una.aerolinea.cliente.conexion.ConexionService;
-import org.una.aerolinea.cliente.dto.ServicioTipoDTO;
-import org.una.aerolinea.cliente.util.Respuesta;
+import org.una.aeropuerto.cliente.conexion.ConexionService;
+import org.una.aeropuerto.cliente.dto.ServicioTipoDTO;
+import org.una.aeropuerto.cliente.util.Respuesta;
 
 /**
  *
