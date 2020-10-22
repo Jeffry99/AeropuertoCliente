@@ -112,5 +112,8 @@ public class EmpleadoDTO {
         this.estado = estado;
     }
     
+    public String toString(){
+        return nombre+" - ID: "+cedula;
+    }
     
 }

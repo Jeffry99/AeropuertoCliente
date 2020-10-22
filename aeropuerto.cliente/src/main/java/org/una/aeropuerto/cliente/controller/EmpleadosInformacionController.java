@@ -98,17 +98,39 @@ public class EmpleadosInformacionController implements Initializable {
             txtTelefono.setText(empleadoEnCuestion.getTelefono());
             txtDireccion.setText(empleadoEnCuestion.getDireccion());  
             if(empleadoEnCuestion.getJefe()!= null){
-                rbSi.setSelected(true);
-                rbNo.setSelected(false);
-            }else{
                 rbSi.setSelected(false);
                 rbNo.setSelected(true);
                 cbxJefeDirecto.setValue(empleadoEnCuestion.getJefe());
                 cbxJefeDirecto.setVisible(true);
                 cbxJefeDirecto.setDisable(false);
+            }else{
+                rbSi.setSelected(true);
+                rbNo.setSelected(false);
+                
+            }
+            if(empleadoEnCuestion.getEstado()){
+                rbActivo.setSelected(true);
+                rbInactivo.setSelected(false);
+            }else{
+                rbActivo.setSelected(false);
+                rbInactivo.setSelected(true);
             }
             lblFechaCreacion1.setText("Creado el "+empleadoEnCuestion.getFechaRegistro());
             lblFechaModificacion1.setText("Modificado el "+empleadoEnCuestion.getFechaModificacion());
+            lblFechaCreacion1.setVisible(true);
+            lblFechaModificacion1.setVisible(true);
+            
+            if(modalidad.equals("Ver")){
+                txtCedula.setDisable(true);
+                txtNombre.setDisable(true);
+                txtTelefono.setDisable(true);
+                txtDireccion.setDisable(true);
+                rbActivo.setDisable(true);
+                rbInactivo.setDisable(true);
+                rbSi.setDisable(true);
+                rbNo.setDisable(true);
+                cbxJefeDirecto.setDisable(true);
+            }
         }
         
         
