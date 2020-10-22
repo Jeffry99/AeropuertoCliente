@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aerolinea.cliente.controller.UsuariosInformacionController">
+   <children>
+      <Label layoutX="260.0" layoutY="143.0" text="Estado:" />
+      <Label layoutX="261.0" layoutY="193.0" text="Rol:" />
+      <ComboBox fx:id="cbRol" layoutX="366.0" layoutY="191.0" prefHeight="25.0" prefWidth="375.0" />
+      <Button fx:id="btnGuardar" layoutX="640.0" layoutY="331.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Button fx:id="btnVolver" layoutX="262.0" layoutY="331.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <Button fx:id="btnAdministrarContrasena" layoutX="540.0" layoutY="252.0" mnemonicParsing="false" onAction="#actAdministrarContrasena" text="Administrar Contraseña" />
+      <RadioButton fx:id="rbActivo" layoutX="366.0" layoutY="145.0" mnemonicParsing="false" text="Activo" />
+      <RadioButton fx:id="rbInactivo" layoutX="445.0" layoutY="145.0" mnemonicParsing="false" text="Inactivo" />
+      <Label layoutX="260.0" layoutY="251.0" text="Contraseña:" />
+      <TextField fx:id="txtContrasena" layoutX="366.0" layoutY="243.0" prefHeight="37.0" prefWidth="375.0" />
+      <Label layoutX="260.0" layoutY="90.0" text="Empleado:" />
+      <ComboBox fx:id="cbEmpleado" editable="true" layoutX="365.0" layoutY="82.0" prefHeight="25.0" prefWidth="375.0" />
+   </children>
+</AnchorPane>
