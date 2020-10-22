@@ -91,5 +91,8 @@ public class TransaccionDTO {
         this.estado = estado;
     }
     
+    public String toString(){
+        return descripcion+" por "+usuario.getEmpleado().getNombre()+" el "+fechaRegistro+" en "+lugar;
+    }
     
 }

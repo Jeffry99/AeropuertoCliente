@@ -27,6 +27,7 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -208,6 +209,7 @@ public class EmpleadosInformacionController implements Initializable {
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
                 if(respuesta.getEstado()){
+                    GenerarTransacciones.crearTransaccion("Se modifica empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
                     Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de empleado", "Se ha modificado el empleado correctamente");
                     volver();
                 }else{
@@ -219,6 +221,8 @@ public class EmpleadosInformacionController implements Initializable {
                 if(modalidad.equals("Agregar")){
                     Respuesta respuesta=empleadoService.crear(empleadoEnCuestion);
                     if(respuesta.getEstado()){
+                        empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
+                        GenerarTransacciones.crearTransaccion("Se crea empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
                         Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de empleado", "Se ha registrado el empleado correctamente");
                         volver();
                     }else{
