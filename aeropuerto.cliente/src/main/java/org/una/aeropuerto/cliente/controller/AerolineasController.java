@@ -11,31 +11,30 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 
 /**
  * FXML Controller class
  *
  * @author Jeffry
  */
-public class RolesInformacionController implements Initializable {
+public class AerolineasController implements Initializable {
 
     @FXML
-    private Label lblId;
+    private TableView<?> tvAerolineas;
     @FXML
-    private Label lblIdNumero;
+    private Button btnVolver;
     @FXML
-    private TextField txtNombre;
+    private ComboBox<?> cbTipoBusqueda;
     @FXML
-    private RadioButton rbActivo;
+    private ComboBox<?> cbBuscar;
     @FXML
-    private RadioButton rbInactivo;
+    private Button btnBorrar;
     @FXML
-    private Button btnCancelar;
+    private Button btnBuscar;
     @FXML
-    private Button btnGuardar;
+    private Button btnAgregar;
 
     /**
      * Initializes the controller class.
@@ -46,12 +45,19 @@ public class RolesInformacionController implements Initializable {
     }    
 
     @FXML
-    private void actCancelar(ActionEvent event) {
+    private void actVolver(ActionEvent event) {
     }
 
     @FXML
-    private void actGuardar(ActionEvent event) {
+    private void actBorrar(ActionEvent event) {
     }
 
+    @FXML
+    private void actBuscar(ActionEvent event) {
+    }
+
+    @FXML
+    private void actAgregar(ActionEvent event) {
+    }
     
 }
