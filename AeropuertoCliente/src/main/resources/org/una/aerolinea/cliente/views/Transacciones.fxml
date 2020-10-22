@@ -7,20 +7,19 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aerolinea.cliente.controller.UsuariosController">
+<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aerolinea.cliente.controller.TransaccionesController">
    <children>
-      <TableView fx:id="tvUsuarios" layoutX="63.0" layoutY="121.0" prefHeight="275.0" prefWidth="874.0">
+      <TableView fx:id="tvTransacciones" layoutX="63.0" layoutY="121.0" prefHeight="275.0" prefWidth="874.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
-      <Button fx:id="btnVolver" layoutX="63.0" layoutY="421.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
-      <Label layoutX="63.0" layoutY="33.0" text="Usuarios del Sistema" />
+      <Button fx:id="btnVolver" layoutX="847.0" layoutY="408.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <Label layoutX="63.0" layoutY="33.0" text="Transacciones Realizadas" />
       <ComboBox fx:id="cbTipoBusqueda" layoutX="63.0" layoutY="74.0" prefHeight="35.0" prefWidth="150.0" promptText="Tipo de Búsqueda" />
       <ComboBox fx:id="cbBuscar" editable="true" layoutX="225.0" layoutY="73.0" prefHeight="37.0" prefWidth="524.0" />
       <Button fx:id="btnBorrar" layoutX="759.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBorrar" text="Borrar" />
       <Button fx:id="btnBuscar" layoutX="847.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscar" text="Buscar" />
-      <Button fx:id="btnAgregar" layoutX="783.0" layoutY="421.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Usuario" />
    </children>
 </AnchorPane>

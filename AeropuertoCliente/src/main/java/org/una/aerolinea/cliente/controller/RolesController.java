@@ -19,10 +19,10 @@ import javafx.scene.control.TableView;
  *
  * @author Jeffry
  */
-public class UsuariosController implements Initializable {
+public class RolesController implements Initializable {
 
     @FXML
-    private TableView<?> tvUsuarios;
+    private TableView<?> tvRoles;
     @FXML
     private Button btnVolver;
     @FXML

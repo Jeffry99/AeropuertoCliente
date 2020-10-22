@@ -11,30 +11,33 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
  *
  * @author Jeffry
  */
-public class UsuariosController implements Initializable {
+public class RolesInformacionController implements Initializable {
 
     @FXML
-    private TableView<?> tvUsuarios;
+    private Label lblId;
     @FXML
-    private Button btnVolver;
+    private Label lblIdNumero;
     @FXML
-    private ComboBox<?> cbTipoBusqueda;
+    private TextField txtNombre;
     @FXML
-    private ComboBox<?> cbBuscar;
+    private TextField txtDescripcion;
     @FXML
-    private Button btnBorrar;
+    private RadioButton rbActivo;
     @FXML
-    private Button btnBuscar;
+    private RadioButton rbInactivo;
     @FXML
-    private Button btnAgregar;
+    private Button btnCancelar;
+    @FXML
+    private Button btnGuardar;
 
     /**
      * Initializes the controller class.
@@ -45,19 +48,11 @@ public class UsuariosController implements Initializable {
     }    
 
     @FXML
-    private void actVolver(ActionEvent event) {
+    private void actCancelar(ActionEvent event) {
     }
 
     @FXML
-    private void actBorrar(ActionEvent event) {
-    }
-
-    @FXML
-    private void actBuscar(ActionEvent event) {
-    }
-
-    @FXML
-    private void actAgregar(ActionEvent event) {
+    private void actGuardar(ActionEvent event) {
     }
     
 }

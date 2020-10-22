@@ -19,22 +19,20 @@ import javafx.scene.control.TableView;
  *
  * @author Jeffry
  */
-public class UsuariosController implements Initializable {
+public class TransaccionesController implements Initializable {
 
-    @FXML
-    private TableView<?> tvUsuarios;
     @FXML
     private Button btnVolver;
     @FXML
-    private ComboBox<?> cbTipoBusqueda;
+    private TableView<?> tvTransacciones;
     @FXML
-    private ComboBox<?> cbBuscar;
+    private ComboBox<?> cbTipoBusqueda;
     @FXML
     private Button btnBorrar;
     @FXML
     private Button btnBuscar;
     @FXML
-    private Button btnAgregar;
+    private ComboBox<?> cbBuscar;
 
     /**
      * Initializes the controller class.
@@ -54,10 +52,6 @@ public class UsuariosController implements Initializable {
 
     @FXML
     private void actBuscar(ActionEvent event) {
-    }
-
-    @FXML
-    private void actAgregar(ActionEvent event) {
     }
     
 }
