@@ -19,9 +19,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -52,10 +54,32 @@ public class EmpleadosController implements Initializable {
     private EmpleadoService empleadoService = new EmpleadoService();
     @FXML
     private Button btnAgregar;
+    @FXML
+    private TextField txtId;
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private TextField txtCedula;
+    @FXML
+    private Button btnBuscarId;
+    @FXML
+    private Button btnBuscarCedula;
+    @FXML
+    private Button btnBuscarNombre;
+    @FXML
+    private ComboBox<String> cbxEstado;
+    @FXML
+    private Button btnBuscarEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTodos();
+        
+        ArrayList estados = new ArrayList();
+        estados.add("Activo");
+        estados.add("Inactivo");
+        ObservableList items = FXCollections.observableArrayList(estados);   
+        cbxEstado.setItems(items);
         // TODO
     }    
 
@@ -191,6 +215,74 @@ public class EmpleadosController implements Initializable {
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         };
+    }
+
+    @FXML
+    private void actBuscarId(ActionEvent event) {
+        if(!txtId.getText().isBlank()){
+            ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+            Respuesta respuesta = empleadoService.getById(Long.valueOf(txtId.getText()));
+            if(respuesta.getEstado().equals(true)){
+                EmpleadoDTO emp = (EmpleadoDTO) respuesta.getResultado("Empleado");
+                empleados.add(emp);
+            }
+            cargarTabla(empleados);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del empleado que desea buscar");
+        }
+    }
+
+    @FXML
+    private void actBuscarCedula(ActionEvent event) {
+        if(!txtCedula.getText().isBlank()){
+            ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+            Respuesta respuesta = empleadoService.getByCedulaAproximate(txtCedula.getText());
+            if(respuesta.getEstado().equals(true)){
+                empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+            }
+            cargarTabla(empleados);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la cédula del empleado que desea buscar");
+        }
+    }
+
+    @FXML
+    private void actBuscarNombre(ActionEvent event) {
+        if(!txtNombre.getText().isBlank()){
+            ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+            Respuesta respuesta = empleadoService.getByNombreAproximate(txtNombre.getText());
+            if(respuesta.getEstado().equals(true)){
+                empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+            }
+            cargarTabla(empleados);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del empleado que desea buscar");
+        }
+    }
+
+    
+    private Boolean estadoBuscar;
+    @FXML
+    private void actSelEstado(ActionEvent event) {
+        if(cbxEstado.getValue().equals("Activo")){
+            estadoBuscar=true;
+        }else{
+            estadoBuscar=false;
+        }
+    }
+
+    @FXML
+    private void actBuscarEstado(ActionEvent event) {
+        if(estadoBuscar!=null){
+            ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+            Respuesta respuesta = empleadoService.getByEstado(estadoBuscar);
+            if(respuesta.getEstado().equals(true)){
+                empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+            }
+            cargarTabla(empleados);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del empleado que desea buscar");
+        }
     }
     
 }
