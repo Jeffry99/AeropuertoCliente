@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import org.una.aerolinea.cliente.dto.UsuarioAutenticado;
 import org.una.aerolinea.cliente.util.AppContext;
 
 /**
@@ -53,7 +54,7 @@ public class ConexionService {
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         headers.add("Content-Type", "application/json; charset=UTF-8");
         headers.add("Accept", "application/json");
-        headers.add("Authorization", AppContext.getInstance().get("TokenJwt"));
+        headers.add("Authorization", UsuarioAutenticado.getInstance().getTokenJwt());
         builder.headers(headers);
     }
     

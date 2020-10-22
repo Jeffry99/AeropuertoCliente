@@ -71,7 +71,7 @@ public class HorarioService {
     public Respuesta getByEmpleado(Long empleado){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("term1", empleado);
+            parametros.put("term", empleado);
             ConexionService conexion = new ConexionService("horarios/list/empleado", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
