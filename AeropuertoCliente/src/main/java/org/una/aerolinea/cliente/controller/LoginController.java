@@ -5,6 +5,7 @@
  */
 package org.una.aerolinea.cliente.controller;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +50,7 @@ public class LoginController {
                     stage.show();
                     Stage stage2 = (Stage) btnIngresar.getScene().getWindow();
                     stage2.close(); 
-                }catch(Exception ex){
+                }catch(IOException ex){
                     Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
                 }
                 
@@ -62,7 +63,7 @@ public class LoginController {
     
     public boolean validar(){
         if(txtUsuario.getText().isBlank()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su usuario");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su cedula");
             return false;
         }
         if(txtContrasena.getText().isBlank()){
