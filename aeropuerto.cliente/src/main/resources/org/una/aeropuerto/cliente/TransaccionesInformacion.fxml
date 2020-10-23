@@ -2,28 +2,111 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.TransaccionesInformacionController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.TransaccionesInformacionController">
    <children>
-      <Label fx:id="lblId" layoutX="286.0" layoutY="69.0" text="Id:" />
-      <Label fx:id="lblIdNumero" layoutX="412.0" layoutY="69.0" text="Numero ID" />
-      <Label layoutX="286.0" layoutY="164.0" text="Lugar:" />
-      <Label layoutX="286.0" layoutY="114.0" text="Descripción:" />
-      <Label layoutX="286.0" layoutY="304.0" text="Estado:" />
-      <TextField fx:id="txtNombre" layoutX="411.0" layoutY="156.0" prefHeight="37.0" prefWidth="303.0" />
-      <TextField fx:id="txtDescripcion" layoutX="412.0" layoutY="106.0" prefHeight="37.0" prefWidth="303.0" />
-      <RadioButton fx:id="rbActivo" layoutX="412.0" layoutY="306.0" mnemonicParsing="false" text="Activo" />
-      <RadioButton fx:id="rbInactivo" layoutX="521.0" layoutY="306.0" mnemonicParsing="false" text="Inactivo" />
-      <Button fx:id="btnCancelar" layoutX="281.0" layoutY="404.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="35.0" prefWidth="115.0" text="Cancelar" />
-      <Button fx:id="btnGuardar" layoutX="600.0" layoutY="404.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
-      <Label layoutX="286.0" layoutY="214.0" text="Rol:" />
-      <TextField fx:id="txtNombre1" layoutX="412.0" layoutY="206.0" prefHeight="37.0" prefWidth="303.0" />
-      <TextField fx:id="txtNombre2" layoutX="411.0" layoutY="256.0" prefHeight="37.0" prefWidth="303.0" />
-      <Label layoutX="286.0" layoutY="264.0" text="Usuario:" />
-      <Label layoutX="286.0" layoutY="350.0" text="Fecha de Registro:" />
-      <Label fx:id="lblFechaRegistro" alignment="CENTER_RIGHT" layoutX="533.0" layoutY="350.0" prefHeight="21.0" prefWidth="182.0" text="Fecha de Registro" />
+      <Label fx:id="lblId" layoutX="271.0" layoutY="72.0" text="Id:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="271.0" layoutY="167.0" text="Lugar:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="271.0" layoutY="117.0" text="Descripción:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="267.0" layoutY="459.0" text="Estado:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Button fx:id="btnVolver" layoutX="269.0" layoutY="550.0" mnemonicParsing="false" onAction="#actVolver" prefHeight="35.0" prefWidth="115.0" text="Volver" />
+      <Label layoutX="271.0" layoutY="217.0" text="Rol:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="txtFechaRegistro" layoutX="399.0" layoutY="499.0" text="_______________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="lblFechaRegistro" alignment="CENTER_RIGHT" layoutX="267.0" layoutY="499.0" prefHeight="21.0" prefWidth="119.0" text="Fecha de Registro:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="txtId" layoutX="365.0" layoutY="72.0" text="____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtDescripcion" layoutX="365.0" layoutY="117.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtLugar" layoutX="365.0" layoutY="167.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtRol" layoutX="365.0" layoutY="217.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="190.0" layoutX="271.0" layoutY="253.0" stroke="BLACK" strokeType="INSIDE" width="469.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#effcd3" height="130.0" layoutX="286.0" layoutY="301.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="439.0" />
+      <Label layoutX="286.0" layoutY="267.0" text="Usuario">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="302.0" layoutY="307.0" text="Nombre:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtNombre" layoutX="396.0" layoutY="307.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="302.0" layoutY="339.0" text="Cédula:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtCedula" layoutX="396.0" layoutY="339.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="302.0" layoutY="369.0" text="Teléfono:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtTelefono" layoutX="396.0" layoutY="369.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="302.0" layoutY="399.0" text="Dirección:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtDireccion" layoutX="396.0" layoutY="399.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtEstado" layoutX="365.0" layoutY="459.0" text="_____________">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

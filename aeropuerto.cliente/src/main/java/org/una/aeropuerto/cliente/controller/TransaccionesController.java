@@ -5,14 +5,39 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
+import org.una.aeropuerto.cliente.App;
+import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
+import org.una.aeropuerto.cliente.dto.RolDTO;
+import org.una.aeropuerto.cliente.dto.TransaccionDTO;
+import org.una.aeropuerto.cliente.service.EmpleadoService;
+import org.una.aeropuerto.cliente.service.RolService;
+import org.una.aeropuerto.cliente.service.TransaccionService;
+import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Mensaje;
+import org.una.aeropuerto.cliente.util.Respuesta;
 
 /**
  * FXML Controller class
@@ -24,21 +49,53 @@ public class TransaccionesController implements Initializable {
     @FXML
     private Button btnVolver;
     @FXML
-    private TableView<?> tvTransacciones;
+    private TableView<TransaccionDTO> tvTransacciones;
     @FXML
-    private ComboBox<?> cbTipoBusqueda;
+    private ComboBox<String> cbxRol;
     @FXML
-    private Button btnBorrar;
+    private Button btnBuscarRol;
     @FXML
-    private Button btnBuscar;
+    private TextField txtId;
     @FXML
-    private ComboBox<?> cbBuscar;
+    private Button btnBuscarId;
+    @FXML
+    private TextField txtLugar;
+    @FXML
+    private Button btnBuscarLugar;
+    @FXML
+    private TextField txtNombreUsuario;
+    @FXML
+    private Button btnBuscarNombreUsuario;
+    @FXML
+    private TextField txtDescripcion;
+    @FXML
+    private Button btnBuscarDescripcion;
 
     /**
      * Initializes the controller class.
      */
+    private TransaccionService transaccionService = new TransaccionService();
+    private RolService rolService = new RolService();
+    private EmpleadoService empleadoService = new EmpleadoService();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ArrayList<RolDTO> roles = new ArrayList<RolDTO>();
+        ArrayList rolesCBX = new ArrayList();
+        Respuesta respuesta = rolService.getAll();
+        if(respuesta.getEstado()==true){
+            roles = (ArrayList<RolDTO>) respuesta.getResultado("Roles");
+            if(!roles.isEmpty()){
+                for(int i=0; i<roles.size(); i++){
+                    rolesCBX.add(roles.get(i).getNombre());
+                }
+            }
+        }
+        
+        ObservableList items = FXCollections.observableArrayList(rolesCBX);   
+        cbxRol.setItems(items);
+        
+        cargarTodos();
         // TODO
     }    
 
@@ -46,12 +103,193 @@ public class TransaccionesController implements Initializable {
     private void actVolver(ActionEvent event) {
     }
 
+    
+    
     @FXML
-    private void actBorrar(ActionEvent event) {
+    private void actSelRol(ActionEvent event) {
     }
 
     @FXML
-    private void actBuscar(ActionEvent event) {
+    private void actBuscarRol(ActionEvent event) {
+        if(!cbxRol.getValue().isBlank()){
+            ArrayList<TransaccionDTO>  transacciones= new ArrayList<TransaccionDTO>();
+            Respuesta respuesta = transaccionService.getByRolAproximate(cbxRol.getValue());
+            if(respuesta.getEstado().equals(true)){
+                transacciones = (ArrayList<TransaccionDTO>) respuesta.getResultado("Transacciones");
+            }
+            cargarTabla(transacciones);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el rol con el que se ejecutó la transacción que desea buscar");
+        }
+    }
+
+    @FXML
+    private void actBuscarId(ActionEvent event) {
+        if(!txtId.getText().isBlank()){
+            ArrayList<TransaccionDTO> transacciones = new ArrayList<TransaccionDTO>();
+            Respuesta respuesta = transaccionService.getById(Long.valueOf(txtId.getText()));
+            if(respuesta.getEstado().equals(true)){
+                TransaccionDTO tran = (TransaccionDTO) respuesta.getResultado("Transaccion");
+                transacciones.add(tran);
+            }
+            cargarTabla(transacciones);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id de la que desea buscar");
+        }
+    }
+
+    @FXML
+    private void actBuscarLugar(ActionEvent event) {
+        if(!txtLugar.getText().isBlank()){
+            ArrayList<TransaccionDTO>  transacciones= new ArrayList<TransaccionDTO>();
+            Respuesta respuesta = transaccionService.getByLugarAproximate(txtLugar.getText());
+            if(respuesta.getEstado().equals(true)){
+                transacciones = (ArrayList<TransaccionDTO>) respuesta.getResultado("Transacciones");
+            }
+            cargarTabla(transacciones);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el lugar donde se ejecutó la transacción que desea buscar");
+        }
+    }
+
+    @FXML
+    private void actBuscarNombreUsuario(ActionEvent event) {
+        ArrayList<TransaccionDTO> transaccionesFiltradas = new ArrayList<TransaccionDTO>();
+        if(!txtNombreUsuario.getText().isBlank()){
+            ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+            Respuesta respuesta = empleadoService.getByNombreAproximate(txtNombreUsuario.getText());
+            if(respuesta.getEstado()==true){
+                empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+                ArrayList<TransaccionDTO> transacciones = new ArrayList<TransaccionDTO>();
+                respuesta = transaccionService.getAll();
+                if(respuesta.getEstado()==true){
+                    transacciones = (ArrayList<TransaccionDTO>) respuesta.getResultado("Transacciones");
+                    for(int i=0; i<transacciones.size(); i++){  
+                        for(int j=0; j<empleados.size(); j++){
+                            if(transacciones.get(i).getUsuario().getEmpleado().getId()==empleados.get(j).getId()){
+                                transaccionesFiltradas.add(transacciones.get(i));
+                            }
+                        }
+                    }
+                }
+                    
+            }
+             
+            cargarTabla(transaccionesFiltradas);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la nombre del usuario que realizó la transacción que desea buscar");
+        }
+        
+        
+        
+    }
+
+    @FXML
+    private void actBuscarDescripcion(ActionEvent event) {
+        if(!txtDescripcion.getText().isBlank()){
+            ArrayList<TransaccionDTO>  transacciones= new ArrayList<TransaccionDTO>();
+            Respuesta respuesta = transaccionService.getByDescripcionAproximate(txtDescripcion.getText());
+            if(respuesta.getEstado().equals(true)){
+                transacciones = (ArrayList<TransaccionDTO>) respuesta.getResultado("Transacciones");
+            }
+            cargarTabla(transacciones);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripción de la transacción que desea buscar");
+        }
     }
     
+    public void cargarTabla(ArrayList<TransaccionDTO> transacciones){
+        tvTransacciones.getColumns().clear();
+        if(!transacciones.isEmpty()){
+            ObservableList items = FXCollections.observableArrayList(transacciones);   
+            
+            TableColumn <TransaccionDTO, Long>colId = new TableColumn("ID");
+            colId.setCellValueFactory(new PropertyValueFactory("id"));
+            TableColumn <TransaccionDTO, String>colDescripcion = new TableColumn("Descripcion");
+            colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
+            TableColumn<TransaccionDTO, String> colUsuario = new TableColumn("Usuario");
+            colUsuario.setCellValueFactory(tran -> {
+                String nombreUsuario;
+                nombreUsuario = tran.getValue().getUsuario().getEmpleado().getNombre();
+                return new ReadOnlyStringWrapper(nombreUsuario);
+            });
+            TableColumn <TransaccionDTO, String>colRol = new TableColumn("Rol");
+            colRol.setCellValueFactory(new PropertyValueFactory("rol"));
+            TableColumn <TransaccionDTO, String>colFechaRegistro = new TableColumn("Fecha de registro");
+            colFechaRegistro.setCellValueFactory(new PropertyValueFactory("fechaRegistro"));
+            
+            tvTransacciones.getColumns().addAll(colId);
+            tvTransacciones.getColumns().addAll(colDescripcion);
+            tvTransacciones.getColumns().addAll(colUsuario);
+            tvTransacciones.getColumns().addAll(colRol);
+            tvTransacciones.getColumns().addAll(colFechaRegistro);
+            addButtonToTable();
+            tvTransacciones.setItems(items);
+        }
+    }
+    
+    private void addButtonToTable() {
+        TableColumn<TransaccionDTO, Void> colBtn = new TableColumn("Acciones");
+
+        Callback<TableColumn<TransaccionDTO, Void>, TableCell<TransaccionDTO, Void>> cellFactory = new Callback<TableColumn<TransaccionDTO, Void>, TableCell<TransaccionDTO, Void>>() {
+            @Override
+            public TableCell<TransaccionDTO, Void> call(final TableColumn<TransaccionDTO, Void> param) {
+                final TableCell<TransaccionDTO, Void> cell = new TableCell<TransaccionDTO, Void>() {
+
+                    
+                    private final Button btn = new Button("Ver");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            try{
+                            TransaccionDTO data = getTableView().getItems().get(getIndex());
+                            ver(data);
+                            }catch(Exception ex){}
+                        });
+                    }
+                    
+                    HBox pane = new HBox(btn);
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(pane);
+                            
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tvTransacciones.getColumns().add(colBtn);
+
+    }
+    
+    public void cargarTodos(){
+        ArrayList<TransaccionDTO> transacciones = new ArrayList<TransaccionDTO>();
+        Respuesta respuesta = transaccionService.getAll();
+        if(respuesta.getEstado().equals(true)){
+            transacciones = (ArrayList<TransaccionDTO>) respuesta.getResultado("Transacciones");
+        }
+        cargarTabla(transacciones);
+    }
+    
+    public void ver(TransaccionDTO transaccion){
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadTransaccion", "Ver");
+        AppContext.getInstance().set("TransaccionEnCuestion", transaccion);
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("TransaccionesInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
+    }
 }

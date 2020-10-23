@@ -5,15 +5,22 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import org.una.aeropuerto.cliente.App;
+import org.una.aeropuerto.cliente.dto.TransaccionDTO;
+import org.una.aeropuerto.cliente.util.AppContext;
 
 /**
  * FXML Controller class
@@ -25,40 +32,67 @@ public class TransaccionesInformacionController implements Initializable {
     @FXML
     private Label lblId;
     @FXML
-    private Label lblIdNumero;
+    private Label txtNombre;
     @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextField txtDescripcion;
-    @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
-    private Button btnCancelar;
-    @FXML
-    private Button btnGuardar;
-    @FXML
-    private TextField txtNombre1;
-    @FXML
-    private TextField txtNombre2;
+    private Label txtDescripcion;
     @FXML
     private Label lblFechaRegistro;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Label txtFechaRegistro;
+    @FXML
+    private Label txtId;
+    @FXML
+    private Label txtLugar;
+    @FXML
+    private Label txtRol;
+    @FXML
+    private Label txtCedula;
+    @FXML
+    private Label txtTelefono;
+    @FXML
+    private Label txtDireccion;
+    @FXML
+    private Label txtEstado;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        String modalidad = (String) AppContext.getInstance().get("ModalidadTransaccion");
+        if(modalidad.equals("Ver")){
+            TransaccionDTO transaccion = (TransaccionDTO) AppContext.getInstance().get("TransaccionEnCuestion");
+            txtCedula.setText(transaccion.getUsuario().getEmpleado().getCedula());
+            txtDescripcion.setText(transaccion.getDescripcion());
+            txtDireccion.setText(transaccion.getUsuario().getEmpleado().getDireccion());
+            txtFechaRegistro.setText(transaccion.getFechaRegistro().toString());
+            txtId.setText(String.valueOf(transaccion.getId()));
+            txtLugar.setText(transaccion.getLugar());
+            txtNombre.setText(transaccion.getUsuario().getEmpleado().getNombre());
+            txtRol.setText(transaccion.getRol());
+            txtTelefono.setText(transaccion.getUsuario().getEmpleado().getTelefono());
+            if(transaccion.getEstado()==true){
+                txtEstado.setText("Activo");
+            }else{
+                txtEstado.setText("Inactivo");
+            }
+        }  
+    }
+            
 
     @FXML
-    private void actCancelar(ActionEvent event) {
+    private void actVolver(ActionEvent event) {
+        try{
+            StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+            Parent root = FXMLLoader.load(App.class.getResource("Transacciones" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            
+        }
     }
 
-    @FXML
-    private void actGuardar(ActionEvent event) {
-    }
     
 }

@@ -146,6 +146,7 @@ public class EmpleadosInformacionController implements Initializable {
             lblFechaModificacion1.setVisible(true);
             
             if(modalidad.equals("Ver")){
+                GenerarTransacciones.crearTransaccion("Se observa empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
                 txtCedula.setDisable(true);
                 txtNombre.setDisable(true);
                 txtTelefono.setDisable(true);
