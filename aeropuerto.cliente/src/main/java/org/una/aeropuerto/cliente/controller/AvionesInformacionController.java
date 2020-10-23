@@ -62,19 +62,17 @@ public class AvionesInformacionController implements Initializable {
     private RadioButton rbInactivo;
     @FXML
     private Label lblIdNumero;
-    private Button btnVuelos;
-    private Button btnServicios;
-    private Button btnBitacora;
     
     private String modalidad="";
-    
+    AerolineaService aerolineaService = new AerolineaService();
     private AvionService avionService = new AvionService();
-    private TextField txtMatricula;
-    private ComboBox<AerolineaDTO> cbAerolinea;
-    private ComboBox<TipoAvionDTO> cbTipoAvion;
-    private AvionDTO avion;
     @FXML
-    private TextField txtCedula;
+    private TextField txtMatricula;
+    @FXML
+    private ComboBox<AerolineaDTO> cbAerolinea;
+    @FXML
+    private ComboBox<TipoAvionDTO> cbTipoAvion;
+    private AvionDTO avion = new AvionDTO();
     /**
      * Initializes the controller class.
      */
@@ -100,10 +98,7 @@ public class AvionesInformacionController implements Initializable {
             llenarDatos();
         }
         if(modalidad.equals("Agregar")){
-            btnServicios.setVisible(false);
-            btnVuelos.setVisible(false);
-            btnBitacora.setVisible(false);
-            
+            lblIdNumero.setVisible(false);
         }
     }    
     public void llenarDatos(){
@@ -164,12 +159,14 @@ public class AvionesInformacionController implements Initializable {
     }
     
     private Boolean estado;
+    @FXML
     private void actActivo(ActionEvent event) {
         estado = true;
         rbActivo.setSelected(true);
         rbInactivo.setSelected(false);
     }
 
+    @FXML
     private void actInactivo(ActionEvent event) {
         estado = false;
         rbActivo.setSelected(false);
@@ -188,7 +185,7 @@ public class AvionesInformacionController implements Initializable {
     }
     
     public boolean validar(){
-        if(txtMatricula.getText().isBlank()){
+        if(txtMatricula.getText().isEmpty()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la cedula del empleado");
             return false;
         }
@@ -208,7 +205,7 @@ public class AvionesInformacionController implements Initializable {
     }
     
     public void initAerolineas(){
-        AerolineaService aerolineaService = new AerolineaService();
+        
         ArrayList<AerolineaDTO> aerolineas;
         Respuesta respuesta = aerolineaService.getByEstado(true);
         if(respuesta.getEstado()){

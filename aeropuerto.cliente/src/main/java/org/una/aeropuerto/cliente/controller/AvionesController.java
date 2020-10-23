@@ -220,6 +220,7 @@ public class AvionesController implements Initializable {
         cbEstado.setValue(null);
         cbTipoAvion.setValue(null);
         cbAerolinea.setValue(null);
+        cargarTodos();
     }
 
 
