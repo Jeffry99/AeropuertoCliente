@@ -30,7 +30,7 @@ public class ParametroAplicacionService {
             return new Respuesta(true, "ParametroAplicacion", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion del parametro de aplicacion: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     public Respuesta modificar(Long id, ParametroAplicacionDTO trabajoEmpleado){
@@ -46,7 +46,7 @@ public class ParametroAplicacionService {
             return new Respuesta(true, "ParametroAplicacion", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion del parametro de aplicacion: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -62,7 +62,7 @@ public class ParametroAplicacionService {
             ParametroAplicacionDTO result = (ParametroAplicacionDTO) conexion.readEntity(ParametroAplicacionDTO.class);
             return new Respuesta(true, "ParametroAplicacion",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -76,7 +76,7 @@ public class ParametroAplicacionService {
             List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -92,7 +92,7 @@ public class ParametroAplicacionService {
             List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -108,7 +108,7 @@ public class ParametroAplicacionService {
             List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
             return new Respuesta(true, "AreasTrabajos",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -124,7 +124,7 @@ public class ParametroAplicacionService {
             List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
 }

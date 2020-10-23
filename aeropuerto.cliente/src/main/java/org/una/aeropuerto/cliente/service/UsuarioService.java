@@ -30,7 +30,7 @@ public class UsuarioService {
             return new Respuesta(true, "Usuario", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion de usuario: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -47,7 +47,7 @@ public class UsuarioService {
             return new Respuesta(true, "Usuario", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion de usuario: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -63,7 +63,7 @@ public class UsuarioService {
             List<UsuarioDTO> result = (List<UsuarioDTO>) conexion.readEntity(new GenericType<List<UsuarioDTO>>(){});
             return new Respuesta(true, "Usuarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -79,7 +79,7 @@ public class UsuarioService {
             List<UsuarioDTO> result = (List<UsuarioDTO>) conexion.readEntity(new GenericType<List<UsuarioDTO>>(){});
             return new Respuesta(true, "Usuarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -95,7 +95,7 @@ public class UsuarioService {
             UsuarioDTO result = (UsuarioDTO) conexion.readEntity(UsuarioDTO.class);
             return new Respuesta(true, "Usuario",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -109,7 +109,7 @@ public class UsuarioService {
             List<UsuarioDTO> result = (List<UsuarioDTO>) conexion.readEntity(new GenericType<List<UsuarioDTO>>(){});
             return new Respuesta(true, "Usuarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
 }

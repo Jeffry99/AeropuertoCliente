@@ -30,7 +30,7 @@ public class AreaTrabajoService {
             return new Respuesta(true, "AreaTrabajo", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion de area de trabajo: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -47,7 +47,7 @@ public class AreaTrabajoService {
             return new Respuesta(true, "AreaTrabajo", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion area de trabajo: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -63,7 +63,7 @@ public class AreaTrabajoService {
             AreaTrabajoDTO result = (AreaTrabajoDTO) conexion.readEntity(AreaTrabajoDTO.class);
             return new Respuesta(true, "AreaTrabajo",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -77,7 +77,7 @@ public class AreaTrabajoService {
             List<AreaTrabajoDTO> result = (List<AreaTrabajoDTO>) conexion.readEntity(new GenericType<List<AreaTrabajoDTO>>(){});
             return new Respuesta(true, "AreasTrabajos",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -93,7 +93,7 @@ public class AreaTrabajoService {
             List<AreaTrabajoDTO> result = (List<AreaTrabajoDTO>) conexion.readEntity(new GenericType<List<AreaTrabajoDTO>>(){});
             return new Respuesta(true, "AreasTrabajos",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -109,7 +109,7 @@ public class AreaTrabajoService {
             List<AreaTrabajoDTO> result = (List<AreaTrabajoDTO>) conexion.readEntity(new GenericType<List<AreaTrabajoDTO>>(){});
             return new Respuesta(true, "AreasTrabajos",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -125,7 +125,7 @@ public class AreaTrabajoService {
             List<AreaTrabajoDTO> result = (List<AreaTrabajoDTO>) conexion.readEntity(new GenericType<List<AreaTrabajoDTO>>(){});
             return new Respuesta(true, "AreasTrabajos",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
 }

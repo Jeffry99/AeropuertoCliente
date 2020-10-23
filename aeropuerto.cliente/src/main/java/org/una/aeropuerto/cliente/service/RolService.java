@@ -30,7 +30,7 @@ public class RolService {
             return new Respuesta(true, "Rol", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion de rol: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -47,7 +47,7 @@ public class RolService {
             return new Respuesta(true, "Rol", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion de rol: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -63,7 +63,7 @@ public class RolService {
             List<RolDTO> result = (List<RolDTO>) conexion.readEntity(new GenericType<List<RolDTO>>(){});
             return new Respuesta(true, "Roles",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -79,7 +79,7 @@ public class RolService {
             List<RolDTO> result = (List<RolDTO>) conexion.readEntity(new GenericType<List<RolDTO>>(){});
             return new Respuesta(true, "Roles",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -95,7 +95,7 @@ public class RolService {
             List<RolDTO> result = (List<RolDTO>) conexion.readEntity(new GenericType<List<RolDTO>>(){});
             return new Respuesta(true, "Roles",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -111,7 +111,7 @@ public class RolService {
             RolDTO result = (RolDTO) conexion.readEntity(RolDTO.class);
             return new Respuesta(true, "Rol",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -125,7 +125,7 @@ public class RolService {
             List<RolDTO> result = (List<RolDTO>) conexion.readEntity(new GenericType<List<RolDTO>>(){});
             return new Respuesta(true, "Roles",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
 }
