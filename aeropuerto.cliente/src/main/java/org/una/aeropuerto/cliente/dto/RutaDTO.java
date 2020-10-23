@@ -67,5 +67,9 @@ public class RutaDTO {
         this.estado = estado;
     }
     
+    public String toString(){
+        return origen+"-"+destino;
+    }
+    
     
 }

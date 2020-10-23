@@ -2,25 +2,25 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AvionesInformacionController">
+<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.VuelosInformacionController">
    <children>
-      <Label fx:id="lblCedula" layoutX="260.0" layoutY="238.0" text="Matrícula:" />
-      <TextField fx:id="txtMatricula" layoutX="365.0" layoutY="230.0" prefHeight="37.0" prefWidth="375.0" />
+      <Label fx:id="lblCedula" layoutX="260.0" layoutY="238.0" text="Avión:" />
       <Button fx:id="btnGuardar" layoutX="639.0" layoutY="469.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
       <Button fx:id="btnVolver" layoutX="260.0" layoutY="469.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label fx:id="lblNombre" layoutX="260.0" layoutY="181.0" text="Id:" />
-      <Label fx:id="lblTelefono" layoutX="260.0" layoutY="295.0" text="Aerolínea" />
-      <Label fx:id="lblDireccion" layoutX="260.0" layoutY="353.0" text="Tipo de Avión:" />
+      <Label fx:id="lblTelefono" layoutX="260.0" layoutY="295.0" text="Ruta:" />
+      <Label fx:id="lblDireccion" layoutX="260.0" layoutY="353.0" text="Fecha:" />
       <Label fx:id="lblEstado" layoutX="260.0" layoutY="399.0" text="Estado:" />
       <RadioButton fx:id="rbActivo" layoutX="366.0" layoutY="401.0" mnemonicParsing="false" onAction="#actActivo" text="Activo" />
       <RadioButton fx:id="rbInactivo" layoutX="445.0" layoutY="401.0" mnemonicParsing="false" onAction="#actInactivo" text="Inactivo" />
       <Label fx:id="lblIdNumero" layoutX="365.0" layoutY="181.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
-      <ComboBox fx:id="cbAerolinea" layoutX="365.0" layoutY="287.0" prefHeight="37.0" prefWidth="375.0" />
-      <ComboBox fx:id="cbTipoAvion" layoutX="365.0" layoutY="345.0" prefHeight="37.0" prefWidth="375.0" />
+      <ComboBox fx:id="cbRuta" layoutX="365.0" layoutY="287.0" prefHeight="37.0" prefWidth="375.0" />
+      <ComboBox fx:id="cbAvion" layoutX="365.0" layoutY="230.0" prefHeight="37.0" prefWidth="375.0" />
+      <DatePicker fx:id="dpFecha" layoutX="365.0" layoutY="345.0" prefHeight="37.0" prefWidth="375.0" />
    </children>
 </AnchorPane>

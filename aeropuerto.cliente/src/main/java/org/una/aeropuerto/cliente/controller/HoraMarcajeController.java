@@ -8,6 +8,7 @@ package org.una.aeropuerto.cliente.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -239,10 +240,13 @@ public class HoraMarcajeController implements Initializable {
                     estadoString = "Inactivo";
                 return new ReadOnlyStringWrapper(estadoString);
             });
+            TableColumn <HoraMarcajeDTO, Date>colFecha = new TableColumn("Fecha");
+            colFecha.setCellValueFactory(new PropertyValueFactory("fechaRegistro"));
             tvHorasMarcaje.getColumns().addAll(colId);
             tvHorasMarcaje.getColumns().addAll(colEmpleado);
             tvHorasMarcaje.getColumns().addAll(colTipo);
             tvHorasMarcaje.getColumns().addAll(colEstado);
+            tvHorasMarcaje.getColumns().addAll(colFecha);
             addButtonToTable();
             tvHorasMarcaje.setItems(items);
         }

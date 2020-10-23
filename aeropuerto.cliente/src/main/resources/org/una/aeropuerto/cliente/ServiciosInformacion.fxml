@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosInformacionController">
+   <children>
+      <Label fx:id="lblCedula" layoutX="56.0" layoutY="151.0" text="Tipo de Servicio:" />
+      <Button fx:id="btnGuardar" layoutX="640.0" layoutY="526.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Button fx:id="btnVolver" layoutX="261.0" layoutY="526.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <Label fx:id="lblNombre" layoutX="56.0" layoutY="113.0" text="Id:" />
+      <Label fx:id="lblTelefono" layoutX="56.0" layoutY="208.0" text="Cobro:" />
+      <Label fx:id="lblDireccion" layoutX="56.0" layoutY="266.0" text="Estado de Cobro:" />
+      <Label fx:id="lblEstado" layoutX="56.0" layoutY="312.0" text="Estado:" />
+      <RadioButton fx:id="rbActivo" layoutX="180.0" layoutY="314.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
+      <RadioButton fx:id="rbInactivo" layoutX="265.0" layoutY="314.0" mnemonicParsing="false" onAction="#actEstadoInactivo" text="Inactivo" />
+      <Label fx:id="lblIdNumero" layoutX="180.0" layoutY="113.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
+      <Label fx:id="lblTelefono1" layoutX="55.0" layoutY="358.0" text="Responsable:" />
+      <ComboBox fx:id="cbTipoServicio" layoutX="180.0" layoutY="143.0" prefHeight="37.0" prefWidth="356.0" />
+      <TextField fx:id="txtCobro" layoutX="179.0" layoutY="200.0" prefHeight="37.0" prefWidth="356.0" />
+      <Label fx:id="lblTelefono11" layoutX="260.0" layoutY="417.0" text="Fecha de Registro:" />
+      <Label fx:id="lblFechaRegistro" alignment="CENTER_RIGHT" layoutX="560.0" layoutY="417.0" prefHeight="21.0" prefWidth="180.0" text="Fecha de Registro:" />
+      <Label fx:id="lblFechaModificacion" alignment="CENTER_RIGHT" layoutX="560.0" layoutY="469.0" prefHeight="21.0" prefWidth="180.0" text="Fecha de Modificación:" />
+      <Label fx:id="lblTelefono1121" layoutX="260.0" layoutY="469.0" prefHeight="21.0" prefWidth="180.0" text="Fecha de Modificación:" />
+      <ComboBox fx:id="cbResponsable" layoutX="180.0" layoutY="350.0" prefHeight="37.0" prefWidth="356.0" />
+      <Label fx:id="lblNombre1" layoutX="578.0" layoutY="151.0" text="Duración:" />
+      <TextField fx:id="txtDuracion" layoutX="674.0" layoutY="143.0" prefHeight="37.0" prefWidth="255.0" />
+      <Label fx:id="lblNombre11" layoutX="578.0" layoutY="208.0" text="Observaciones:" />
+      <TextField fx:id="txtObservaciones" layoutX="578.0" layoutY="240.0" prefHeight="150.0" prefWidth="349.0" />
+      <RadioButton fx:id="rbActivoCobro" layoutX="179.0" layoutY="268.0" mnemonicParsing="false" onAction="#actEstadoCobroActivo" text="Activo" />
+      <RadioButton fx:id="rbInactivoCobro" layoutX="264.0" layoutY="268.0" mnemonicParsing="false" onAction="#actEstadoCobroInactivo" text="Inactivo" />
+   </children>
+</AnchorPane>
