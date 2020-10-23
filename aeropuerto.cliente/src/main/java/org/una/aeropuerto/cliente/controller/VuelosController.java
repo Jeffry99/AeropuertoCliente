@@ -7,9 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -23,7 +21,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,7 +32,6 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.RutaDTO;
 import org.una.aeropuerto.cliente.dto.VueloDTO;
-import org.una.aeropuerto.cliente.service.AerolineaService;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.RutaService;
 import org.una.aeropuerto.cliente.service.VueloService;
@@ -56,8 +52,6 @@ public class VuelosController implements Initializable {
     private Button btnVolver;
     @FXML
     private ComboBox<String> cbEstado;
-    @FXML
-    private Button btnBorrar;
     @FXML
     private Button btnBuscarAvion;
     @FXML
@@ -80,11 +74,10 @@ public class VuelosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        cargarTodos();
         initEstados();
         initAviones();
         initRutas();
+        cargarTodos();
     }    
     public void cargarTodos(){
         ArrayList<VueloDTO> vuelos = new ArrayList<VueloDTO>();
@@ -238,7 +231,6 @@ public class VuelosController implements Initializable {
         }
     }
 
-    @FXML
     private void actBorrar(ActionEvent event) {
         cbAvion.setValue(null);
         cbEstado.setValue(null);
@@ -374,7 +366,7 @@ public class VuelosController implements Initializable {
         ArrayList<RutaDTO> rutas;
         Respuesta respuesta = rutaService.getByEstado(true);
         if(respuesta.getEstado()){
-            rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Aviones");
+            rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             ObservableList items = FXCollections.observableArrayList(rutas);
             cbAvion.setItems(items);
         }
