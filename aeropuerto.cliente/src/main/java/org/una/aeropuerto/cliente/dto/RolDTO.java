@@ -57,5 +57,8 @@ public class RolDTO {
         this.estado = estado;
     }
     
+    public String toString(){
+        return nombre;
+    }
     
 }

@@ -67,6 +67,40 @@ public class UsuarioService {
         }
     }
     
+    
+    public Respuesta getByNombre(String nombre){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("term", nombre);
+            ConexionService conexion = new ConexionService("usuarios/list/nombre", "/{term}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al buscar los empleados por el nombre");
+            }
+            List<UsuarioDTO> result = (List<UsuarioDTO>) conexion.readEntity(new GenericType<List<UsuarioDTO>>(){});
+            return new Respuesta(true, "Usuarios",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
+        }
+    }
+    
+    public Respuesta getByCedula(String cedula){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("term", cedula);
+            ConexionService conexion = new ConexionService("usuarios/list/cedula", "/{term}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al buscar los empleados por la cédula");
+            }
+            List<UsuarioDTO> result = (List<UsuarioDTO>) conexion.readEntity(new GenericType<List<UsuarioDTO>>(){});
+            return new Respuesta(true, "Usuarios",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
+        }
+    }
+    
+    
     public Respuesta getByEstado(boolean estado){
         try{
             Map<String, Object> parametros = new HashMap<>();

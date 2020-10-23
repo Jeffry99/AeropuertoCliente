@@ -116,6 +116,7 @@ public class RolesInformacionController implements Initializable {
                 if(modalidad.equals("Agregar")){
                     Respuesta respuesta=rolService.crear(rol);
                     if(respuesta.getEstado()){
+                        rol=(RolDTO) respuesta.getResultado("Rol");
                         GenerarTransacciones.crearTransaccion("Se crea rol con id "+rol.getId(), "RolesInformacion");
                         Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de rol", "Se ha registrado el rol correctamente");
                         volver();
