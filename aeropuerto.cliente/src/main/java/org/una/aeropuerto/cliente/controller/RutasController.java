@@ -1,9 +1,10 @@
+package org.una.aeropuerto.cliente.controller;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,8 +30,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
-import org.una.aeropuerto.cliente.dto.AreaTrabajoDTO;
-import org.una.aeropuerto.cliente.service.AreaTrabajoService;
+import org.una.aeropuerto.cliente.dto.RutaDTO;
+import org.una.aeropuerto.cliente.service.RutaService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -40,34 +41,37 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  *
  * @author Luis
  */
-public class AreasTrabajoController implements Initializable {
+public class RutasController implements Initializable {
 
     @FXML
-    private TableView<AreaTrabajoDTO> tvAreasTrabajo;
+    private TableView<RutaDTO> tvRutas;
     @FXML
     private Button btnVolver;
     @FXML
-    private Button btnAgregar;
-    @FXML
     private Button btnBuscarId;
     @FXML
+    private Button btnAgregar;
+    @FXML
     private TextField txtbuscarId;
+    @FXML
     private TextField txtbuscarDist;
     @FXML
-    private TextField txtbuscarNombre;
+    private TextField txtbuscarOri;
     @FXML
     private ComboBox<String> cbxEstado;
     @FXML
-    private Button btnBuscarDescripcion;
+    private Button btnBuscarDist;
+    @FXML
+    private Button btnBuscarOri;
     @FXML
     private Button btnBuscarEst;
-   
-    private AreaTrabajoService AreaTrabajoService = new AreaTrabajoService();
     @FXML
-    private TextField txtbuscarDescripcion;
+    private TextField txtbuscarDes;
     @FXML
-    private Button btnBuscarNombre;
-   
+    private Button btnBuscarDes;
+
+    private RutaService rutaService = new RutaService();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTodos();
@@ -79,26 +83,27 @@ public class AreasTrabajoController implements Initializable {
         cbxEstado.setItems(items);
     }    
     public void cargarTodos(){
-        ArrayList<AreaTrabajoDTO> AreasTrabajo = new ArrayList<AreaTrabajoDTO>();
-        Respuesta respuesta = AreaTrabajoService.getAll();
+        ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+        Respuesta respuesta = rutaService.getAll();
         if(respuesta.getEstado().equals(true)){
-            AreasTrabajo = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+            rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
         }
-        cargarTabla(AreasTrabajo);
+        cargarTabla(rutas);
     }
-    
-     public void cargarTabla(ArrayList<AreaTrabajoDTO> aerolineas){
-        tvAreasTrabajo.getColumns().clear();
+     public void cargarTabla(ArrayList<RutaDTO> aerolineas){
+        tvRutas.getColumns().clear();
         if(!aerolineas.isEmpty()){
             ObservableList items = FXCollections.observableArrayList(aerolineas);   
             
-            TableColumn <AreaTrabajoDTO, Long>colId = new TableColumn("ID");
+            TableColumn <RutaDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
-            TableColumn <AreaTrabajoDTO, String>colNombre = new TableColumn("Nombre");
-            colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-            TableColumn <AreaTrabajoDTO, String>colDescripcion = new TableColumn("Descripcion");
-            colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
-            TableColumn<AreaTrabajoDTO, String> colEstado = new TableColumn("Estado");
+            TableColumn <RutaDTO, String>colDistancia = new TableColumn("Distancia");
+            colDistancia.setCellValueFactory(new PropertyValueFactory("distancia"));
+            TableColumn <RutaDTO, String>colOrigen = new TableColumn("Origen");
+            colOrigen.setCellValueFactory(new PropertyValueFactory("origen"));
+            TableColumn <RutaDTO, String>colDestino = new TableColumn("Destino");
+            colDestino.setCellValueFactory(new PropertyValueFactory("destino"));
+            TableColumn<RutaDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(emp -> {
                 String estadoString;
                 if(emp.getValue().getEstado())
@@ -107,29 +112,30 @@ public class AreasTrabajoController implements Initializable {
                     estadoString = "Inactivo";
                 return new ReadOnlyStringWrapper(estadoString);
             });
-            tvAreasTrabajo.getColumns().addAll(colId);
-            tvAreasTrabajo.getColumns().addAll(colNombre);
-            tvAreasTrabajo.getColumns().addAll(colDescripcion);
-            tvAreasTrabajo.getColumns().addAll(colEstado);
+            tvRutas.getColumns().addAll(colId);
+            tvRutas.getColumns().addAll(colDistancia);
+            tvRutas.getColumns().addAll(colOrigen);
+            tvRutas.getColumns().addAll(colDestino);
+            tvRutas.getColumns().addAll(colEstado);
             addButtonToTable();
-            tvAreasTrabajo.setItems(items);
+            tvRutas.setItems(items);
         }
     }
     
     private void addButtonToTable() {
-        TableColumn<AreaTrabajoDTO, Void> colBtn = new TableColumn("Acciones");
+        TableColumn<RutaDTO, Void> colBtn = new TableColumn("Acciones");
 
-        Callback<TableColumn<AreaTrabajoDTO, Void>, TableCell<AreaTrabajoDTO, Void>> cellFactory = new Callback<TableColumn<AreaTrabajoDTO, Void>, TableCell<AreaTrabajoDTO, Void>>() {
-            @Override
-            public TableCell<AreaTrabajoDTO, Void> call(final TableColumn<AreaTrabajoDTO, Void> param) {
-                final TableCell<AreaTrabajoDTO, Void> cell = new TableCell<AreaTrabajoDTO, Void>() {
+    Callback<TableColumn<RutaDTO, Void>, TableCell<RutaDTO, Void>> cellFactory = new Callback<TableColumn<RutaDTO, Void>, TableCell<RutaDTO, Void>>() {
+          @Override
+            public TableCell<RutaDTO, Void> call(final TableColumn<RutaDTO, Void> param) {
+                final TableCell<RutaDTO, Void> cell = new TableCell<RutaDTO, Void>() {
 
                     private final Button btn = new Button("Editar");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             try{
-                            AreaTrabajoDTO data = getTableView().getItems().get(getIndex());
+                            RutaDTO data = getTableView().getItems().get(getIndex());
                             modificar(data);
                             }catch(Exception ex){}
                         });
@@ -140,7 +146,7 @@ public class AreasTrabajoController implements Initializable {
                     {
                         btn2.setOnAction((ActionEvent event) -> {
                             try{
-                            AreaTrabajoDTO data = getTableView().getItems().get(getIndex());
+                            RutaDTO data = getTableView().getItems().get(getIndex());
                             ver(data);
                             }catch(Exception ex){}
                         });
@@ -165,15 +171,16 @@ public class AreasTrabajoController implements Initializable {
 
         colBtn.setCellFactory(cellFactory);
 
-        tvAreasTrabajo.getColumns().add(colBtn);
+        tvRutas.getColumns().add(colBtn);
     }
     
-         public void modificar(AreaTrabajoDTO areaTrabajo){
+    
+    public void modificar(RutaDTO aerolinea){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadAreaTrabajo", "Modificar");
-        AppContext.getInstance().set("AreaTrabajoEnCuestion", areaTrabajo);
+        AppContext.getInstance().set("ModalidadRuta", "Modificar");
+        AppContext.getInstance().set("RutaEnCuestion", aerolinea);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("RutasInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -181,12 +188,44 @@ public class AreasTrabajoController implements Initializable {
         };
     }
         
-    public void ver(AreaTrabajoDTO areaTrabajo){
+    public void ver(RutaDTO aerolinea){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadAreaTrabajo", "Ver");
-        AppContext.getInstance().set("AreaTrabajoEnCuestion", areaTrabajo);
+        AppContext.getInstance().set("ModalidadRuta", "Ver");
+        AppContext.getInstance().set("RutaEnCuestion", aerolinea);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("RutasInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
+    }
+
+    @FXML
+    private void actVolver(ActionEvent event) {
+    }
+
+    @FXML
+    private void actBuscarId(ActionEvent event) {
+        if(!txtbuscarId.getText().isBlank()){
+            ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+            Respuesta respuesta = rutaService.getById(Long.valueOf(txtbuscarId.getText()));
+            if(respuesta.getEstado().equals(true)){
+                RutaDTO aero = (RutaDTO) respuesta.getResultado("Rutas");
+                rutas.add(aero);
+            }
+            cargarTabla(rutas);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id de la ruta que desea buscar");
+        }
+    }
+
+    @FXML
+    private void actAgregar(ActionEvent event) {
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadRuta", "Agregar");
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("RutasInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -194,38 +233,6 @@ public class AreasTrabajoController implements Initializable {
         };
     }
     
-    @FXML
-    private void actVolver(ActionEvent event) {
-    }
-
-    @FXML
-    private void actAgregar(ActionEvent event) {
-        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadAreaTrabajo", "Agregar");
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajosInformacion" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        };
-    }
-
-    @FXML
-    private void actBuscarId(ActionEvent event) {
-     if(!txtbuscarId.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getById(Long.valueOf(txtbuscarId.getText()));
-            if(respuesta.getEstado().equals(true)){
-                AreaTrabajoDTO area = (AreaTrabajoDTO) respuesta.getResultado("Aerolineas");
-                aerolineas.add(area);
-            }
-            cargarTabla(aerolineas);
-        }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del area de trabajo que desea buscar");
-        }
-    }
-
     private Boolean estadoBuscar;
     @FXML
     private void actSelEstado(ActionEvent event) {
@@ -237,48 +244,59 @@ public class AreasTrabajoController implements Initializable {
     }
 
     @FXML
-    private void actBuscarDescripcion(ActionEvent event) {
+    private void actBuscarDist(ActionEvent event) {
         if(!txtbuscarDist.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByDescripcionAproximate(txtbuscarDist.getText());
+            ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+            Respuesta respuesta = rutaService.getByDistanciaRango(Float.parseFloat(txtbuscarDist.getText()));
             if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+                rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             }
-            cargarTabla(aerolineas);
+            cargarTabla(rutas);
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion de area de trabajo que desea buscar");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la distancia de la ruta que desea buscar");
         }
     }
 
-    private void actBuscarNom(ActionEvent event) {
-        if(!txtbuscarNombre.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByNombreAproximate(txtbuscarNombre.getText());
+    @FXML
+    private void actBuscarOri(ActionEvent event) {
+        if(!txtbuscarOri.getText().isBlank()){
+            ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+            Respuesta respuesta = rutaService.getByOrigenAproximate(txtbuscarOri.getText());
             if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+                rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             }
-            cargarTabla(aerolineas);
+            cargarTabla(rutas);
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo que desea buscar");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el origen de la ruta que desea buscar");
         }
     }
 
     @FXML
     private void actBuscarEst(ActionEvent event) {
         if(estadoBuscar!=null){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByEstado(estadoBuscar);
+            ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+            Respuesta respuesta = rutaService.getByEstado(estadoBuscar);
             if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+                rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             }
-            cargarTabla(aerolineas);
+            cargarTabla(rutas);
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del area de trabajo que desea buscar");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la ruta que desea buscar");
         }
     }
 
     @FXML
-    private void actBuscarNombre(ActionEvent event) {
+    private void actBuscarDes(ActionEvent event) {
+       if(!txtbuscarDes.getText().isBlank()){
+            ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+            Respuesta respuesta = rutaService.getByDestinoAproximate(txtbuscarDes.getText());
+            if(respuesta.getEstado().equals(true)){
+                rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
+            }
+            cargarTabla(rutas);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el destino de la ruta que desea buscar");
+        } 
     }
     
 }
