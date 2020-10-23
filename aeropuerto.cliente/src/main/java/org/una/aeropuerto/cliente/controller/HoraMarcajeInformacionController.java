@@ -78,6 +78,7 @@ public class HoraMarcajeInformacionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        empleadoSeleccionado = new EmpleadoDTO();
         modalidad = (String) AppContext.getInstance().get("ModalidadHoraMarcaje");
         ArrayList tipos = new ArrayList();
         tipos.add("Entrada");
@@ -85,11 +86,11 @@ public class HoraMarcajeInformacionController implements Initializable {
         ObservableList items3 = FXCollections.observableArrayList(tipos);   
         cbxTipo.setItems(items3);
         cargarEmpleados();
-        
+        txtFechaRegistro.setVisible(false);
         
         if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
             horaMarcajeEnCuestion = (HoraMarcajeDTO) AppContext.getInstance().get("HoraMarcajeEnCuestion");
-            
+            empleadoSeleccionado=horaMarcajeEnCuestion.getEmpleado();
             txtCedula.setText(horaMarcajeEnCuestion.getEmpleado().getCedula());
             txtNombre.setText(horaMarcajeEnCuestion.getEmpleado().getNombre());
             if(horaMarcajeEnCuestion.getTipo()==1){
@@ -109,11 +110,15 @@ public class HoraMarcajeInformacionController implements Initializable {
                 rbInactivo.setSelected(true);
             }
             txtFechaRegistro.setText(horaMarcajeEnCuestion.getFechaRegistro().toString());
+            txtFechaRegistro.setVisible(true);
             if(modalidad.equals("Ver")){
                 GenerarTransacciones.crearTransaccion("Se observa hora de marcaje con id "+horaMarcajeEnCuestion.getId(), "HoraMarcajeInformacion");
                 lbSeleccionarEmpleado.setVisible(false);
                 tvEmpleados.setVisible(false);
                 tvEmpleados.setDisable(true);
+                cbxTipo.setDisable(true);
+                btnAgregar.setDisable(true);
+                btnAgregar.setVisible(false);
             }
         }
         

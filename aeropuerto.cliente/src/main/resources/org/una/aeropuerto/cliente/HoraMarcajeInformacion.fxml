@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuerto.cliente.controller.HoraMarcajeInformacionController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.HoraMarcajeInformacionController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffeb" height="111.0" layoutX="184.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="652.0" />
       <Label layoutX="191.0" layoutY="104.0" text="Empleado seleccionado" />
@@ -24,7 +23,7 @@
       <RadioButton fx:id="rbInactivo" layoutX="341.0" layoutY="227.0" mnemonicParsing="false" onAction="#actInactivo" text="Inactivo" />
       <ComboBox fx:id="cbxTipo" layoutX="181.0" layoutY="259.0" onAction="#actSelTipo" prefHeight="37.0" prefWidth="231.0" promptText="Seleccionar tipo" />
       <Button fx:id="btnVolver" layoutX="186.0" layoutY="595.0" mnemonicParsing="false" onAction="#actVolver" prefWidth="90.0" text="Volver" />
-      <Button fx:id="btnAgregar" layoutX="735.0" layoutY="595.0" mnemonicParsing="false" onAction="#actGuardar" text="Agregar" />
+      <Button fx:id="btnAgregar" layoutX="735.0" layoutY="595.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
       <TableView fx:id="tvEmpleados" layoutX="184.0" layoutY="390.0" prefHeight="187.0" prefWidth="652.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
