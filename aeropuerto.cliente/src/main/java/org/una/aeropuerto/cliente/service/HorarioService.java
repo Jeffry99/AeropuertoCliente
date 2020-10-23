@@ -30,7 +30,7 @@ public class HorarioService {
             return new Respuesta(true, "Horario", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion de hora de marcaje: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -47,7 +47,7 @@ public class HorarioService {
             return new Respuesta(true, "Horario", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion horario: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -64,7 +64,7 @@ public class HorarioService {
             List<HorarioDTO> result = (List<HorarioDTO>) conexion.readEntity(new GenericType<List<HorarioDTO>>(){});
             return new Respuesta(true, "Horarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -80,7 +80,7 @@ public class HorarioService {
             List<HorarioDTO> result = (List<HorarioDTO>) conexion.readEntity(new GenericType<List<HorarioDTO>>(){});
             return new Respuesta(true, "Horarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -96,7 +96,7 @@ public class HorarioService {
             List<HorarioDTO> result = (List<HorarioDTO>) conexion.readEntity(new GenericType<List<HorarioDTO>>(){});
             return new Respuesta(true, "Horarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -112,7 +112,7 @@ public class HorarioService {
             HorarioDTO result = (HorarioDTO) conexion.readEntity(HorarioDTO.class);
             return new Respuesta(true, "Horario",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -126,7 +126,7 @@ public class HorarioService {
             List<HorarioDTO> result = (List<HorarioDTO>) conexion.readEntity(new GenericType<List<HorarioDTO>>(){});
             return new Respuesta(true, "Horarios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
 }

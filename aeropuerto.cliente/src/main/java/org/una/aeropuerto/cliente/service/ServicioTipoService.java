@@ -30,7 +30,7 @@ public class ServicioTipoService {
             return new Respuesta(true, "TipoServicio", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion de tipo de servicio: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -47,7 +47,7 @@ public class ServicioTipoService {
             return new Respuesta(true, "TipoServicio", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion tipo de servicio: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -63,7 +63,7 @@ public class ServicioTipoService {
             ServicioTipoDTO result = (ServicioTipoDTO) conexion.readEntity(ServicioTipoDTO.class);
             return new Respuesta(true, "TipoServicio",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -77,7 +77,7 @@ public class ServicioTipoService {
             List<ServicioTipoDTO> result = (List<ServicioTipoDTO>) conexion.readEntity(new GenericType<List<ServicioTipoDTO>>(){});
             return new Respuesta(true, "TiposServicios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -93,7 +93,7 @@ public class ServicioTipoService {
             List<ServicioTipoDTO> result = (List<ServicioTipoDTO>) conexion.readEntity(new GenericType<List<ServicioTipoDTO>>(){});
             return new Respuesta(true, "TiposServicios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -109,7 +109,7 @@ public class ServicioTipoService {
             List<ServicioTipoDTO> result = (List<ServicioTipoDTO>) conexion.readEntity(new GenericType<List<ServicioTipoDTO>>(){});
             return new Respuesta(true, "TiposServicios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -125,7 +125,7 @@ public class ServicioTipoService {
             List<ServicioTipoDTO> result = (List<ServicioTipoDTO>) conexion.readEntity(new GenericType<List<ServicioTipoDTO>>(){});
             return new Respuesta(true, "TiposServicios",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
 }

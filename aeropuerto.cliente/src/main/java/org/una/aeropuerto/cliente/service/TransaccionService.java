@@ -30,7 +30,7 @@ public class TransaccionService {
             return new Respuesta(true, "Transaccion", result);
         }catch(Exception ex){
             System.out.println("Excepcion creacion de transaccion: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No pudo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -47,7 +47,7 @@ public class TransaccionService {
             return new Respuesta(true, "Transaccion", result);
         }catch(Exception ex){
             System.out.println("Excepcion modificacion de usuario: "+ex.getMessage());
-            return new Respuesta(false, ex.toString(), "No pudo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -63,7 +63,7 @@ public class TransaccionService {
             List<TransaccionDTO> result = (List<TransaccionDTO>) conexion.readEntity(new GenericType<List<TransaccionDTO>>(){});
             return new Respuesta(true, "Transacciones",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No pudo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -79,7 +79,7 @@ public class TransaccionService {
             List<TransaccionDTO> result = (List<TransaccionDTO>) conexion.readEntity(new GenericType<List<TransaccionDTO>>(){});
             return new Respuesta(true, "Transaccion",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No puedo establecerse conexion con el servidor");
         }
     }
     
@@ -95,7 +95,7 @@ public class TransaccionService {
             List<TransaccionDTO> result = (List<TransaccionDTO>) conexion.readEntity(new GenericType<List<TransaccionDTO>>(){});
             return new Respuesta(true, "Transacciones",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No pudo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -111,7 +111,7 @@ public class TransaccionService {
             List<TransaccionDTO> result = (List<TransaccionDTO>) conexion.readEntity(new GenericType<List<TransaccionDTO>>(){});
             return new Respuesta(true, "Transacciones",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No pudo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
@@ -127,7 +127,7 @@ public class TransaccionService {
             TransaccionDTO result = (TransaccionDTO) conexion.readEntity(TransaccionDTO.class);
             return new Respuesta(true, "Transaccion",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No puedo establecerse conexion con el servidor");
         }
     }
     
@@ -141,7 +141,7 @@ public class TransaccionService {
             List<TransaccionDTO> result = (List<TransaccionDTO>) conexion.readEntity(new GenericType<List<TransaccionDTO>>(){});
             return new Respuesta(true, "Transacciones",result);
         }catch(Exception ex){
-            return new Respuesta(false, ex.toString(), "No pudo establecerce conexion con el servidor");
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
