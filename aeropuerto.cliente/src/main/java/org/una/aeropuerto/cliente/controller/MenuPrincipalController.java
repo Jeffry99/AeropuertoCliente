@@ -51,6 +51,7 @@ public class MenuPrincipalController implements Initializable {
     private Menu TituloUsuario;
     @FXML
     private MenuItem btnAviones;
+    @FXML
     private MenuItem btnAerolineas;
 
     /**
@@ -138,6 +139,7 @@ public class MenuPrincipalController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
 	}
+    @FXML
     private void actAerolineas(ActionEvent event) {
          try{
             Parent root = FXMLLoader.load(App.class.getResource("Aerolineas" + ".fxml"));

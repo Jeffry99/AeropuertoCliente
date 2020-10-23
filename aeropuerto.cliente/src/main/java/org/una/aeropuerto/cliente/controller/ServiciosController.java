@@ -324,7 +324,7 @@ public class ServiciosController implements Initializable {
     private void actBuscarCobro(ActionEvent event) {
         if(validarBusquedas("Monto")){
             ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
-            Respuesta respuesta = servicioRegistradoService.getByEstado(estado);
+            Respuesta respuesta = servicioRegistradoService.getByCobroRango("ds");
             if(respuesta.getEstado().equals(true)){
                 servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
             }
