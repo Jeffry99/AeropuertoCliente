@@ -57,5 +57,7 @@ public class TipoAvionDTO {
         this.estado = estado;
     }
     
-    
+    public String toString(){
+        return nombre;
+    }
 }

@@ -20,7 +20,7 @@ public class ServicioRegistradoDTO {
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private java.util.Date fechaModificacion;
     private float cobro;
-    private float estadoCobro;
+    private boolean estadoCobro;
     private float duracion;
     private String observaciones;
     private boolean estado;
@@ -30,7 +30,7 @@ public class ServicioRegistradoDTO {
     public ServicioRegistradoDTO() {
     }
 
-    public ServicioRegistradoDTO(Long id, ServicioTipoDTO servicioTipo, Date fechaRegistro, Date fechaModificacion, float cobro, float estadoCobro, float duracion, String observaciones, boolean estado, EmpleadoDTO responsable, AvionDTO avion) {
+    public ServicioRegistradoDTO(Long id, ServicioTipoDTO servicioTipo, Date fechaRegistro, Date fechaModificacion, float cobro, boolean estadoCobro, float duracion, String observaciones, boolean estado, EmpleadoDTO responsable, AvionDTO avion) {
         this.id = id;
         this.servicioTipo = servicioTipo;
         this.fechaRegistro = fechaRegistro;
@@ -84,11 +84,11 @@ public class ServicioRegistradoDTO {
         this.cobro = cobro;
     }
 
-    public float getEstadoCobro() {
+    public boolean getEstadoCobro() {
         return estadoCobro;
     }
 
-    public void setEstadoCobro(float estadoCobro) {
+    public void setEstadoCobro(boolean estadoCobro) {
         this.estadoCobro = estadoCobro;
     }
 

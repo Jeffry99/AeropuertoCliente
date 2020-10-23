@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.MenuPrincipalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.MenuPrincipalController">
    <top>
       <MenuBar fx:id="menuBar" prefHeight="30.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
         <menus>
@@ -24,6 +24,7 @@
                   <MenuItem fx:id="btnHorarios" mnemonicParsing="false" onAction="#actHorarios" text="Horarios" />
                   <MenuItem fx:id="btnHoraMarcaje" mnemonicParsing="false" onAction="#actHoraMarcaje" text="Hora de marcaje" />
                   <MenuItem fx:id="btnTransacciones" mnemonicParsing="false" onAction="#actTransacciones" text="Transacciones" />
+                  <MenuItem fx:id="btnAviones" mnemonicParsing="false" onAction="#actAviones" text="Aviones" />
                   <MenuItem fx:id="btnAerolineas" mnemonicParsing="false" onAction="#actAerolineas" text="Aerolineas" />
             </items>
           </Menu>

@@ -57,5 +57,7 @@ public class AerolineaDTO {
         this.estado = estado;
     }
     
-    
+    public String toString(){
+        return nombre;
+    }
 }
