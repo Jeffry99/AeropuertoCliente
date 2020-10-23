@@ -8,8 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuerto.cliente.controller.TiposAvionController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.TiposAvionController">
    <children>
       <AnchorPane id="AnchorPane" layoutX="15.0" layoutY="15.0" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css">
          <children>
@@ -27,12 +26,13 @@
             <Button fx:id="btnBuscarId" layoutX="255.0" layoutY="80.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
             <Button fx:id="btnAgregar" layoutX="737.0" layoutY="593.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Tipos de avion" />
             <TextField fx:id="txtbuscarId" layoutX="51.0" layoutY="79.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
-            <TextField fx:id="txtbuscarDist" layoutX="51.0" layoutY="137.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por distancia recomendada" />
+            <TextField fx:id="txtbuscarMin" layoutX="34.0" layoutY="136.0" prefHeight="37.0" prefWidth="101.0" promptText="Buscar min" />
             <TextField fx:id="txtbuscarNombre" layoutX="526.0" layoutY="77.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
             <ComboBox fx:id="cbxEstado" layoutX="527.0" layoutY="136.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
             <Button fx:id="btnBuscarDist" layoutX="255.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBuscarDist" text="Buscar" />
             <Button fx:id="btnBuscarNom" layoutX="729.0" layoutY="78.0" mnemonicParsing="false" onAction="#actBuscarNom" text="Buscar" />
             <Button fx:id="btnBuscarEst" layoutX="730.0" layoutY="137.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
+            <TextField fx:id="txtbuscarMax" layoutX="146.0" layoutY="137.0" prefHeight="37.0" prefWidth="101.0" promptText="Buscar max" />
          </children>
       </AnchorPane>
    </children>

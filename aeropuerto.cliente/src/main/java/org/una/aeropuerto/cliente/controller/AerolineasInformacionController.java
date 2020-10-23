@@ -166,6 +166,20 @@ public class AerolineasInformacionController implements Initializable {
             
         }
     }
+
+    @FXML
+    private void actEstadoActivo(ActionEvent event) {
+        estado = true;
+        rbActivo.setSelected(true);
+        rbInactivo.setSelected(false);
+    }
+
+    @FXML
+    private void actEstadoIctivo(ActionEvent event) {
+        estado = false;
+        rbActivo.setSelected(false);
+        rbInactivo.setSelected(true);
+    }
     
 }
 

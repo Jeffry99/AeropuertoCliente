@@ -55,8 +55,6 @@ public class TiposAvionController implements Initializable {
     @FXML
     private TextField txtbuscarId;
     @FXML
-    private TextField txtbuscarDist;
-    @FXML
     private TextField txtbuscarNombre;
     @FXML
     private ComboBox<String> cbxEstado;
@@ -66,6 +64,10 @@ public class TiposAvionController implements Initializable {
     private Button btnBuscarNom;
     @FXML
     private Button btnBuscarEst;
+    @FXML
+    private TextField txtbuscarMin;
+    @FXML
+    private TextField txtbuscarMax;
 
     /**
      * Initializes the controller class.
@@ -99,8 +101,8 @@ public class TiposAvionController implements Initializable {
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn <TipoAvionDTO, String>colNombre = new TableColumn("Nombre");
             colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-            TableColumn <TipoAvionDTO, String>colDistancia = new TableColumn("Distancia");
-            colDistancia.setCellValueFactory(new PropertyValueFactory("distancia"));
+            TableColumn <TipoAvionDTO,Float>colDistancia = new TableColumn("Distancia Rec");
+            colDistancia.setCellValueFactory(new PropertyValueFactory("distanciaRecomendada"));
             TableColumn<TipoAvionDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(emp -> {
                 String estadoString;
@@ -240,9 +242,9 @@ public class TiposAvionController implements Initializable {
 
     @FXML
     private void actBuscarDist(ActionEvent event) {
-        if(!txtbuscarDist.getText().isBlank()){
+        if(!txtbuscarMax.getText().isBlank()&&!txtbuscarMin.getText().isBlank()){
             ArrayList<TipoAvionDTO> tipoAviones = new ArrayList<TipoAvionDTO>();
-            Respuesta respuesta = tipoAvionesService.getByDistanciaRango(Float.parseFloat(txtbuscarDist.getText()));
+            Respuesta respuesta = tipoAvionesService.getByDistanciaRango(Float.valueOf(txtbuscarMax.getText()),Float.valueOf(txtbuscarMin.getText()));
             if(respuesta.getEstado().equals(true)){
                 tipoAviones = (ArrayList<TipoAvionDTO>) respuesta.getResultado("TiposAviones");
             }

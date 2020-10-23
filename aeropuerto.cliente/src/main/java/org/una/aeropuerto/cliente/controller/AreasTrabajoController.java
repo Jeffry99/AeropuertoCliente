@@ -52,7 +52,6 @@ public class AreasTrabajoController implements Initializable {
     private Button btnBuscarId;
     @FXML
     private TextField txtbuscarId;
-    private TextField txtbuscarDist;
     @FXML
     private TextField txtbuscarNombre;
     @FXML
@@ -238,28 +237,15 @@ public class AreasTrabajoController implements Initializable {
 
     @FXML
     private void actBuscarDescripcion(ActionEvent event) {
-        if(!txtbuscarDist.getText().isBlank()){
+        if(!txtbuscarDescripcion.getText().isBlank()){
             ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByDescripcionAproximate(txtbuscarDist.getText());
+            Respuesta respuesta = AreaTrabajoService.getByDescripcionAproximate(txtbuscarDescripcion.getText());
             if(respuesta.getEstado().equals(true)){
                 aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
             }
             cargarTabla(aerolineas);
         }else{
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion de area de trabajo que desea buscar");
-        }
-    }
-
-    private void actBuscarNom(ActionEvent event) {
-        if(!txtbuscarNombre.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByNombreAproximate(txtbuscarNombre.getText());
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
-            }
-            cargarTabla(aerolineas);
-        }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo que desea buscar");
         }
     }
 
@@ -279,6 +265,16 @@ public class AreasTrabajoController implements Initializable {
 
     @FXML
     private void actBuscarNombre(ActionEvent event) {
+        if(!txtbuscarNombre.getText().isBlank()){
+            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
+            Respuesta respuesta = AreaTrabajoService.getByNombreAproximate(txtbuscarNombre.getText());
+            if(respuesta.getEstado().equals(true)){
+                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+            }
+            cargarTabla(aerolineas);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo que desea buscar");
+        }
     }
     
 }

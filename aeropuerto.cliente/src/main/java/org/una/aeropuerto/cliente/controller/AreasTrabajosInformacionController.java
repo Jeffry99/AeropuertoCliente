@@ -115,8 +115,7 @@ public class AreasTrabajosInformacionController implements Initializable {
 
     @FXML
     private void actGuardar(ActionEvent event) {
- if(validar()){
-            
+        if(validar()){
             areaTrabajoEnCuestion.setNombre(txtNombre.getText());
             areaTrabajoEnCuestion.setDescripcion(txtDescripcion.getText());
             areaTrabajoEnCuestion.setEstado(estado);
@@ -156,5 +155,19 @@ public class AreasTrabajosInformacionController implements Initializable {
         }catch(IOException ex){
             
         }
+    }
+
+    @FXML
+    private void actEstadoInactivo(ActionEvent event) {
+        estado = false;
+        rbActivo.setSelected(false);
+        rbInactivo.setSelected(true);
+    }
+
+    @FXML
+    private void actEstadoActivo(ActionEvent event) {
+        estado = true;
+        rbActivo.setSelected(true);
+        rbInactivo.setSelected(false);
     }
 }

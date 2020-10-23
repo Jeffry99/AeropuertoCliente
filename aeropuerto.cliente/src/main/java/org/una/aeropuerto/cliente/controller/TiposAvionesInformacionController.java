@@ -58,7 +58,7 @@ public class TiposAvionesInformacionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
      
-    modalidad = (String) AppContext.getInstance().get("ModalidadAerolinea");
+    modalidad = (String) AppContext.getInstance().get("ModalidadTipoAvion");
     btnGuardar.setVisible(false);
     btnGuardar.setDisable(true);  
         
@@ -157,6 +157,20 @@ if(validar()){
         }catch(IOException ex){
             
         }
+    }
+
+    @FXML
+    private void actEstadoActivo(ActionEvent event) {
+        estado = true;
+        rbActivo.setSelected(true);
+        rbInactivo.setSelected(false);
+    }
+
+    @FXML
+    private void actEstadoInactivo(ActionEvent event) {
+        estado = false;
+        rbActivo.setSelected(false);
+        rbInactivo.setSelected(true);
     }
     
 }

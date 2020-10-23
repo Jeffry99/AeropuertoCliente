@@ -54,8 +54,6 @@ public class RutasController implements Initializable {
     @FXML
     private TextField txtbuscarId;
     @FXML
-    private TextField txtbuscarDist;
-    @FXML
     private TextField txtbuscarOri;
     @FXML
     private ComboBox<String> cbxEstado;
@@ -71,6 +69,10 @@ public class RutasController implements Initializable {
     private Button btnBuscarDes;
 
     private RutaService rutaService = new RutaService();
+    @FXML
+    private TextField txtbuscarMin;
+    @FXML
+    private TextField txtbuscarMax;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -211,7 +213,7 @@ public class RutasController implements Initializable {
             ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
             Respuesta respuesta = rutaService.getById(Long.valueOf(txtbuscarId.getText()));
             if(respuesta.getEstado().equals(true)){
-                RutaDTO aero = (RutaDTO) respuesta.getResultado("Rutas");
+                RutaDTO aero = (RutaDTO) respuesta.getResultado("Ruta");
                 rutas.add(aero);
             }
             cargarTabla(rutas);
@@ -245,9 +247,9 @@ public class RutasController implements Initializable {
 
     @FXML
     private void actBuscarDist(ActionEvent event) {
-        if(!txtbuscarDist.getText().isBlank()){
+        if(!txtbuscarMax.getText().isBlank()&&!txtbuscarMin.getText().isBlank()){
             ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
-            Respuesta respuesta = rutaService.getByDistanciaRango(Float.parseFloat(txtbuscarDist.getText()));
+            Respuesta respuesta = rutaService.getByDistanciaRango(Float.valueOf(txtbuscarMax.getText()),Float.valueOf(txtbuscarMin.getText()));
             if(respuesta.getEstado().equals(true)){
                 rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             }

@@ -14,8 +14,8 @@
       <Label layoutX="285.0" layoutY="260.0" text="Responsable:" />
       <Label layoutX="285.0" layoutY="320.0" text="Estado:" />
       <TextField fx:id="txtNombre" layoutX="412.0" layoutY="191.0" prefHeight="37.0" prefWidth="303.0" />
-      <RadioButton fx:id="rbActivo" layoutX="411.0" layoutY="320.0" mnemonicParsing="false" text="Activo" />
-      <RadioButton fx:id="rbInactivo" layoutX="517.0" layoutY="320.0" mnemonicParsing="false" text="Inactivo" />
+      <RadioButton fx:id="rbActivo" layoutX="411.0" layoutY="320.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
+      <RadioButton fx:id="rbInactivo" layoutX="517.0" layoutY="320.0" mnemonicParsing="false" onAction="#actEstadoIctivo" text="Inactivo" />
       <Button fx:id="btnCancelar" layoutX="285.0" layoutY="405.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="35.0" prefWidth="115.0" text="Volver" />
       <Button fx:id="btnGuardar" layoutX="600.0" layoutY="405.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
       <TextField fx:id="txtResponsable" layoutX="412.0" layoutY="252.0" prefHeight="37.0" prefWidth="303.0" />

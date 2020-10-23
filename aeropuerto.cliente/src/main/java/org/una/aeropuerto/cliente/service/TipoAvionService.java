@@ -96,11 +96,12 @@ public class TipoAvionService {
         }
     }
     
-    public Respuesta getByDistanciaRango(float distancia){
+    public Respuesta getByDistanciaRango(float mas, float menos){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("term", distancia);
-            ConexionService conexion = new ConexionService("tipos_aviones/list/destino", "/{term}", parametros);
+            parametros.put("mas", mas);
+            parametros.put("menos", menos);
+            ConexionService conexion = new ConexionService("tipos_aviones/list/distanciaRango", "/{mas}/{menos}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los tipos de aviones por distancia");

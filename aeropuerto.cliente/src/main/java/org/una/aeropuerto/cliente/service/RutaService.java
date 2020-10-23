@@ -128,11 +128,12 @@ public class RutaService {
         }
     }
     
-    public Respuesta getByDistanciaRango(float distancia){
+    public Respuesta getByDistanciaRango(float mas, float menos){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("term", distancia);
-            ConexionService conexion = new ConexionService("rutas/list/destino", "/{term}", parametros);
+            parametros.put("mas", mas);
+            parametros.put("menos", menos);
+            ConexionService conexion = new ConexionService("rutas/list/distanciaRango", "/{mas}/{menos}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar las rutas por distancia");

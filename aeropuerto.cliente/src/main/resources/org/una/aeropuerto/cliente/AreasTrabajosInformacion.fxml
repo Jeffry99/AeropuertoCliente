@@ -6,8 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuerto.cliente.controller.AreasTrabajosInformacionController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AreasTrabajosInformacionController">
    <children>
       <AnchorPane id="AnchorPane" layoutX="10.0" layoutY="10.0" prefHeight="470.0" prefWidth="1000.0" stylesheets="@estilo.css">
          <children>
@@ -17,8 +16,8 @@
             <Label layoutX="285.0" layoutY="260.0" text="Descripción:" />
             <Label layoutX="285.0" layoutY="320.0" text="Estado:" />
             <TextField fx:id="txtNombre" layoutX="412.0" layoutY="191.0" prefHeight="37.0" prefWidth="303.0" />
-            <RadioButton fx:id="rbActivo" layoutX="411.0" layoutY="320.0" mnemonicParsing="false" text="Activo" />
-            <RadioButton fx:id="rbInactivo" layoutX="517.0" layoutY="320.0" mnemonicParsing="false" text="Inactivo" />
+            <RadioButton fx:id="rbActivo" layoutX="411.0" layoutY="320.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
+            <RadioButton fx:id="rbInactivo" layoutX="517.0" layoutY="320.0" mnemonicParsing="false" onAction="#actEstadoInactivo" text="Inactivo" />
             <Button fx:id="btnCancelar" layoutX="285.0" layoutY="405.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="35.0" prefWidth="115.0" text="Volver" />
             <Button fx:id="btnGuardar" layoutX="600.0" layoutY="405.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
             <TextField fx:id="txtDescripcion" layoutX="412.0" layoutY="252.0" prefHeight="37.0" prefWidth="303.0" />
