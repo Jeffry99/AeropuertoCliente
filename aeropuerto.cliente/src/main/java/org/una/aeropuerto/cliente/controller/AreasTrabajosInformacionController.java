@@ -7,10 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,20 +20,20 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
-import org.una.aeropuerto.cliente.dto.AerolineaDTO;
-import org.una.aeropuerto.cliente.service.AerolineaService;
-import org.una.aeropuerto.cliente.util.Respuesta;
+import org.una.aeropuerto.cliente.dto.AreaTrabajoDTO;
+import org.una.aeropuerto.cliente.service.AreaTrabajoService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
+import org.una.aeropuerto.cliente.util.Respuesta;
 
 /**
  * FXML Controller class
  *
- * @author Jeffry
+ * @author Luis
  */
-public class AerolineasInformacionController implements Initializable {
-    
+public class AreasTrabajosInformacionController implements Initializable {
+
     @FXML
     private Label lblId;
     @FXML
@@ -52,18 +49,17 @@ public class AerolineasInformacionController implements Initializable {
     @FXML
     private Button btnGuardar;
     @FXML
-    private TextField txtResponsable;
-        
-    private AerolineaService aerolineaService = new AerolineaService();
-    private AerolineaDTO aerolineaEnCuestion = new AerolineaDTO();
+    private TextField txtDescripcion;
+
+    private AreaTrabajoService areaTrabajoService = new AreaTrabajoService();
+    private AreaTrabajoDTO areaTrabajoEnCuestion = new AreaTrabajoDTO();
     private String modalidad="";
     private Boolean estado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        
-    modalidad = (String) AppContext.getInstance().get("ModalidadAerolinea");
+      
+    modalidad = (String) AppContext.getInstance().get("ModalidadAreaTrabajo");
     btnGuardar.setVisible(false);
     btnGuardar.setDisable(true);  
         
@@ -73,10 +69,10 @@ public class AerolineasInformacionController implements Initializable {
     }   
       
      if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
-            aerolineaEnCuestion = (AerolineaDTO) AppContext.getInstance().get("AerolineaEnCuestion");
-            txtNombre.setText(aerolineaEnCuestion.getNombre());
-            txtResponsable.setText(aerolineaEnCuestion.getResponsable());
-            if(aerolineaEnCuestion.getEstado()){
+            areaTrabajoEnCuestion = (AreaTrabajoDTO) AppContext.getInstance().get("AreaTrabajoEnCuestion");
+            txtNombre.setText(areaTrabajoEnCuestion.getNombre());
+            txtDescripcion.setText(areaTrabajoEnCuestion.getDescripcion());
+            if(areaTrabajoEnCuestion.getEstado()){
                 estado=true;
                 rbActivo.setSelected(true);
                 rbInactivo.setSelected(false);
@@ -87,8 +83,8 @@ public class AerolineasInformacionController implements Initializable {
             }
             
             if(modalidad.equals("Ver")){
-                GenerarTransacciones.crearTransaccion("Se observa aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
-                txtResponsable.setDisable(true);
+                GenerarTransacciones.crearTransaccion("Se observa aerolinea con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
+                txtDescripcion.setDisable(true);
                 txtNombre.setDisable(true);
                 rbActivo.setDisable(true);
                 rbInactivo.setDisable(true);
@@ -96,24 +92,21 @@ public class AerolineasInformacionController implements Initializable {
         }
     }
     
-    public boolean validar(){
-        if(txtResponsable.getText().isBlank()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el responsable de la aerolonea");
+     public boolean validar(){
+        if(txtDescripcion.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion del area de trabajo");
             return false;
         }
         if(txtNombre.getText().isBlank()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre de la aerolinea");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo");
             return false;
         }
         if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la aerolinea");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del area de trabajo");
             return false;
         }
         return true;
     }
-    
-
-        
 
     @FXML
     private void actCancelar(ActionEvent event) {
@@ -122,17 +115,17 @@ public class AerolineasInformacionController implements Initializable {
 
     @FXML
     private void actGuardar(ActionEvent event) {
-    if(validar()){
+ if(validar()){
             
-            aerolineaEnCuestion.setNombre(txtNombre.getText());
-            aerolineaEnCuestion.setResponsable(txtResponsable.getText());
-            aerolineaEnCuestion.setEstado(estado);
+            areaTrabajoEnCuestion.setNombre(txtNombre.getText());
+            areaTrabajoEnCuestion.setDescripcion(txtDescripcion.getText());
+            areaTrabajoEnCuestion.setEstado(estado);
             
             if(modalidad.equals("Modificar")){
-                Respuesta respuesta=aerolineaService.modificar(aerolineaEnCuestion.getId(), aerolineaEnCuestion);
+                Respuesta respuesta=areaTrabajoService.modificar(areaTrabajoEnCuestion.getId(), areaTrabajoEnCuestion);
                 if(respuesta.getEstado()){
-                    GenerarTransacciones.crearTransaccion("Se modifica la aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de la aerolinea", "Se ha modificado la aerolinea correctamente");
+                    GenerarTransacciones.crearTransaccion("Se modifica el aerea de trabajo con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
+                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación del area de trabajo", "Se ha modificado el aerea de trabajo correctamente");
                     volver();
                 }else{
                     Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
@@ -141,11 +134,11 @@ public class AerolineasInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
-                    Respuesta respuesta=aerolineaService.crear(aerolineaEnCuestion);
+                    Respuesta respuesta=areaTrabajoService.crear(areaTrabajoEnCuestion);
                     if(respuesta.getEstado()){
-                        aerolineaEnCuestion = (AerolineaDTO) respuesta.getResultado("Aerolinea");
-                        GenerarTransacciones.crearTransaccion("Se crea la aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de la aerolinea", "Se ha registrado el una aerolina correctamente");
+                        areaTrabajoEnCuestion = (AreaTrabajoDTO) respuesta.getResultado("AreaTrabajo");
+                        GenerarTransacciones.crearTransaccion("Se crea una area de trabajo con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de una area de trabajo", "Se ha registrado el una area de trabajo correctamente");
                         volver();
                     }else{
                         Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de una aerolinea", respuesta.getMensaje());
@@ -154,18 +147,14 @@ public class AerolineasInformacionController implements Initializable {
             }
         }
     }
-    
-    
-    public void volver() {
+        public void volver() {
         try{
             StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-            Parent root = FXMLLoader.load(App.class.getResource("Aerolineas" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajos" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
             
         }
     }
-    
 }
-

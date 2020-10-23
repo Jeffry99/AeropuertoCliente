@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -13,7 +14,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,11 +26,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.RolDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioDTO;
 import org.una.aeropuerto.cliente.service.RolService;
 import org.una.aeropuerto.cliente.service.UsuarioService;
+import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -97,6 +103,15 @@ public class UsuariosController implements Initializable {
 
     @FXML
     private void actAgregar(ActionEvent event) {
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadUsuario", "Agregar");
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("UsuariosInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
 
     @FXML
@@ -286,10 +301,28 @@ public class UsuariosController implements Initializable {
     }
     
     public void ver(UsuarioDTO usuario){
-        
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadUsuario", "Ver");
+        AppContext.getInstance().set("UsuarioEnCuestion", usuario);
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("UsuariosInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
     
     public void modificar(UsuarioDTO usuario){
-        
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadUsuario", "Modificar");
+        AppContext.getInstance().set("UsuarioEnCuestion", usuario);
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("UsuariosInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
 }

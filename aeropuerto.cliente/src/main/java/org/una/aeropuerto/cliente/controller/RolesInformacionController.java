@@ -77,9 +77,11 @@ public class RolesInformacionController implements Initializable {
             txtDescripcion.setText(rol.getDescripcion());
             txtNombre.setText(rol.getNombre());
             if(rol.getEstado()==true){
+                estado=true;
                 rbActivo.setSelected(true);
                 rbInactivo.setSelected(false);
             }else{
+                estado=false;
                 rbActivo.setSelected(false);
                 rbInactivo.setSelected(true);
             }
