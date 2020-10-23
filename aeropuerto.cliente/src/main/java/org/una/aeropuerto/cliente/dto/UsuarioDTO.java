@@ -27,6 +27,10 @@ public class UsuarioDTO {
         this.estado = estado;
     }
 
+  
+
+    
+    
     public Long getId() {
         return id;
     }
