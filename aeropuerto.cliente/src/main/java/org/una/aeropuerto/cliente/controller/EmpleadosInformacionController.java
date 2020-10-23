@@ -256,7 +256,6 @@ public class EmpleadosInformacionController implements Initializable {
         esJefe = false;
         rbSi.setSelected(false);
         rbNo.setSelected(true);
-        
         cbxJefeDirecto.setVisible(true);
         cbxJefeDirecto.setDisable(false);
     }

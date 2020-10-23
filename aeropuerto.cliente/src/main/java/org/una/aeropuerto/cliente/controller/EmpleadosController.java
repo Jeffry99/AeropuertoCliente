@@ -105,7 +105,7 @@ public class EmpleadosController implements Initializable {
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn <EmpleadoDTO, String>colNombre = new TableColumn("Nombre");
             colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-            TableColumn <EmpleadoDTO, String>colCedula = new TableColumn("Cedula");
+            TableColumn <EmpleadoDTO, String>colCedula = new TableColumn("Cédula");
             colCedula.setCellValueFactory(new PropertyValueFactory("cedula"));
             TableColumn<EmpleadoDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(emp -> {

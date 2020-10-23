@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 
 /**
@@ -65,6 +66,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("Empleados" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan empleados", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -77,6 +79,14 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actRoles(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Roles" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan roles", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML
@@ -93,6 +103,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("Transacciones" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan transacciones", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }

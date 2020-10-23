@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.TransaccionDTO;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 
 /**
  * FXML Controller class
@@ -63,7 +64,9 @@ public class TransaccionesInformacionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         String modalidad = (String) AppContext.getInstance().get("ModalidadTransaccion");
         if(modalidad.equals("Ver")){
+            
             TransaccionDTO transaccion = (TransaccionDTO) AppContext.getInstance().get("TransaccionEnCuestion");
+            GenerarTransacciones.crearTransaccion("Se observa transaccion con id "+transaccion.getId(), "EmpleadosInformacion");
             txtCedula.setText(transaccion.getUsuario().getEmpleado().getCedula());
             txtDescripcion.setText(transaccion.getDescripcion());
             txtDireccion.setText(transaccion.getUsuario().getEmpleado().getDireccion());
