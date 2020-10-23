@@ -90,7 +90,7 @@ public class ServicioRegistradoService {
                 return new Respuesta(false, conexion.getError(), "Error al buscar los servicios aeropuerto por estado");
             }
             ServicioRegistradoDTO result = (ServicioRegistradoDTO) conexion.readEntity(ServicioRegistradoDTO.class);
-            return new Respuesta(true, "ServicioAeropuerto",result);
+            return new Respuesta(true, "ServiciosAeropuerto",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
@@ -106,13 +106,13 @@ public class ServicioRegistradoService {
                 return new Respuesta(false, conexion.getError(), "Error al buscar los servicios aeropuerto por estado");
             }
             ServicioRegistradoDTO result = (ServicioRegistradoDTO) conexion.readEntity(ServicioRegistradoDTO.class);
-            return new Respuesta(true, "ServicioAeropuerto",result);
+            return new Respuesta(true, "ServiciosAeropuerto",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
-    public Respuesta getByEstadoCobro(String tipo){
+    public Respuesta getByTipoAproximate(String tipo){
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", tipo);
@@ -122,7 +122,7 @@ public class ServicioRegistradoService {
                 return new Respuesta(false, conexion.getError(), "Error al buscar los servicios aeropuerto por tipo");
             }
             ServicioRegistradoDTO result = (ServicioRegistradoDTO) conexion.readEntity(ServicioRegistradoDTO.class);
-            return new Respuesta(true, "ServicioAeropuerto",result);
+            return new Respuesta(true, "ServiciosAeropuerto",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
@@ -138,7 +138,7 @@ public class ServicioRegistradoService {
                 return new Respuesta(false, conexion.getError(), "Error al buscar los servicios aeropuerto por cobro");
             }
             ServicioRegistradoDTO result = (ServicioRegistradoDTO) conexion.readEntity(ServicioRegistradoDTO.class);
-            return new Respuesta(true, "ServicioAeropuerto",result);
+            return new Respuesta(true, "ServiciosAeropuerto",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }

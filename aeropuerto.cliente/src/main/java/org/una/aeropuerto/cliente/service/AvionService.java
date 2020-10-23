@@ -6,7 +6,9 @@
 package org.una.aeropuerto.cliente.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import javax.ws.rs.core.GenericType;
 import org.una.aeropuerto.cliente.conexion.ConexionService;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -68,10 +70,11 @@ public class AvionService {
         try{
             ConexionService conexion = new ConexionService("aviones/");
             conexion.get();
+            
             if(conexion.isError()){
-                return new Respuesta(false, conexion.getError(), "Error al buscar todos los aviones");
+                return new Respuesta(false, conexion.getError(), "Error al buscar todos los aviones");  
             }
-            AvionDTO result = (AvionDTO) conexion.readEntity(AvionDTO.class);
+            List<AvionDTO> result = (List<AvionDTO>) conexion.readEntity(new GenericType<List<AvionDTO>>(){});
             return new Respuesta(true, "Aviones",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -87,7 +90,7 @@ public class AvionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar el avion por su id");
             }
-            AvionDTO result = (AvionDTO) conexion.readEntity(AvionDTO.class);
+            List<AvionDTO> result = (List<AvionDTO>) conexion.readEntity(new GenericType<List<AvionDTO>>(){});            
             return new Respuesta(true, "Aviones",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -103,7 +106,7 @@ public class AvionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar el avion por su matricula");
             }
-            AvionDTO result = (AvionDTO) conexion.readEntity(AvionDTO.class);
+            List<AvionDTO> result = (List<AvionDTO>) conexion.readEntity(new GenericType<List<AvionDTO>>(){});            
             return new Respuesta(true, "Aviones",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -119,7 +122,7 @@ public class AvionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar aviones por aerolinea");
             }
-            AvionDTO result = (AvionDTO) conexion.readEntity(AvionDTO.class);
+            List<AvionDTO> result = (List<AvionDTO>) conexion.readEntity(new GenericType<List<AvionDTO>>(){});            
             return new Respuesta(true, "Aviones",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -135,7 +138,7 @@ public class AvionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar aviones por tipo de avion");
             }
-            AvionDTO result = (AvionDTO) conexion.readEntity(AvionDTO.class);
+            List<AvionDTO> result = (List<AvionDTO>) conexion.readEntity(new GenericType<List<AvionDTO>>(){});            
             return new Respuesta(true, "Aviones",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
