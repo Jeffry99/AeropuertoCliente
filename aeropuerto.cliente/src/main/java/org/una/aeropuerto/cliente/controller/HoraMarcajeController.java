@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -13,7 +14,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
@@ -22,11 +26,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.HoraMarcajeDTO;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.HoraMarcajeService;
+import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
 /**
@@ -84,8 +92,8 @@ public class HoraMarcajeController implements Initializable {
         
         
         ArrayList tipos = new ArrayList();
-        estados.add("Entrada");
-        estados.add("Salida");
+        tipos.add("Entrada");
+        tipos.add("Salida");
         ObservableList items3 = FXCollections.observableArrayList(tipos);   
         cbxTipo.setItems(items3);
         
@@ -98,10 +106,30 @@ public class HoraMarcajeController implements Initializable {
 
     @FXML
     private void actAgregar(ActionEvent event) {
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadHoraMarcaje", "Agregar");
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
 
     @FXML
     private void actBuscarId(ActionEvent event) {
+        if(!txtId.getText().isBlank()){
+            ArrayList<HoraMarcajeDTO> horasMarcaje = new ArrayList<HoraMarcajeDTO>();
+            Respuesta respuesta = horaService.getById(Long.valueOf(txtId.getText()));
+            if(respuesta.getEstado().equals(true)){
+                HoraMarcajeDTO hora = (HoraMarcajeDTO) respuesta.getResultado("HoraMarcaje");
+                horasMarcaje.add(hora);
+            }
+            cargarTabla(horasMarcaje);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el id de la hora de marcaje que desea buscar");
+        }
     }
 
     
@@ -117,6 +145,16 @@ public class HoraMarcajeController implements Initializable {
 
     @FXML
     private void actBuscarEstado(ActionEvent event) {
+        if(estadoBuscar!=null){
+            ArrayList<HoraMarcajeDTO> horasMarcaje = new ArrayList<HoraMarcajeDTO>();
+            Respuesta respuesta = horaService.getByEstado(estadoBuscar);
+            if(respuesta.getEstado().equals(true)){
+                horasMarcaje = (ArrayList<HoraMarcajeDTO>) respuesta.getResultado("HorasMarcajes");
+            }
+            cargarTabla(horasMarcaje);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la hora de marcaje que desea buscar");
+        }
     }
 
     @FXML
@@ -125,6 +163,16 @@ public class HoraMarcajeController implements Initializable {
 
     @FXML
     private void actBuscarEmpleado(ActionEvent event) {
+        if(cbxEmpleado.getValue()!=null){
+            ArrayList<HoraMarcajeDTO> horasMarcaje = new ArrayList<HoraMarcajeDTO>();
+            Respuesta respuesta = horaService.getByEmpleado(cbxEmpleado.getValue().getId());
+            if(respuesta.getEstado().equals(true)){
+                horasMarcaje = (ArrayList<HoraMarcajeDTO>) respuesta.getResultado("HorasMarcajes");
+            }
+            cargarTabla(horasMarcaje);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el empleado de la hora de marcaje que desea buscar");
+        }
     }
 
     Integer tipo;
@@ -139,6 +187,16 @@ public class HoraMarcajeController implements Initializable {
 
     @FXML
     private void actBuscarTipo(ActionEvent event) {
+        if(tipo!=null){
+            ArrayList<HoraMarcajeDTO> horasMarcaje = new ArrayList<HoraMarcajeDTO>();
+            Respuesta respuesta = horaService.getByTipo(tipo);
+            if(respuesta.getEstado().equals(true)){
+                horasMarcaje = (ArrayList<HoraMarcajeDTO>) respuesta.getResultado("HorasMarcajes");
+            }
+            cargarTabla(horasMarcaje);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el tipo de la hora de marcaje que desea buscar");
+        }
     }
     
     public void cargarTodos(){
@@ -244,10 +302,28 @@ public class HoraMarcajeController implements Initializable {
     }
     
     public void ver(HoraMarcajeDTO hora){
-        
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadHoraMarcaje", "Ver");
+        AppContext.getInstance().set("HoraMarcajeEnCuestion", hora);
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
     
     public void modificar(HoraMarcajeDTO hora){
-        
+        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
+        AppContext.getInstance().set("ModalidadHoraMarcaje", "Modificar");
+        AppContext.getInstance().set("HoraMarcajeEnCuestion", hora);
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
 }

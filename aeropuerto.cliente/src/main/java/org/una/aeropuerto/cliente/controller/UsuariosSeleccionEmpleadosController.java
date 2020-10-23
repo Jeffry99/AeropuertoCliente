@@ -44,11 +44,11 @@ public class UsuariosSeleccionEmpleadosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
-            Respuesta respuesta = empleadoService.getByEstado(true);
-            if(respuesta.getEstado().equals(true)){
-                empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
-            }
-            cargarTabla(empleados);
+        Respuesta respuesta = empleadoService.getByEstado(true);
+        if(respuesta.getEstado().equals(true)){
+            empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+        }
+        cargarTabla(empleados);
     }
 
     public void cargarTabla(ArrayList<EmpleadoDTO> empleados){

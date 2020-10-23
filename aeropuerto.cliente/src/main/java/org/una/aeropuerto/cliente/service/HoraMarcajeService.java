@@ -83,7 +83,7 @@ public class HoraMarcajeService {
         }
     }
     
-    public Respuesta getByTipo(String tipo){
+    public Respuesta getByTipo(int tipo){
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", tipo);

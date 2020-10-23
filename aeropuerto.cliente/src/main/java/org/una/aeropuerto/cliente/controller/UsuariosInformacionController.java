@@ -103,6 +103,7 @@ public class UsuariosInformacionController implements Initializable {
                 rbInactivo.setSelected(true);
             }
             if(modalidad.equals("Ver")){
+                GenerarTransacciones.crearTransaccion("Se observa empleado con id "+usuarioEnCuestion.getId(), "UsuariosInformacion");
                 btnGuardar.setVisible(false);
                 btnGuardar.setDisable(true);
                 rbActivo.setDisable(true);
