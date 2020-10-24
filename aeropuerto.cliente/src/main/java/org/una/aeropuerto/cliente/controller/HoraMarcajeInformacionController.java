@@ -93,6 +93,7 @@ public class HoraMarcajeInformacionController implements Initializable {
             rectangulo.setVisible(false);
             tipo=1;
             txtTipo.setText("Entrada");
+            btnMarcar.setText("MARCAR ENTRADA");
         }else{
             ArrayList<HoraMarcajeDTO> horas = (ArrayList<HoraMarcajeDTO>) res.getResultado("HorasMarcajes");
             if(horas.isEmpty()){
@@ -102,6 +103,7 @@ public class HoraMarcajeInformacionController implements Initializable {
                 rectangulo.setVisible(false);
                 tipo=1;
                 txtTipo.setText("Entrada");
+                btnMarcar.setText("MARCAR ENTRADA");
             }else{
                 
                 HoraMarcajeDTO ultima=new HoraMarcajeDTO();
@@ -117,10 +119,12 @@ public class HoraMarcajeInformacionController implements Initializable {
                     tipo=2;
                     lbTipo.setText("Entrada");
                     txtTipo.setText("Salida");
+                    btnMarcar.setText("MARCAR SALIDA");
                 }else{
                     tipo=1;
                     lbTipo.setText("Salida");
                     txtTipo.setText("Entrada");
+                    btnMarcar.setText("MARCAR ENTRADA");
                 }
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 lbFecha.setText(formatter.format(ultima.getFechaRegistro()));
