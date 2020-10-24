@@ -10,7 +10,7 @@
    <children>
       <Label layoutX="409.0" layoutY="47.0" text="Registro de hora de marcaje" />
       <Button fx:id="btnVolver" layoutX="34.0" layoutY="584.0" mnemonicParsing="false" onAction="#actVolver" prefWidth="90.0" text="Volver" />
-      <Button fx:id="btnMarcar" layoutX="373.0" layoutY="178.0" mnemonicParsing="false" onAction="#actMarcar" prefHeight="105.0" prefWidth="255.0" style="-fx-background-color: red;" text="MARCAR">
+      <Button fx:id="btnMarcar" layoutX="293.0" layoutY="183.0" mnemonicParsing="false" onAction="#actMarcar" prefHeight="128.0" prefWidth="415.0" style="-fx-background-color: red;" text="MARCAR">
          <font>
             <Font size="1.0" />
          </font></Button>
@@ -22,6 +22,6 @@
       <Label fx:id="lbFecha" layoutX="332.0" layoutY="416.0" text="Fecha:" />
       <Label fx:id="lbHora" layoutX="640.0" layoutY="416.0" text="Fecha:" />
       <Label fx:id="lbTipo" layoutX="323.0" layoutY="447.0" text="Fecha:" />
-      <Label fx:id="txtTipo" layoutX="487.0" layoutY="148.0" text="Label" />
+      <Label fx:id="txtTipo" layoutX="483.0" layoutY="149.0" text="Label" />
    </children>
 </AnchorPane>

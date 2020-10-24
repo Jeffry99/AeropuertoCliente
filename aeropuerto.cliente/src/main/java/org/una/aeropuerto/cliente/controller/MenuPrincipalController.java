@@ -126,6 +126,14 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actHorarios(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Horarios" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan horarios", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML
