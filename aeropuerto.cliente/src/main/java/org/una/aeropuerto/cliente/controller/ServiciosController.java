@@ -81,6 +81,7 @@ public class ServiciosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        cargarTodos();
     }    
     
     public void cargarTodos(){

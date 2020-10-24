@@ -117,7 +117,7 @@ public class AvionService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", aerolinea);
-            ConexionService conexion = new ConexionService("aviones/list/areolinea", "/{term}", parametros);
+            ConexionService conexion = new ConexionService("aviones/list/aerolinea", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar aviones por aerolinea");
