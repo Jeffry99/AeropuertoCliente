@@ -6,27 +6,45 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 <AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.EmpleadosInformacionController">
    <children>
-      <Label fx:id="lblCedula" layoutX="223.0" layoutY="90.0" text="Cédula:" />
-      <Label fx:id="lblJefe" layoutX="567.0" layoutY="205.0" text="Es Jefe:" />
-      <TextField fx:id="txtCedula" layoutX="319.0" layoutY="82.0" prefHeight="37.0" prefWidth="137.0" />
-      <Button fx:id="btnGuardar" layoutX="679.0" layoutY="411.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
-      <Button fx:id="btnVolver" layoutX="221.0" layoutY="411.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
-      <RadioButton fx:id="rbSi" layoutX="663.0" layoutY="207.0" mnemonicParsing="false" onAction="#actEsJefe" text="Sí" />
-      <RadioButton fx:id="rbNo" layoutX="742.0" layoutY="207.0" mnemonicParsing="false" onAction="#actNoEsJefe" text="No" />
-      <Label fx:id="lblNombre" layoutX="223.0" layoutY="33.0" text="Nombre:" />
-      <TextField fx:id="txtNombre" layoutX="319.0" layoutY="25.0" prefHeight="37.0" prefWidth="460.0" />
-      <Label fx:id="lblTelefono" layoutX="523.0" layoutY="90.0" text="Teléfono:" />
-      <TextField fx:id="txtTelefono" layoutX="642.0" layoutY="82.0" prefHeight="37.0" prefWidth="137.0" />
-      <Label fx:id="lblDireccion" layoutX="221.0" layoutY="147.0" text="Dirección:" />
-      <TextField fx:id="txtDireccion" alignment="TOP_LEFT" layoutX="319.0" layoutY="139.0" pickOnBounds="false" prefHeight="37.0" prefWidth="460.0" />
-      <Label fx:id="lblEstado" layoutX="224.0" layoutY="205.0" text="Estado:" />
-      <RadioButton fx:id="rbActivo" layoutX="320.0" layoutY="207.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
-      <RadioButton fx:id="rbInactivo" layoutX="399.0" layoutY="207.0" mnemonicParsing="false" onAction="#actEstadoInactivo" text="Inactivo" />
-      <Label fx:id="lblFechaCreacion1" layoutX="224.0" layoutY="301.0" text="Fecha de Creación:" />
-      <Label fx:id="lblFechaModificacion1" layoutX="223.0" layoutY="344.0" text="Fecha de Modificación:" />
-      <ComboBox fx:id="cbxJefeDirecto" layoutX="561.0" layoutY="248.0" prefHeight="28.0" prefWidth="219.0" promptText="Seleccione su jefe directo" />
+      <Label fx:id="lblCedula" layoutX="709.0" layoutY="113.0" text="Cédula:" />
+      <Label fx:id="lblJefe" layoutX="710.0" layoutY="225.0" text="Es Jefe:" />
+      <TextField fx:id="txtCedula" layoutX="786.0" layoutY="104.0" prefHeight="37.0" prefWidth="137.0" />
+      <Button fx:id="btnGuardar" layoutX="835.0" layoutY="580.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Button fx:id="btnVolver" layoutX="78.0" layoutY="580.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <RadioButton fx:id="rbSi" layoutX="786.0" layoutY="227.0" mnemonicParsing="false" onAction="#actEsJefe" text="Sí" />
+      <RadioButton fx:id="rbNo" layoutX="885.0" layoutY="227.0" mnemonicParsing="false" onAction="#actNoEsJefe" text="No" />
+      <Label fx:id="lblNombre" layoutX="79.0" layoutY="112.0" text="Nombre:" />
+      <TextField fx:id="txtNombre" layoutX="158.0" layoutY="104.0" prefHeight="37.0" prefWidth="460.0" />
+      <Label fx:id="lblTelefono" layoutX="708.0" layoutY="170.0" text="Teléfono:" />
+      <TextField fx:id="txtTelefono" layoutX="786.0" layoutY="161.0" prefHeight="37.0" prefWidth="137.0" />
+      <Label fx:id="lblDireccion" layoutX="76.0" layoutY="169.0" text="Dirección:" />
+      <TextField fx:id="txtDireccion" alignment="TOP_LEFT" layoutX="158.0" layoutY="161.0" pickOnBounds="false" prefHeight="37.0" prefWidth="460.0" />
+      <Label fx:id="lblEstado" layoutX="76.0" layoutY="224.0" text="Estado:" />
+      <RadioButton fx:id="rbActivo" layoutX="158.0" layoutY="226.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
+      <RadioButton fx:id="rbInactivo" layoutX="235.0" layoutY="226.0" mnemonicParsing="false" onAction="#actEstadoInactivo" text="Inactivo" />
+      <Label fx:id="lblFechaCreacion1" layoutX="75.0" layoutY="269.0" text="Fecha de Creación:" />
+      <Label fx:id="lblFechaModificacion1" layoutX="75.0" layoutY="304.0" text="Fecha de Modificación:" />
+      <ComboBox fx:id="cbxJefeDirecto" layoutX="710.0" layoutY="256.0" prefHeight="28.0" prefWidth="213.0" promptText="Seleccione su jefe directo" />
+      <Label fx:id="lblNombre1" layoutX="397.0" layoutY="41.0" text="INFORMACIÓN DE EMPLEADOS" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="79.0" layoutY="51.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="307.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="616.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="307.0" />
+      <Label fx:id="lblNombre11" layoutX="403.0" layoutY="356.0" text="INFORMACIÓN DE USUARIOS" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="75.0" layoutY="365.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="307.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="612.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="307.0" />
+      <Label fx:id="lblEstado1" layoutX="76.0" layoutY="391.0" text="Rol:" />
+      <ComboBox fx:id="cbRol" layoutX="107.0" layoutY="388.0" prefHeight="28.0" prefWidth="195.0" promptText="seleccionar rol" />
+      <Label fx:id="lblEstado2" layoutX="75.0" layoutY="445.0" text="Estado:" />
+      <RadioButton fx:id="rbActivoUsuario" layoutX="157.0" layoutY="447.0" mnemonicParsing="false" onAction="#actEstadoActivoUsuario" text="Activo" />
+      <RadioButton fx:id="rbInactivoUsuario" layoutX="234.0" layoutY="447.0" mnemonicParsing="false" onAction="#actEstadoInactivoUsuario" text="Inactivo" />
+      <Label fx:id="lbContrasenaNueva" layoutX="591.0" layoutY="391.0" prefHeight="21.0" prefWidth="122.0" text="Contraseña nueva:" />
+      <TextField fx:id="txtContrasenaNueva" layoutX="753.0" layoutY="383.0" prefHeight="37.0" prefWidth="166.0" />
+      <Label fx:id="lbContrasenaConfirmar" layoutX="591.0" layoutY="445.0" prefHeight="21.0" prefWidth="149.0" text="Confirmar contraseña:" />
+      <TextField fx:id="txtContrasenaConfirmar" layoutX="753.0" layoutY="437.0" prefHeight="37.0" prefWidth="166.0" />
+      <Label fx:id="lbContrasenaActual" layoutX="593.0" layoutY="498.0" prefHeight="21.0" prefWidth="149.0" text="Contraseña actual:" />
+      <TextField fx:id="txtContrasenaActual" layoutX="753.0" layoutY="491.0" prefHeight="37.0" prefWidth="166.0" />
    </children>
 </AnchorPane>

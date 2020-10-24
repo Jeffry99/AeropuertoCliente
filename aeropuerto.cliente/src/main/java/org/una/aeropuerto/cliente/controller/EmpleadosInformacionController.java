@@ -28,6 +28,7 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.RolDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioDTO;
+import org.una.aeropuerto.cliente.service.AutenticacionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.RolService;
 import org.una.aeropuerto.cliente.service.UsuarioService;
@@ -89,23 +90,35 @@ public class EmpleadosInformacionController implements Initializable {
     @FXML
     private ComboBox<RolDTO> cbRol;
     @FXML
-    private Label lblEstado1;
-    @FXML
     private RadioButton rbActivoUsuario;
     @FXML
     private RadioButton rbInactivoUsuario;
     @FXML
-    private PasswordField txtContrasenaActual;
+    private TextField txtContrasenaActual;
     @FXML
-    private PasswordField txtContrasenaNueva;
+    private TextField txtContrasenaNueva;
     @FXML
-    private PasswordField txtContrasenaConfirmar;
+    private TextField txtContrasenaConfirmar;
     
     private UsuarioDTO usuarioEnCuestion = new UsuarioDTO();
     private UsuarioService usuarioService = new UsuarioService();
     private String modalidad=""; 
     private EmpleadoDTO empleadoEnCuestion = new EmpleadoDTO();
     private EmpleadoService empleadoService = new EmpleadoService();
+    @FXML
+    private Label lblNombre1;
+    @FXML
+    private Label lblNombre11;
+    @FXML
+    private Label lblEstado1;
+    @FXML
+    private Label lblEstado2;
+    @FXML
+    private Label lbContrasenaNueva;
+    @FXML
+    private Label lbContrasenaConfirmar;
+    @FXML
+    private Label lbContrasenaActual;
     
     
     @Override
@@ -205,8 +218,15 @@ public class EmpleadosInformacionController implements Initializable {
                 txtContrasenaConfirmar.setVisible(false);
                 txtContrasenaNueva.setDisable(true);
                 txtContrasenaNueva.setVisible(false);
+                lbContrasenaConfirmar.setVisible(false);
+                lbContrasenaNueva.setVisible(false);
+                lbContrasenaActual.setVisible(false);
+                
+                
+                
             }
         }else{
+            lbContrasenaActual.setVisible(false);
             txtContrasenaActual.setVisible(false);
             txtContrasenaActual.setDisable(true);
         }
@@ -284,12 +304,27 @@ public class EmpleadosInformacionController implements Initializable {
                     return false;
                 }else{
                     //evaluar contrasena actual si va editar el usuario, hacer login con la cedula del empleado y contrasena actual si me devulve false no funciono
-                    cambioContrasena=true;
+                    if(modalidad.equals("Modificar")){
+                        if(txtContrasenaActual.getText().isBlank()){
+                            Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "Digite la contraseña actual");  
+                            return false;
+                        }else{
+                            AutenticacionService auService = new AutenticacionService();
+                            Respuesta res = auService.Login(empleadoEnCuestion.getCedula(), txtContrasenaActual.getText());
+                            if(res.getEstado()){
+                                cambioContrasena=true;
+                            }else{
+                                Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña actual no coincide");  
+                                return false;
+                            }
+                        }
+                    }
                 }
             } 
         }else{
             cambioContrasena=false;
         }
+        
         
         
         
