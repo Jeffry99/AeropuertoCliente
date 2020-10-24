@@ -117,7 +117,7 @@ public class AreaTrabajoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", descripcion);
-            ConexionService conexion = new ConexionService("areas_trabajo/list/descripcion", "/{term}", parametros);
+            ConexionService conexion = new ConexionService("areas_trabajos/list/descripcion", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar las areas de trabajo por la descripcion");

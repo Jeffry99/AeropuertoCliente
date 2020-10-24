@@ -29,7 +29,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
+import org.una.aeropuerto.cliente.dto.AreaTrabajoDTO;
+import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.TrabajoEmpleadoDTO;
+import org.una.aeropuerto.cliente.service.AreaTrabajoService;
+import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.TrabajoEmpleadoService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -55,10 +59,6 @@ public class TrabajosEmpleadosController implements Initializable {
     @FXML
     private TextField txtbuscarId;
     @FXML
-    private TextField txtbuscarNom;
-    @FXML
-    private TextField txtbuscarRes;
-    @FXML
     private ComboBox<String> cbxEstado;
     @FXML
     private Button btnBuscarAreaTrabajo;
@@ -66,10 +66,14 @@ public class TrabajosEmpleadosController implements Initializable {
     private Button btnBuscarEmpleado;
     @FXML
     private Button btnBuscarEst;
+    @FXML
+    private ComboBox<EmpleadoDTO> cbxEmpleadoID;
+    @FXML
+    private ComboBox<AreaTrabajoDTO> cbxAreaID;
 
-    /**
-     * Initializes the controller class.
-     */
+    private EmpleadoService empleadoService = new EmpleadoService();
+    private AreaTrabajoService areaTrabajoService = new AreaTrabajoService();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTodos();
@@ -79,6 +83,22 @@ public class TrabajosEmpleadosController implements Initializable {
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxEstado.setItems(items);
+        
+        ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+        Respuesta respuesta = empleadoService.getAll();
+        if(respuesta.getEstado()==true){
+            empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+        }
+        ObservableList items2 = FXCollections.observableArrayList(empleados);   
+        cbxEmpleadoID.setItems(items2);
+        
+        ArrayList<AreaTrabajoDTO> areasTrabajos = new ArrayList<AreaTrabajoDTO>();
+        Respuesta respuesta1 = areaTrabajoService.getAll();
+        if(respuesta1.getEstado()==true){
+            areasTrabajos = (ArrayList<AreaTrabajoDTO>) respuesta1.getResultado("AreasTrabajos");
+        }
+        ObservableList items3 = FXCollections.observableArrayList(areasTrabajos);   
+        cbxAreaID.setItems(items3);
     }    
  
     public void cargarTodos(){
@@ -98,9 +118,9 @@ public class TrabajosEmpleadosController implements Initializable {
             TableColumn <TrabajoEmpleadoDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn <TrabajoEmpleadoDTO, String>colAreaTrabajo = new TableColumn("Area Trabajo");
-            colAreaTrabajo.setCellValueFactory(new PropertyValueFactory("areas_trabajos_id"));
+            colAreaTrabajo.setCellValueFactory(new PropertyValueFactory("areaTrabajo"));
             TableColumn <TrabajoEmpleadoDTO, String>colEmpleado = new TableColumn("Empleado");
-            colEmpleado.setCellValueFactory(new PropertyValueFactory("empleados_id"));
+            colEmpleado.setCellValueFactory(new PropertyValueFactory("empleado"));
             TableColumn<TrabajoEmpleadoDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(emp -> {
                 String estadoString;
@@ -207,7 +227,7 @@ public class TrabajosEmpleadosController implements Initializable {
             ArrayList<TrabajoEmpleadoDTO> trabajosEmpleados = new ArrayList<TrabajoEmpleadoDTO>();
             Respuesta respuesta = trabajoEmpleadoService.getById(Long.valueOf(txtbuscarId.getText()));
             if(respuesta.getEstado().equals(true)){
-                TrabajoEmpleadoDTO trabajo = (TrabajoEmpleadoDTO) respuesta.getResultado("Aerolineas");
+                TrabajoEmpleadoDTO trabajo = (TrabajoEmpleadoDTO) respuesta.getResultado("TrabajoEmpleado");
                 trabajosEmpleados.add(trabajo);
             }
             cargarTabla(trabajosEmpleados);
@@ -241,9 +261,9 @@ public class TrabajosEmpleadosController implements Initializable {
 
     @FXML
     private void actBuscarAreaTrabajo(ActionEvent event) {
-        if(!txtbuscarNom.getText().isBlank()){
+        if(cbxAreaID.getValue()!=null){
             ArrayList<TrabajoEmpleadoDTO> trabajosEmpleados = new ArrayList<TrabajoEmpleadoDTO>();
-            Respuesta respuesta = trabajoEmpleadoService.getByAreaTrabajo(Long.valueOf(txtbuscarNom.getText()));
+            Respuesta respuesta = trabajoEmpleadoService.getByAreaTrabajo(cbxAreaID.getValue().getId());
             if(respuesta.getEstado().equals(true)){
                 trabajosEmpleados = (ArrayList<TrabajoEmpleadoDTO>) respuesta.getResultado("TrabajosEmpleados");
             }
@@ -255,9 +275,9 @@ public class TrabajosEmpleadosController implements Initializable {
 
     @FXML
     private void actBuscarEmpleado(ActionEvent event) {
-        if(!txtbuscarNom.getText().isBlank()){
+        if(cbxEmpleadoID.getValue()!=null){
             ArrayList<TrabajoEmpleadoDTO> trabajosEmpleados = new ArrayList<TrabajoEmpleadoDTO>();
-            Respuesta respuesta = trabajoEmpleadoService.getByEmpleado(Long.valueOf(txtbuscarNom.getText()));
+            Respuesta respuesta = trabajoEmpleadoService.getByEmpleado(cbxEmpleadoID.getValue().getId());
             if(respuesta.getEstado().equals(true)){
                 trabajosEmpleados = (ArrayList<TrabajoEmpleadoDTO>) respuesta.getResultado("TrabajosEmpleados");
             }
@@ -273,12 +293,20 @@ public class TrabajosEmpleadosController implements Initializable {
             ArrayList<TrabajoEmpleadoDTO> trabajosEmpleados = new ArrayList<TrabajoEmpleadoDTO>();
             Respuesta respuesta = trabajoEmpleadoService.getByEstado(estadoBuscar);
             if(respuesta.getEstado().equals(true)){
-                trabajosEmpleados = (ArrayList<TrabajoEmpleadoDTO>) respuesta.getResultado("Aerolineas");
+                trabajosEmpleados = (ArrayList<TrabajoEmpleadoDTO>) respuesta.getResultado("TrabajosEmpleados");
             }
             cargarTabla(trabajosEmpleados);
         }else{
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del trabajo empleado que desea buscar");
         }
+    }
+
+    @FXML
+    private void actSelEmpleadoID(ActionEvent event) {
+    }
+
+    @FXML
+    private void actSelAreaID(ActionEvent event) {
     }
     
 }

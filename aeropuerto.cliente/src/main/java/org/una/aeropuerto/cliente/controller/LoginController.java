@@ -38,6 +38,8 @@ public class LoginController {
     
     @FXML
     private void actIngresar(ActionEvent event) {
+        txtUsuario.setText("lujepa2");
+        txtContrasena.setText("Una2020");
         if(validar()){
             Respuesta respuesta = autenticacionService.Login(txtUsuario.getText(), txtContrasena.getText());
             if(respuesta.getEstado().equals(true)){

@@ -149,7 +149,7 @@ public class AreasTrabajosInformacionController implements Initializable {
         public void volver() {
         try{
             StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-            Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajos" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajo" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){

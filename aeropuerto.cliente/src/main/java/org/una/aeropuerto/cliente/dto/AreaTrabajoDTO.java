@@ -57,6 +57,8 @@ public class AreaTrabajoDTO {
         this.estado = estado;
     }
     
-    
+    public String toString(){
+        return nombre;
+    }
     
 }

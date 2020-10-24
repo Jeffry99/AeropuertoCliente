@@ -26,12 +26,12 @@
             <Button fx:id="btnBuscarId" layoutX="319.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
             <Button fx:id="btnAgregar" layoutX="715.0" layoutY="594.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Trabajo Empleado" />
             <TextField fx:id="txtbuscarId" layoutX="115.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
-            <TextField fx:id="txtbuscarNom" layoutX="115.0" layoutY="139.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id area " />
-            <TextField fx:id="txtbuscarRes" layoutX="546.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id empleado" />
             <ComboBox fx:id="cbxEstado" layoutX="546.0" layoutY="139.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
             <Button fx:id="btnBuscarAreaTrabajo" layoutX="319.0" layoutY="140.0" mnemonicParsing="false" onAction="#actBuscarAreaTrabajo" text="Buscar" />
             <Button fx:id="btnBuscarEmpleado" layoutX="749.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarEmpleado" text="Buscar" />
             <Button fx:id="btnBuscarEst" layoutX="749.0" layoutY="140.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
+            <ComboBox fx:id="cbxEmpleadoID" layoutX="547.0" layoutY="80.0" onAction="#actSelEmpleadoID" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id empleado" />
+            <ComboBox fx:id="cbxAreaID" layoutX="115.0" layoutY="138.0" onAction="#actSelAreaID" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id área " />
          </children>
       </AnchorPane>
    </children>

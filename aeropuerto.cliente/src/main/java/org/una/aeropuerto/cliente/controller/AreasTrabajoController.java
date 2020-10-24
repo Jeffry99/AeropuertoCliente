@@ -216,7 +216,7 @@ public class AreasTrabajoController implements Initializable {
             ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
             Respuesta respuesta = AreaTrabajoService.getById(Long.valueOf(txtbuscarId.getText()));
             if(respuesta.getEstado().equals(true)){
-                AreaTrabajoDTO area = (AreaTrabajoDTO) respuesta.getResultado("Aerolineas");
+                AreaTrabajoDTO area = (AreaTrabajoDTO) respuesta.getResultado("AreaTrabajo");
                 aerolineas.add(area);
             }
             cargarTabla(aerolineas);

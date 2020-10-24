@@ -116,7 +116,7 @@ public class TrabajoEmpleadoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", areaTrabajo);
-            ConexionService conexion = new ConexionService("trabajos_empleados/list/area_trabajo", "/{term}", parametros);
+            ConexionService conexion = new ConexionService("trabajos_empleados/list/areaTrabajo", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los empleados de un trabajo empleado");

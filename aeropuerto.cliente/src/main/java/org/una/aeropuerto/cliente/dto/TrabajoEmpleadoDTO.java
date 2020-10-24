@@ -56,6 +56,6 @@ public class TrabajoEmpleadoDTO {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
+
     
 }
