@@ -16,14 +16,16 @@
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Button fx:id="btnVolver" layoutX="70.0" layoutY="595.0" mnemonicParsing="false" onAction="#actVolver" prefWidth="90.0" text="Volver" />
-      <Button fx:id="btnAgregar" layoutX="843.0" layoutY="595.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar" />
       <TextField fx:id="txtId" layoutX="73.0" layoutY="93.0" prefHeight="37.0" prefWidth="249.0" promptText="Buscar por id" />
       <Button fx:id="btnBuscarId" layoutX="342.0" layoutY="94.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
       <ComboBox fx:id="cbxEstado" layoutX="73.0" layoutY="150.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="249.0" promptText="Buscar por estado" />
       <Button fx:id="btnBuscarEstado" layoutX="344.0" layoutY="151.0" mnemonicParsing="false" onAction="#actBuscarEstado" text="Buscar" />
-      <ComboBox fx:id="cbxEmpleado" layoutX="585.0" layoutY="150.0" onAction="#actSelEmpleado" prefHeight="37.0" prefWidth="249.0" promptText="Buscar por empleado" />
+      <ComboBox fx:id="cbxEmpleado" layoutX="585.0" layoutY="150.0" prefHeight="37.0" prefWidth="249.0" promptText="Buscar por empleado" />
       <Button fx:id="btnBuscarEmpleado" layoutX="856.0" layoutY="151.0" mnemonicParsing="false" onAction="#actBuscarEmpleado" text="Buscar" />
       <ComboBox fx:id="cbxTipo" layoutX="585.0" layoutY="93.0" onAction="#actSelTipo" prefHeight="37.0" prefWidth="249.0" promptText="Buscar por tipo" />
       <Button fx:id="btnBuscarTipo" layoutX="856.0" layoutY="94.0" mnemonicParsing="false" onAction="#actBuscarTipo" text="Buscar" />

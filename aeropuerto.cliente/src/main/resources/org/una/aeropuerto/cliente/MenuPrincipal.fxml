@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -16,7 +17,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#actCerrarSesion" text="Cerrar sesión" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Administración">
+          <Menu fx:id="TituloAdministracion" mnemonicParsing="false" text="Administración">
             <items>
                   <MenuItem fx:id="btnUsuarios" mnemonicParsing="false" onAction="#actUsuarios" text="Usuarios" />
                   <MenuItem fx:id="btnRoles" mnemonicParsing="false" onAction="#actRoles" text="Roles" />
@@ -28,13 +29,18 @@
                   <MenuItem fx:id="btnRutas" mnemonicParsing="false" onAction="#actRutas" text="Rutas" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Aviones">
+          <Menu fx:id="TituloAviones" mnemonicParsing="false" text="Aviones">
                <items>
                   <MenuItem fx:id="btnAerolineas" mnemonicParsing="false" onAction="#actAerolineas" text="Aerolineas" />
                   <MenuItem fx:id="btnAviones" mnemonicParsing="false" onAction="#actAviones" text="Aviones" />
                   <MenuItem fx:id="btnTiposAviones" mnemonicParsing="false" onAction="#actTiposAviones" text="Tipo aviones" />
                </items>
           </Menu>
+            <Menu mnemonicParsing="false">
+               <graphic>
+                  <Button fx:id="btnRegistrarMarcaje" mnemonicParsing="false" onAction="#actRegistrarMarcaje" text="Registrar marcaje" />
+               </graphic>
+            </Menu>
         </menus>
       </MenuBar>
    </top>

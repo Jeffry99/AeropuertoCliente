@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -59,6 +60,12 @@ public class MenuPrincipalController implements Initializable {
     private MenuItem btnRutas;
     @FXML
     private MenuItem btnTiposAviones;
+    @FXML
+    private Button btnRegistrarMarcaje;
+    @FXML
+    private Menu TituloAdministracion;
+    @FXML
+    private Menu TituloAviones;
 
     /**
      * Initializes the controller class.
@@ -68,7 +75,29 @@ public class MenuPrincipalController implements Initializable {
         AppContext.getInstance().set("Contenedor", this.Contenedor);
         TituloUsuario.setText(UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
         
-    }    
+        if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("Marcaje")){
+            TituloAdministracion.setDisable(true);
+            TituloAviones.setDisable(true);
+            btnRegistrarMarcaje.setDisable(true);
+            
+            TituloAdministracion.setVisible(false);
+            TituloAviones.setVisible(false);
+            btnRegistrarMarcaje.setVisible(false);
+            registrarMarcaje("RolMarcaje");
+        }
+        
+    }   
+    
+    public void registrarMarcaje(String modalidad){
+        try{
+            AppContext.getInstance().set("ModalidadHoraMarcaje", modalidad);
+            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
+    }
 
 
     @FXML
@@ -196,6 +225,11 @@ public class MenuPrincipalController implements Initializable {
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
+    }
+
+    @FXML
+    private void actRegistrarMarcaje(ActionEvent event) {
+        registrarMarcaje("OtroRol");
     }
     
 }

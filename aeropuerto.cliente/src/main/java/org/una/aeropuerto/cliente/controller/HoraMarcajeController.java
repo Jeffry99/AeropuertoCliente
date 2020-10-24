@@ -7,6 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -49,8 +50,6 @@ public class HoraMarcajeController implements Initializable {
     private TableView<HoraMarcajeDTO> tvHorasMarcaje;
     @FXML
     private Button btnVolver;
-    @FXML
-    private Button btnAgregar;
     @FXML
     private TextField txtId;
     @FXML
@@ -105,18 +104,6 @@ public class HoraMarcajeController implements Initializable {
     private void actVolver(ActionEvent event) {
     }
 
-    @FXML
-    private void actAgregar(ActionEvent event) {
-        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadHoraMarcaje", "Agregar");
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        };
-    }
 
     @FXML
     private void actBuscarId(ActionEvent event) {
@@ -158,9 +145,6 @@ public class HoraMarcajeController implements Initializable {
         }
     }
 
-    @FXML
-    private void actSelEmpleado(ActionEvent event) {
-    }
 
     @FXML
     private void actBuscarEmpleado(ActionEvent event) {
@@ -231,103 +215,29 @@ public class HoraMarcajeController implements Initializable {
                     string = "Salida";
                 return new ReadOnlyStringWrapper(string);
             });
-            TableColumn<HoraMarcajeDTO, String> colEstado = new TableColumn("Estado");
-            colEstado.setCellValueFactory(emp -> {
-                String estadoString;
-                if(emp.getValue().getEstado())
-                    estadoString = "Activo";
-                else
-                    estadoString = "Inactivo";
-                return new ReadOnlyStringWrapper(estadoString);
+            TableColumn<HoraMarcajeDTO, String> colFecha = new TableColumn("Fecha");
+            colFecha.setCellValueFactory(hora -> {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String fecha = formatter.format(hora.getValue().getFechaRegistro());
+                return new ReadOnlyStringWrapper(fecha);
             });
-            TableColumn <HoraMarcajeDTO, Date>colFecha = new TableColumn("Fecha");
-            colFecha.setCellValueFactory(new PropertyValueFactory("fechaRegistro"));
+            TableColumn<HoraMarcajeDTO, String> colHora = new TableColumn("Hora");
+            colHora.setCellValueFactory(hora -> {
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                String fecha = formatter.format(hora.getValue().getFechaRegistro());
+                return new ReadOnlyStringWrapper(fecha);
+            });
             tvHorasMarcaje.getColumns().addAll(colId);
             tvHorasMarcaje.getColumns().addAll(colEmpleado);
             tvHorasMarcaje.getColumns().addAll(colTipo);
-            tvHorasMarcaje.getColumns().addAll(colEstado);
             tvHorasMarcaje.getColumns().addAll(colFecha);
-            addButtonToTable();
+            tvHorasMarcaje.getColumns().addAll(colHora);
+            
             tvHorasMarcaje.setItems(items);
         }
     }
     
-    private void addButtonToTable() {
-        TableColumn<HoraMarcajeDTO, Void> colBtn = new TableColumn("Acciones");
-
-        Callback<TableColumn<HoraMarcajeDTO, Void>, TableCell<HoraMarcajeDTO, Void>> cellFactory = new Callback<TableColumn<HoraMarcajeDTO, Void>, TableCell<HoraMarcajeDTO, Void>>() {
-            @Override
-            public TableCell<HoraMarcajeDTO, Void> call(final TableColumn<HoraMarcajeDTO, Void> param) {
-                final TableCell<HoraMarcajeDTO, Void> cell = new TableCell<HoraMarcajeDTO, Void>() {
-
-                    private final Button btn = new Button("Editar");
-
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                            try{
-                            HoraMarcajeDTO data = getTableView().getItems().get(getIndex());
-                            modificar(data);
-                            }catch(Exception ex){}
-                        });
-                    }
-                    
-                    private final Button btn2 = new Button("Ver");
-
-                    {
-                        btn2.setOnAction((ActionEvent event) -> {
-                            try{
-                            HoraMarcajeDTO data = getTableView().getItems().get(getIndex());
-                            ver(data);
-                            }catch(Exception ex){}
-                        });
-                    }
-                    
-                    HBox pane = new HBox(btn, btn2);
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(pane);
-                            
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-
-        colBtn.setCellFactory(cellFactory);
-
-        tvHorasMarcaje.getColumns().add(colBtn);
-
-    }
     
-    public void ver(HoraMarcajeDTO hora){
-        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadHoraMarcaje", "Ver");
-        AppContext.getInstance().set("HoraMarcajeEnCuestion", hora);
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        };
-    }
     
-    public void modificar(HoraMarcajeDTO hora){
-        StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadHoraMarcaje", "Modificar");
-        AppContext.getInstance().set("HoraMarcajeEnCuestion", hora);
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("HoraMarcajeInformacion" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        };
-    }
+    
 }
