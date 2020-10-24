@@ -104,9 +104,9 @@ public class UsuariosController implements Initializable {
     @FXML
     private void actAgregar(ActionEvent event) {
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadUsuario", "Agregar");
+        AppContext.getInstance().set("ModalidadEmpleadoUsuario", "Agregar");
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("UsuariosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("EmpleadosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -302,10 +302,10 @@ public class UsuariosController implements Initializable {
     
     public void ver(UsuarioDTO usuario){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadUsuario", "Ver");
+        AppContext.getInstance().set("ModalidadEmpleadoUsuario", "Ver");
         AppContext.getInstance().set("UsuarioEnCuestion", usuario);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("UsuariosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("EmpleadosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -315,10 +315,10 @@ public class UsuariosController implements Initializable {
     
     public void modificar(UsuarioDTO usuario){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-        AppContext.getInstance().set("ModalidadUsuario", "Modificar");
+        AppContext.getInstance().set("ModalidadEmpleadoUsuario", "Modificar");
         AppContext.getInstance().set("UsuarioEnCuestion", usuario);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("UsuariosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("EmpleadosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){

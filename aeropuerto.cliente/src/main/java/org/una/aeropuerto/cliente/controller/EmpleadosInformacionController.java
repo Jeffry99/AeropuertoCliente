@@ -20,12 +20,17 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
+import org.una.aeropuerto.cliente.dto.RolDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioDTO;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
+import org.una.aeropuerto.cliente.service.RolService;
+import org.una.aeropuerto.cliente.service.UsuarioService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -81,24 +86,35 @@ public class EmpleadosInformacionController implements Initializable {
     private Label lblFechaModificacion1;
     @FXML
     private ComboBox<EmpleadoDTO> cbxJefeDirecto;
+    @FXML
+    private ComboBox<RolDTO> cbRol;
+    @FXML
+    private Label lblEstado1;
+    @FXML
+    private RadioButton rbActivoUsuario;
+    @FXML
+    private RadioButton rbInactivoUsuario;
+    @FXML
+    private PasswordField txtContrasenaActual;
+    @FXML
+    private PasswordField txtContrasenaNueva;
+    @FXML
+    private PasswordField txtContrasenaConfirmar;
     
-    private String modalidad="";
-    
+    private UsuarioDTO usuarioEnCuestion = new UsuarioDTO();
+    private UsuarioService usuarioService = new UsuarioService();
+    private String modalidad=""; 
     private EmpleadoDTO empleadoEnCuestion = new EmpleadoDTO();
-    
     private EmpleadoService empleadoService = new EmpleadoService();
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
-        Respuesta respuesta = empleadoService.getByEstado(true);
-        if(respuesta.getEstado()){
-            empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
-            ObservableList items = FXCollections.observableArrayList(empleados);
-            cbxJefeDirecto.setItems(items);
-        }
+        initEmpleadosJefe();
+        initRoles();
           
         
-        modalidad = (String) AppContext.getInstance().get("ModalidadEmpleado");
+        modalidad = (String) AppContext.getInstance().get("ModalidadEmpleadoUsuario");
         btnGuardar.setVisible(false);
         btnGuardar.setDisable(true);
         
@@ -113,7 +129,11 @@ public class EmpleadosInformacionController implements Initializable {
             btnGuardar.setDisable(false);
         }
         if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
-            empleadoEnCuestion = (EmpleadoDTO) AppContext.getInstance().get("EmpleadoEnCuestion");
+            usuarioEnCuestion = (UsuarioDTO) AppContext.getInstance().get("UsuarioEnCuestion");
+            empleadoEnCuestion = usuarioEnCuestion.getEmpleado();
+            
+            //////////////////////////////////////////////////////////////////////
+            //sets empleado
             txtNombre.setText(empleadoEnCuestion.getNombre());
             txtCedula.setText(empleadoEnCuestion.getCedula());
             txtTelefono.setText(empleadoEnCuestion.getTelefono());
@@ -144,6 +164,24 @@ public class EmpleadosInformacionController implements Initializable {
             lblFechaModificacion1.setText("Modificado el "+empleadoEnCuestion.getFechaModificacion());
             lblFechaCreacion1.setVisible(true);
             lblFechaModificacion1.setVisible(true);
+            //////////////////////////////////////////////////////////////////////
+            
+            //////////////////////////////////////////////////////////////////////
+            //sets usuario
+            cbRol.setValue(usuarioEnCuestion.getRol());
+            if(usuarioEnCuestion.getEstado()==true){
+                estadoUsuario=true;
+                rbActivoUsuario.setSelected(true);
+                rbInactivoUsuario.setSelected(false);
+            }else{
+                estadoUsuario=false;
+                rbActivoUsuario.setSelected(false);
+                rbInactivoUsuario.setSelected(true);
+            }
+            //////////////////////////////////////////////////////////////////////
+            
+            
+            
             
             if(modalidad.equals("Ver")){
                 GenerarTransacciones.crearTransaccion("Se observa empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
@@ -156,7 +194,21 @@ public class EmpleadosInformacionController implements Initializable {
                 rbSi.setDisable(true);
                 rbNo.setDisable(true);
                 cbxJefeDirecto.setDisable(true);
+                
+                
+                rbActivoUsuario.setDisable(true);
+                rbInactivoUsuario.setDisable(true);
+                cbRol.setDisable(true);
+                txtContrasenaActual.setDisable(true);
+                txtContrasenaActual.setVisible(false);
+                txtContrasenaConfirmar.setDisable(true);
+                txtContrasenaConfirmar.setVisible(false);
+                txtContrasenaNueva.setDisable(true);
+                txtContrasenaNueva.setVisible(false);
             }
+        }else{
+            txtContrasenaActual.setVisible(false);
+            txtContrasenaActual.setDisable(true);
         }
         
         
@@ -165,6 +217,30 @@ public class EmpleadosInformacionController implements Initializable {
 
     }
     
+    public void initEmpleadosJefe(){
+        ArrayList<EmpleadoDTO> empleados = new ArrayList<EmpleadoDTO>();
+        Respuesta respuesta = empleadoService.getByEstado(true);
+        if(respuesta.getEstado()){
+            empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
+            ObservableList items = FXCollections.observableArrayList(empleados);
+            cbxJefeDirecto.setItems(items);
+        }
+    }
+    
+
+    public void initRoles(){
+        RolService rolService = new RolService();
+        ArrayList<RolDTO> roles = new ArrayList();
+        Respuesta respuesta = rolService.getByEstado(true);
+        if(respuesta.getEstado()==true){
+            roles = (ArrayList<RolDTO>) respuesta.getResultado("Roles");
+        }
+        ObservableList items2 = FXCollections.observableArrayList(roles);   
+        cbRol.setItems(items2);
+    }
+    
+    
+    boolean cambioContrasena = true;
     public boolean validar(){
         if(txtCedula.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la cedula del empleado");
@@ -189,6 +265,34 @@ public class EmpleadosInformacionController implements Initializable {
                 }
             } 
         }
+        
+        if(cbRol.getValue()==null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el rol que va tener el usuario");
+            return false;
+        }
+        if(estadoUsuario==null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del usuario");
+            return false;
+        }
+        if(!txtContrasenaNueva.getText().isBlank()){
+            if(txtContrasenaConfirmar.getText().isBlank()){
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor confirme la contraseña");
+                return false;
+            }else{
+                if(!txtContrasenaNueva.getText().equals(txtContrasenaConfirmar.getText())){
+                    Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña a confirmar no coincide con la contraseña nueva");  
+                    return false;
+                }else{
+                    //evaluar contrasena actual si va editar el usuario, hacer login con la cedula del empleado y contrasena actual si me devulve false no funciono
+                    cambioContrasena=true;
+                }
+            } 
+        }else{
+            cambioContrasena=false;
+        }
+        
+        
+        
         return true;
     }
     
@@ -201,6 +305,7 @@ public class EmpleadosInformacionController implements Initializable {
             empleadoEnCuestion.setDireccion(txtDireccion.getText());
             empleadoEnCuestion.setTelefono(txtTelefono.getText());
             empleadoEnCuestion.setEstado(estado);
+
             if(!esJefe){
                 empleadoEnCuestion.setJefe(cbxJefeDirecto.getValue());
             }else{
@@ -210,9 +315,22 @@ public class EmpleadosInformacionController implements Initializable {
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
                 if(respuesta.getEstado()){
-                    GenerarTransacciones.crearTransaccion("Se modifica empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de empleado", "Se ha modificado el empleado correctamente");
-                    volver();
+                    empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
+                    
+                    usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
+                    usuarioEnCuestion.setEstado(estadoUsuario);
+                    usuarioEnCuestion.setRol(cbRol.getValue());
+                    
+                    if(cambioContrasena==true){
+                        usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+                    }
+                    Respuesta respuestaUsuario=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
+                    if(respuestaUsuario.getEstado()){
+                        usuarioEnCuestion=(UsuarioDTO) respuestaUsuario.getResultado("Usuario");
+                        GenerarTransacciones.crearTransaccion("Se modifica empleado y usuario con id "+usuarioEnCuestion.getId(), "EmpleadosInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de empleado", "Se ha modificado el empleado correctamente");
+                        volver();
+                    }
                 }else{
                     Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
                 }
@@ -223,9 +341,19 @@ public class EmpleadosInformacionController implements Initializable {
                     Respuesta respuesta=empleadoService.crear(empleadoEnCuestion);
                     if(respuesta.getEstado()){
                         empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
-                        GenerarTransacciones.crearTransaccion("Se crea empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de empleado", "Se ha registrado el empleado correctamente");
-                        volver();
+                        
+                        usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
+                        usuarioEnCuestion.setEstado(estadoUsuario);
+                        usuarioEnCuestion.setRol(cbRol.getValue());
+                        usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+                        
+                        Respuesta respuestaUsuario=usuarioService.crear(usuarioEnCuestion);
+                        if(respuestaUsuario.getEstado()){
+                            usuarioEnCuestion=(UsuarioDTO) respuestaUsuario.getResultado("Usuario");
+                            GenerarTransacciones.crearTransaccion("Se crea empleado y usuario con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
+                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de empleado", "Se ha registrado el empleado correctamente");
+                            volver();
+                        }
                     }else{
                         Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de empleado", respuesta.getMensaje());
                     }
@@ -280,11 +408,28 @@ public class EmpleadosInformacionController implements Initializable {
     public void volver() {
         try{
             StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-            Parent root = FXMLLoader.load(App.class.getResource("Empleados" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("Usuarios" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
             
         }
+    }
+
+
+    
+    private Boolean estadoUsuario;
+    @FXML
+    private void actEstadoActivoUsuario(ActionEvent event) {
+        rbActivoUsuario.setSelected(true);
+        rbInactivoUsuario.setSelected(false);
+        estadoUsuario=true;
+    }
+
+    @FXML
+    private void actEstadoInactivoUsuario(ActionEvent event) {
+        rbActivoUsuario.setSelected(false);
+        rbInactivoUsuario.setSelected(true);
+        estadoUsuario=false;
     }
 }

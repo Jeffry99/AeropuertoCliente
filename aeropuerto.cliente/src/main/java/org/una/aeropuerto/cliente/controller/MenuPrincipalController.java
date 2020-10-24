@@ -34,8 +34,6 @@ public class MenuPrincipalController implements Initializable {
     @FXML
     private MenuBar menuBar;
     @FXML
-    private MenuItem btnEmpleados;
-    @FXML
     private MenuItem btnUsuarios;
     @FXML
     private MenuItem btnRoles;
@@ -72,18 +70,6 @@ public class MenuPrincipalController implements Initializable {
         
     }    
 
-    @FXML
-    private void actEmpleados(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("Empleados" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan empleados", "MenuPrincipal");
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        }
-        
-    }
 
     @FXML
     private void actUsuarios(ActionEvent event) {
