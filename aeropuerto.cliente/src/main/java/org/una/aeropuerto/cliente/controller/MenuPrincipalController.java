@@ -35,8 +35,6 @@ public class MenuPrincipalController implements Initializable {
     @FXML
     private MenuBar menuBar;
     @FXML
-    private MenuItem btnUsuarios;
-    @FXML
     private MenuItem btnRoles;
     @FXML
     private MenuItem btnHorarios;
@@ -60,6 +58,7 @@ public class MenuPrincipalController implements Initializable {
     private Button btnRegistrarMarcaje;
     @FXML
     private Menu TituloAdministracion;
+    @FXML
     private Menu TituloAviones;
     @FXML
     private MenuItem btnServiciosRegistrados;
@@ -73,6 +72,16 @@ public class MenuPrincipalController implements Initializable {
     private MenuItem btnBitacoraAviones;
     @FXML
     private MenuItem btnServiciosTipos;
+    @FXML
+    private MenuItem btnParametros;
+    @FXML
+    private Menu TituloEmpleados;
+    @FXML
+    private Menu TituloVuelos;
+    @FXML
+    private MenuItem btnVuelos;
+    @FXML
+    private MenuItem btnAlertas;
 
     /**
      * Initializes the controller class.
@@ -107,17 +116,7 @@ public class MenuPrincipalController implements Initializable {
     }
 
 
-    @FXML
-    private void actUsuarios(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("Usuarios" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan usuarios", "MenuPrincipal");
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        }
-    }
+    
 
     @FXML
     private void actRoles(ActionEvent event) {
@@ -248,6 +247,14 @@ public class MenuPrincipalController implements Initializable {
     }
     @FXML
     private void actEmpleados(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Usuarios" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan usuarios", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML
@@ -284,5 +291,17 @@ public class MenuPrincipalController implements Initializable {
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
+    }
+
+    @FXML
+    private void actParamentros(ActionEvent event) {
+    }
+
+    @FXML
+    private void actVuelos(ActionEvent event) {
+    }
+
+    @FXML
+    private void actAlertas(ActionEvent event) {
     }
 }

@@ -95,22 +95,22 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </JFXButton>
-      <Label fx:id="horaMin1" layoutX="298.0" layoutY="145.0" text="12:">
+      <Label fx:id="horaMin1" layoutX="310.0" layoutY="145.0" text="12">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="horaMin2" layoutX="298.0" layoutY="183.0" text="12:">
+      <Label fx:id="horaMin2" layoutX="310.0" layoutY="183.0" text="12">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="horaMin3" layoutX="298.0" layoutY="221.0" text="12:">
+      <Label fx:id="horaMin3" layoutX="310.0" layoutY="221.0" text="12">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="horaMin4" layoutX="298.0" layoutY="260.0" text="12:">
+      <Label fx:id="horaMin4" layoutX="310.0" layoutY="259.0" text="12">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -149,5 +149,25 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Button>
+      <Label fx:id="horaMin11" layoutX="331.0" layoutY="144.0" text=":">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="horaMin111" layoutX="331.0" layoutY="182.0" text=":">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="horaMin1111" layoutX="331.0" layoutY="220.0" text=":">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="horaMin11111" layoutX="331.0" layoutY="258.0" text=":">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
