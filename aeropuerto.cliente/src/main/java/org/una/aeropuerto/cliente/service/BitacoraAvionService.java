@@ -23,13 +23,13 @@ public class BitacoraAvionService {
             ConexionService conexion = new ConexionService("bitacoras_aviones/crear");
             conexion.post(bitacora);
             if(conexion.isError()){
-                System.out.println("Error creacion de rol: "+conexion.getError());
-                return new Respuesta(false, conexion.getError(), "No se pudo crear el tipo de alerta");
+                System.out.println("Error creacion de bitacora: "+conexion.getError());
+                return new Respuesta(false, conexion.getError(), "No se pudo crear el estado del avion");
             }
             BitacoraAvionDTO result = (BitacoraAvionDTO) conexion.readEntity(BitacoraAvionDTO.class);
             return new Respuesta(true, "BitacoraAvion", result);
         }catch(Exception ex){
-            System.out.println("Excepcion creacion del tipo de alerta: "+ex.getMessage());
+            System.out.println("Excepcion creacion del estado de avion: "+ex.getMessage());
             return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
         }
     }
@@ -112,7 +112,7 @@ public class BitacoraAvionService {
         }
     }
     
-    public Respuesta getByDistanciaRecorrida(int distancia){
+    public Respuesta getByDistanciaRecorrida(float distancia){
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", distancia);

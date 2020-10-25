@@ -159,8 +159,8 @@ public class ServiciosInformacionController implements Initializable {
             rbInactivoCobro.setSelected(false);
             estado = true;
         }else{
-            rbActivo.setSelected(false);
-            rbInactivo.setSelected(true);
+            rbActivoCobro.setSelected(false);
+            rbInactivoCobro.setSelected(true);
             estado = false;
         }
         
