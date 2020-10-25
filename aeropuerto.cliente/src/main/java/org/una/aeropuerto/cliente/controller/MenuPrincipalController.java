@@ -71,6 +71,8 @@ public class MenuPrincipalController implements Initializable {
     private MenuItem btnRutas;
     @FXML
     private MenuItem btnBitacoraAviones;
+	@FXML
+    private MenuItem btnServiciosTipos;
 
     /**
      * Initializes the controller class.
@@ -267,6 +269,17 @@ public class MenuPrincipalController implements Initializable {
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
             GenerarTransacciones.crearTransaccion("Se observan bitácoras", "MenuPrincipal");
+		}catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
+	}
+    private void actServiciosTipos(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("ServiciosTipos" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan servicios tipos", "MenuPrincipal");
+
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
