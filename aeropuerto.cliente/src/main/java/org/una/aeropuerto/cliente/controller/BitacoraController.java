@@ -20,6 +20,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -68,9 +70,11 @@ public class BitacoraController implements Initializable {
     BitacoraAvionService bitacoraService = new BitacoraAvionService();
     BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
     @FXML
-    private TextField txtDistancia;
-    @FXML
     private TextField txtUbicacion;
+    @FXML
+    private Spinner<Double> spDistanciaMas;
+    @FXML
+    private Spinner<Double> spDistanciaMenos;
     /**
      * Initializes the controller class.
      */
@@ -83,6 +87,11 @@ public class BitacoraController implements Initializable {
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbEstado.setItems(items);
+        
+        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+        SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+        spDistanciaMenos.setValueFactory(value);
+        spDistanciaMas.setValueFactory(value2);
         
         cargarTodos();
     }    
@@ -232,14 +241,14 @@ public class BitacoraController implements Initializable {
 
     @FXML
     private void actBorrar(ActionEvent event) {
-        txtDistancia.setText("");
-        txtDistancia.setPromptText("Buscar por Distancia Recorrida");
         txtUbicacion.setText("");
         txtUbicacion.setPromptText("Buscar por Ubicación");
         cbEstado.setValue(null);
         cbAvion.setValue(null);
         cbEstado.setPromptText("Buscar por Estado");
         cbAvion.setPromptText("Buscar por Avión");
+        spDistanciaMas.getValueFactory().setValue(Double.valueOf(0));
+        spDistanciaMenos.getValueFactory().setValue(Double.valueOf(0));
         cargarTodos();
     }
 
@@ -273,12 +282,12 @@ public class BitacoraController implements Initializable {
     @FXML
     private void actBuscaDistancia(ActionEvent event) {
         if(validarBusquedas("Distancia")){
-            /*ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
-            Respuesta respuesta = bitacoraService.getByDistanciaRecorrida(spDistancia.getValue());
+            ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+            Respuesta respuesta = bitacoraService.getByDistanciaRecorridaRango(spDistanciaMas.getValue().floatValue(), spDistanciaMenos.getValue().floatValue());
             if(respuesta.getEstado().equals(true)){
                 bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
             }
-            cargarTabla(bitacoras);*/
+            cargarTabla(bitacoras);
         }
     }
 
@@ -321,7 +330,7 @@ public class BitacoraController implements Initializable {
     
     public boolean validarBusquedas(String tipo){
         if(tipo.equals("Distancia")){
-            if(txtDistancia.getText().isEmpty()){
+            if(spDistanciaMenos.getValue() == null || spDistanciaMas.getValue() == null){
                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Falta información", "Digite la distancia recorrida");
                 return false;
             }

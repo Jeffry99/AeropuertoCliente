@@ -128,6 +128,23 @@ public class BitacoraAvionService {
         }
     }
     
+    public Respuesta getByDistanciaRecorridaRango(float mas, float menos){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("mas", mas);
+            parametros.put("menos", menos);
+            ConexionService conexion = new ConexionService("bitacoras_aviones/list/distanciaRango", "/{mas}/{menos}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al buscar las bitacoras de aviones por distancia");
+            }
+            List<BitacoraAvionDTO> result = (List<BitacoraAvionDTO>) conexion.readEntity(new GenericType<List<BitacoraAvionDTO>>(){});
+            return new Respuesta(true, "BitacorasAvion",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+        }
+    }
+    
     public Respuesta getByTiempoTierra(int tiempo){
         try{
             Map<String, Object> parametros = new HashMap<>();
