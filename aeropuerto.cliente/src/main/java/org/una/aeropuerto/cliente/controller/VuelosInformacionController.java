@@ -124,16 +124,27 @@ public class VuelosInformacionController implements Initializable {
             estado = false;
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
             //vuelo.setAvion(cbAvion.getValue());
             //vuelo.setEstado(estado);
             Date fecha = java.util.Date.from(dpFecha.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            System.out.println("--------------------------------");
+            System.out.println("Fecha de vuelo: "+fecha);
+            System.out.println("--------------------------------");
             //vuelo.setFecha(fecha);
            // vuelo.setRuta(cbRuta.getValue());
             
-            
+            /*
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=vueloService.modificar(vuelo.getId(), vuelo);
                 if(respuesta.getEstado()){
@@ -157,7 +168,7 @@ public class VuelosInformacionController implements Initializable {
                         Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de vuelo", respuesta.getMensaje());
                     }
                 }
-            }
+            }*/
         }
     }
 
