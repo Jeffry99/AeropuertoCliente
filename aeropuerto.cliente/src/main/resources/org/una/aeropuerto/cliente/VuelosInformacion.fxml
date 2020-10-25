@@ -19,8 +19,8 @@
       <RadioButton fx:id="rbActivo" layoutX="366.0" layoutY="401.0" mnemonicParsing="false" onAction="#actActivo" text="Activo" />
       <RadioButton fx:id="rbInactivo" layoutX="445.0" layoutY="401.0" mnemonicParsing="false" onAction="#actInactivo" text="Inactivo" />
       <Label fx:id="lblIdNumero" layoutX="365.0" layoutY="181.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
-      <ComboBox fx:id="cbRuta" layoutX="365.0" layoutY="287.0" prefHeight="37.0" prefWidth="375.0" />
-      <ComboBox fx:id="cbAvion" layoutX="365.0" layoutY="230.0" prefHeight="37.0" prefWidth="375.0" />
+      <ComboBox fx:id="cbRuta" layoutX="365.0" layoutY="287.0" onMouseClicked="#actRutas" prefHeight="37.0" prefWidth="375.0" />
+      <ComboBox fx:id="cbAvion" layoutX="365.0" layoutY="230.0" onMouseClicked="#actAviones" prefHeight="37.0" prefWidth="375.0" />
       <DatePicker fx:id="dpFecha" layoutX="365.0" layoutY="345.0" prefHeight="37.0" prefWidth="375.0" />
    </children>
 </AnchorPane>

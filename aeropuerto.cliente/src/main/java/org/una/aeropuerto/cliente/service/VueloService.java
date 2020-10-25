@@ -19,28 +19,28 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  * @author Jeffry
  */
 public class VueloService {
-    public Respuesta crear(VueloDTO alerta){
+    public Respuesta crear(VueloDTO vuelo){
         try{
             ConexionService conexion = new ConexionService("vuelos/crear");
-            conexion.post(alerta);
+            conexion.post(vuelo);
             if(conexion.isError()){
                 System.out.println("Error creacion de vuelo: "+conexion.getError());
-                return new Respuesta(false, conexion.getError(), "No se pudo crear el tipo de alerta");
+                return new Respuesta(false, conexion.getError(), "No se pudo crear el vuelo");
             }
             VueloDTO result = (VueloDTO) conexion.readEntity(VueloDTO.class);
             return new Respuesta(true, "Vuelo", result);
         }catch(Exception ex){
-            System.out.println("Excepcion creacion del tipo de alerta: "+ex.getMessage());
+            System.out.println("Excepcion creacion del vuelo: "+ex.getMessage());
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
     }
     
-    public Respuesta modificar(Long id, VueloDTO alerta){
+    public Respuesta modificar(Long id, VueloDTO vuelo){
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
             ConexionService conexion = new ConexionService("vuelos/modificar", "/{id}", parametros);
-            conexion.put(alerta);
+            conexion.put(vuelo);
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "No se pudo modificar el vuelo");
             }

@@ -195,7 +195,7 @@ public class VuelosController implements Initializable {
         AppContext.getInstance().set("ModalidadVuelo", "Ver");
         AppContext.getInstance().set("VueloEnCuestion", vuelo);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesVuelosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("VuelosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -208,7 +208,7 @@ public class VuelosController implements Initializable {
         AppContext.getInstance().set("ModalidadVuelo", "Modificar");
         AppContext.getInstance().set("VueloEnCuestion", vuelo);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesVuelosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("VuelosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -291,7 +291,7 @@ public class VuelosController implements Initializable {
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadVuelo", "Agregar");
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesVuelosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("VuelosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -306,7 +306,7 @@ public class VuelosController implements Initializable {
     public void volver() {
         try{
             StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("MenuPrincipal" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
