@@ -92,6 +92,9 @@ public class ServicioTipoDTO {
         this.areaTrabajo = areaTrabajo;
     }
     
+    public String toString(){
+        return this.getNombre();
+    }
     
     
 }

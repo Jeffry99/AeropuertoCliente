@@ -23,7 +23,7 @@ public class AvionService {
             ConexionService conexion = new ConexionService("aviones/crear");
             conexion.post(avion);
             if(conexion.isError()){
-                System.out.println("Error creacion de trabajo empleado: "+conexion.getError());
+                System.out.println("Error creacion de avion: "+conexion.getError());
                 return new Respuesta(false, conexion.getError(), "No se pudo crear el avion");
             }
             AvionDTO result = (AvionDTO) conexion.readEntity(AvionDTO.class);

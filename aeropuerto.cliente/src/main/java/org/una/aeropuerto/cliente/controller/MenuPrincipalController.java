@@ -51,21 +51,24 @@ public class MenuPrincipalController implements Initializable {
     @FXML
     private MenuItem btnAerolineas;
     @FXML
-    private MenuItem btnAreasTrabajos;
-    @FXML
-    private MenuItem btnTrabajosEmpleados;
-    @FXML
     private MenuItem btnAviones;
     @FXML
-    private MenuItem btnRutas;
+    private MenuItem btnEmpleados;
     @FXML
     private MenuItem btnTiposAviones;
     @FXML
     private Button btnRegistrarMarcaje;
     @FXML
     private Menu TituloAdministracion;
-    @FXML
     private Menu TituloAviones;
+    @FXML
+    private MenuItem btnServiciosRegistrados;
+    @FXML
+    private MenuItem btnAreasTrabajos;
+    @FXML
+    private MenuItem btnTrabajosEmpleados;
+    @FXML
+    private MenuItem btnRutas;
 
     /**
      * Initializes the controller class.
@@ -239,5 +242,19 @@ public class MenuPrincipalController implements Initializable {
     private void actRegistrarMarcaje(ActionEvent event) {
         registrarMarcaje("OtroRol");
     }
-    
+    @FXML
+    private void actEmpleados(ActionEvent event) {
+    }
+
+    @FXML
+    private void actServiciosRegistrados(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Servicios" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan servicios", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
+    }
 }

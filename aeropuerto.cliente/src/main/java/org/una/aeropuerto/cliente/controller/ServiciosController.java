@@ -8,7 +8,9 @@ package org.una.aeropuerto.cliente.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +23,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,7 +48,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  * @author Jeffry
  */
 public class ServiciosController implements Initializable {
-    private ServicioRegistradoService servicioRegistradoService = new ServicioRegistradoService();
+    private ServicioRegistradoService servicioRegistradoService;
     @FXML
     private TableView<ServicioRegistradoDTO> tvServicios;
     @FXML
@@ -66,9 +70,9 @@ public class ServiciosController implements Initializable {
     private Button btnBuscarCobro;
     private Label lblAvion;
     @FXML
-    private TextField txtMinimo;
+    private Spinner<Double> txtMinimo;
     @FXML
-    private TextField txtMaximo;
+    private Spinner<Double> txtMaximo;
     @FXML
     private ComboBox<String> cbEstadoCobro;
     @FXML
@@ -81,7 +85,29 @@ public class ServiciosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
+        
+        servicioRegistradoService = new ServicioRegistradoService();
         cargarTodos();
+        
+        ArrayList estados = new ArrayList();
+        estados.add("Activo");
+        estados.add("Inactivo");
+        ObservableList items = FXCollections.observableArrayList(estados);   
+        cbEstado.setItems(items);
+        
+        ArrayList estadosCobro = new ArrayList();
+        estadosCobro.add("Activo");
+        estadosCobro.add("Inactivo");
+        ObservableList itemsCobro = FXCollections.observableArrayList(estadosCobro);   
+        cbEstadoCobro.setItems(itemsCobro);
+        
+        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+        SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+        txtMinimo.setValueFactory(value);
+        txtMaximo.setValueFactory(value2);
+        
+        
     }    
     
     public void cargarTodos(){
@@ -103,17 +129,10 @@ public class ServiciosController implements Initializable {
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             
             TableColumn <ServicioRegistradoDTO, String>colTipoServicio = new TableColumn("Tipo de Servicio");
-            colTipoServicio.setCellValueFactory(ts -> {
-                String tipoServicio = ts.getValue().getServicioTipo().getNombre();
-                return new ReadOnlyStringWrapper(tipoServicio);
-            });
+            colTipoServicio.setCellValueFactory(new PropertyValueFactory("servicioTipo"));
             
-            TableColumn <ServicioRegistradoDTO, String>colCobro = new TableColumn("Aerolinea");
-            colId.setCellValueFactory(new PropertyValueFactory("cobro"));
-            /*colCobro.setCellValueFactory(sr -> {
-                String cobro = String.valueOf(sr.getValue().getCobro());
-                return new ReadOnlyStringWrapper(cobro);
-            });*/
+            TableColumn <ServicioRegistradoDTO, String>colCobro = new TableColumn("Cobro");
+            colCobro.setCellValueFactory(new PropertyValueFactory("cobro"));
             
             TableColumn<ServicioRegistradoDTO, String> colEstadoCobro = new TableColumn("Estado de Cobro");
             colEstadoCobro.setCellValueFactory(av -> {
@@ -125,21 +144,26 @@ public class ServiciosController implements Initializable {
                 return new ReadOnlyStringWrapper(estadoString);
             });
             
-            TableColumn<ServicioRegistradoDTO, String> colResponsable = new TableColumn("Responsable");
-            colResponsable.setCellValueFactory(sr -> {
-                String responsable = String.valueOf(sr.getValue().getResponsable().getNombre());
-                return new ReadOnlyStringWrapper(responsable);
+            TableColumn<ServicioRegistradoDTO, String> colEstado = new TableColumn("Estado");
+            colEstado.setCellValueFactory(av -> {
+            String estadoString;
+                if(av.getValue().getEstado())
+                    estadoString = "Activo";
+                else
+                    estadoString = "Inactivo";
+                return new ReadOnlyStringWrapper(estadoString);
             });
             
+            TableColumn<ServicioRegistradoDTO, String> colResponsable = new TableColumn("Responsable");
+            colResponsable.setCellValueFactory(new PropertyValueFactory("responsable"));
+            
             TableColumn<ServicioRegistradoDTO, String> colAvion = new TableColumn("Avión");
-            colEstadoCobro.setCellValueFactory(sr -> {
-                String avion = String.valueOf(sr.getValue().getAvion().getMatricula());
-                return new ReadOnlyStringWrapper(avion);
-            });
+            colAvion.setCellValueFactory(new PropertyValueFactory("avion"));
             
             tvServicios.getColumns().addAll(colId);
             tvServicios.getColumns().addAll(colTipoServicio);
             tvServicios.getColumns().addAll(colCobro);
+            tvServicios.getColumns().addAll(colEstado);
             tvServicios.getColumns().addAll(colEstadoCobro);
             tvServicios.getColumns().addAll(colResponsable);
             tvServicios.getColumns().addAll(colAvion);
@@ -205,7 +229,7 @@ public class ServiciosController implements Initializable {
         AppContext.getInstance().set("ModalidadServicioRegistrado", "Ver");
         AppContext.getInstance().set("ServicioRegistradoEnCuestion", servicio);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesServiciosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("ServiciosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -218,7 +242,7 @@ public class ServiciosController implements Initializable {
         AppContext.getInstance().set("ModalidadServicioRegistrado", "Modificar");
         AppContext.getInstance().set("ServicioRegistradoEnCuestion", servicio);
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesServiciosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("ServiciosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -237,14 +261,16 @@ public class ServiciosController implements Initializable {
         }
     }
 
-    private boolean estado;
+    private Boolean estado;
     @FXML
     private void actEstados(ActionEvent event) {
-        if(cbEstado.getValue().equals("Activo")){
+        if(cbEstado.getValue() != null){
+            if(cbEstado.getValue().equals("Activo")){
             estado = true;
-        }else{
-            if(cbEstado.getValue().equals("Inactivo")){
-                estado = false;
+            }else{
+                if(cbEstado.getValue().equals("Inactivo")){
+                    estado = false;
+                }
             }
         }
     }
@@ -253,16 +279,17 @@ public class ServiciosController implements Initializable {
     private void actBorrar(ActionEvent event) {
         txtTipo.setText("");
         cbEstado.setValue(null);
-        cbTipoAvion.setValue(null);
-        txtMinimo.setText(null);
-        txtMaximo.setText(null);
+        cbEstadoCobro.setValue(null);
+        txtMinimo.getValueFactory().setValue(0.0);
+        txtMaximo.getValueFactory().setValue(0.0);
+        cargarTodos();
     }
     @FXML
     private void actAgregar(ActionEvent event) {
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadServicioRegistrado", "Agregar");
         try{
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesServiciosInformacion" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("ServiciosInformacion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -290,7 +317,7 @@ public class ServiciosController implements Initializable {
             }
         }
         if(tipo.equals("Monto")){
-            if(txtMinimo.getText().isEmpty() || txtMaximo.getText().isEmpty()){
+            if(txtMinimo.getValue() == null || txtMaximo.getValue() == null){
                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Falta información", "Especifique el rango de cobro");
                 return false;
             }
@@ -325,7 +352,7 @@ public class ServiciosController implements Initializable {
     private void actBuscarCobro(ActionEvent event) {
         if(validarBusquedas("Monto")){
             ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
-            Respuesta respuesta = servicioRegistradoService.getByCobroRango("ds");
+            Respuesta respuesta = servicioRegistradoService.getByCobroRango(txtMinimo.getValue().floatValue(), txtMaximo.getValue().floatValue());
             if(respuesta.getEstado().equals(true)){
                 servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
             }
@@ -336,11 +363,13 @@ public class ServiciosController implements Initializable {
     private Boolean estadoCobro;
     @FXML
     private void actEstadoCobro(ActionEvent event) {
-        if(cbEstadoCobro.getValue().equals("Activo")){
+        if(cbEstadoCobro.getValue() != null){
+            if(cbEstadoCobro.getValue().equals("Activo")){
             estadoCobro = true;
-        }else{
-            if(cbEstadoCobro.getValue().equals("Inactivo")){
-                estadoCobro = false;
+            }else{
+                if(cbEstadoCobro.getValue().equals("Inactivo")){
+                    estadoCobro = false;
+                }
             }
         }
     }

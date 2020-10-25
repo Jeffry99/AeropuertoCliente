@@ -23,6 +23,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
@@ -32,6 +34,7 @@ import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.dto.ServicioTipoDTO;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
 import org.una.aeropuerto.cliente.service.AerolineaService;
+import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
@@ -49,51 +52,30 @@ import org.una.aeropuerto.cliente.util.Respuesta;
 public class ServiciosInformacionController implements Initializable {
 
     @FXML
-    private Label lblCedula;
-    @FXML
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
-    @FXML
-    private Label lblNombre;
-    @FXML
-    private Label lblTelefono;
-    @FXML
-    private Label lblDireccion;
-    @FXML
-    private Label lblEstado;
     @FXML
     private RadioButton rbActivo;
     @FXML
     private RadioButton rbInactivo;
     @FXML
     private Label lblIdNumero;
-    private ComboBox<String> cbEstadoCobro;
-    @FXML
-    private Label lblTelefono1;
     @FXML
     private ComboBox<ServicioTipoDTO> cbTipoServicio;
     @FXML
-    private TextField txtCobro;
-    @FXML
-    private Label lblTelefono11;
+    private Spinner<Double> txtCobro;
     @FXML
     private Label lblFechaRegistro;
     @FXML
     private Label lblFechaModificacion;
     @FXML
-    private Label lblTelefono1121;
-    @FXML
     private ComboBox<EmpleadoDTO> cbResponsable;
     
     private String modalidad="";
-    private ServicioRegistradoDTO servicio;
+    private ServicioRegistradoDTO servicio = new ServicioRegistradoDTO();
     @FXML
-    private Label lblNombre1;
-    @FXML
-    private TextField txtDuracion;
-    @FXML
-    private Label lblNombre11;
+    private Spinner<Double> txtDuracion;
     @FXML
     private TextField txtObservaciones;
     @FXML
@@ -103,7 +85,9 @@ public class ServiciosInformacionController implements Initializable {
     
     private Boolean estado;
     private Boolean estadoCobro;
-    private ServicioRegistradoService servicioService = new ServicioRegistradoService();
+    private ServicioRegistradoService servicioService;
+    @FXML
+    private ComboBox<AvionDTO> cbAviones;
 
     /**
      * Initializes the controller class.
@@ -111,19 +95,25 @@ public class ServiciosInformacionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        servicioService = new ServicioRegistradoService();
+        servicio = new ServicioRegistradoDTO();
         modalidad = (String) AppContext.getInstance().get("ModalidadServicioRegistrado");
-
+        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+        SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+        txtCobro.setValueFactory(value);
+        txtDuracion.setValueFactory(value2);
         initTiposServicio();
         initResponsables();
-        
+        initAviones();
+        lblFechaModificacion.setText("");
         if(modalidad.equals("Ver")){
             llenarDatos();
-            btnGuardar.setVisible(false);
-            btnGuardar.setDisable(true);
-            
+            btnGuardar.setVisible(false);          
             txtCobro.setDisable(true);
             cbTipoServicio.setDisable(true);
-            cbEstadoCobro.setDisable(true);
+            cbAviones.setDisable(true);
+            rbActivoCobro.setDisable(true);
+            rbInactivoCobro.setDisable(true);
             rbActivo.setDisable(true);
             rbInactivo.setDisable(true);
             cbResponsable.setDisable(true);
@@ -142,11 +132,12 @@ public class ServiciosInformacionController implements Initializable {
     public void llenarDatos(){
         servicio = (ServicioRegistradoDTO)AppContext.getInstance().get("ServicioRegistradoEnCuestion");
         lblIdNumero.setText(servicio.getId().toString());
-        txtCobro.setText(String.valueOf(servicio.getCobro()));
+        txtCobro.getValueFactory().setValue(Double.valueOf(servicio.getCobro()));
         cbTipoServicio.setValue(servicio.getServicioTipo());
         cbResponsable.setValue(servicio.getResponsable());
+        cbAviones.setValue(servicio.getAvion());
         lblFechaRegistro.setText(servicio.getFechaRegistro().toString());
-        txtDuracion.setText(String.valueOf(servicio.getDuracion()));
+        txtDuracion.getValueFactory().setValue(Double.valueOf(servicio.getDuracion()));
         txtObservaciones.setText(servicio.getObservaciones());
         
         if(servicio.getFechaModificacion() != null){
@@ -176,11 +167,11 @@ public class ServiciosInformacionController implements Initializable {
     }
     
     public boolean validar(){
-        if(txtCobro.getText().isBlank()){
+        if(txtCobro.getValue() == null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite monto del cobro");
             return false;
         }
-        if(txtDuracion.getText().isBlank()){
+        if(txtDuracion.getValue() == null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la duracion del servicio");
             return false;
         }
@@ -205,15 +196,16 @@ public class ServiciosInformacionController implements Initializable {
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
-            servicio.setCobro(Float.valueOf(txtCobro.getText()));
+            servicio.setCobro(txtCobro.getValue().floatValue());
             servicio.setEstado(estado);
             servicio.setResponsable(cbResponsable.getValue());
-            servicio.setAvion((AvionDTO)AppContext.getInstance().get("AvionEnCuestion"));
-            servicio.setDuracion(Float.valueOf(txtDuracion.getText()));
+            servicio.setAvion(cbAviones.getValue());
+            servicio.setDuracion(txtDuracion.getValue().floatValue());
             servicio.setEstadoCobro(estadoCobro);
             servicio.setServicioTipo(cbTipoServicio.getValue());
             
             if(modalidad.equals("Modificar")){
+                
                 Respuesta respuesta=servicioService.modificar(servicio.getId(), servicio);
                 if(respuesta.getEstado()){
                     GenerarTransacciones.crearTransaccion("Se modifica servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
@@ -222,8 +214,6 @@ public class ServiciosInformacionController implements Initializable {
                 }else{
                     Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de servicio registrado", respuesta.getMensaje());
                 }
-                
-                
             }else{
                 if(modalidad.equals("Agregar")){
                     Respuesta respuesta=servicioService.crear(servicio);
@@ -256,9 +246,9 @@ public class ServiciosInformacionController implements Initializable {
     }
     
     public void initTiposServicio(){
-        ServicioTipoService serviciosService = new ServicioTipoService();
+        ServicioTipoService serviciosTiposService = new ServicioTipoService();
         ArrayList<ServicioTipoDTO> tiposServicio;
-        Respuesta respuesta = serviciosService.getByEstado(true);
+        Respuesta respuesta = serviciosTiposService.getByEstado(true);
         if(respuesta.getEstado()){
             tiposServicio = (ArrayList<ServicioTipoDTO>) respuesta.getResultado("TiposServicios");
             ObservableList items = FXCollections.observableArrayList(tiposServicio);
@@ -273,7 +263,18 @@ public class ServiciosInformacionController implements Initializable {
         if(respuesta.getEstado()){
             empleados = (ArrayList<EmpleadoDTO>) respuesta.getResultado("Empleados");
             ObservableList items = FXCollections.observableArrayList(empleados);
-            cbTipoServicio.setItems(items);
+            cbResponsable.setItems(items);
+        }
+    }
+    
+    public void initAviones(){
+        AvionService avionService = new AvionService();
+        ArrayList<AvionDTO> aviones;
+        Respuesta respuesta = avionService.getByEstado(true);
+        if(respuesta.getEstado()){
+            aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
+            ObservableList items = FXCollections.observableArrayList(aviones);
+            cbAviones.setItems(items);
         }
     }
 

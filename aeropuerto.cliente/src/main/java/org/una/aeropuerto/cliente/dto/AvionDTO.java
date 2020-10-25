@@ -67,5 +67,7 @@ public class AvionDTO {
         this.estado = estado;
     }
     
-    
+    public String toString(){
+        return aerolinea+" - "+matricula;
+    }
 }
