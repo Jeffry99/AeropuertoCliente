@@ -90,6 +90,14 @@ public class SeleccionDeHoraController implements Initializable {
     private HorariosInformacionController controllerHorarios;
     private String modalidad="";
     private String modalidadHorarios="";
+    @FXML
+    private Label horaMin11;
+    @FXML
+    private Label horaMin111;
+    @FXML
+    private Label horaMin1111;
+    @FXML
+    private Label horaMin11111;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
