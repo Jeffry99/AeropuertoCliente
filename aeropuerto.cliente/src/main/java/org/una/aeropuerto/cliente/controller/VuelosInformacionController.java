@@ -127,11 +127,11 @@ public class VuelosInformacionController implements Initializable {
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
-            //vuelo.setAvion(cbAvion.getValue());
-            //vuelo.setEstado(estado);
+            vuelo.setAvion(cbAvion.getValue());
+            vuelo.setEstado(estado);
             Date fecha = java.util.Date.from(dpFecha.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-            //vuelo.setFecha(fecha);
-           // vuelo.setRuta(cbRuta.getValue());
+            vuelo.setFecha(fecha);
+            vuelo.setRuta(cbRuta.getValue());
             
             
             if(modalidad.equals("Modificar")){
