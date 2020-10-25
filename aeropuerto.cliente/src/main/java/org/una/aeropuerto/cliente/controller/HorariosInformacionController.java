@@ -5,7 +5,11 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+
+import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -15,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
@@ -51,11 +54,20 @@ public class HorariosInformacionController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
+    
+    
     /**
      * Initializes the controller class.
      */
     private String modalidad="";
     private HorarioDTO horarioEnCuestion = new HorarioDTO();
+    
+    
+    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+    @FXML
+    private JFXTimePicker horaInicio;
+    @FXML
+    private JFXTimePicker horaFinal;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -69,7 +81,13 @@ public class HorariosInformacionController implements Initializable {
             cbxDiaInicio.setValue(getDiaString(horarioEnCuestion.getDiaInicio()));
             cbxDiaFinal.setValue(getDiaString(horarioEnCuestion.getDiaFinal()));
             //setHoraInicio
+            String horaDeInicio = formatter.format(horarioEnCuestion.getHoraInicio());
+            horaInicio.setValue(LocalTime.parse(horaDeInicio));
+            
             //setHoraFinal
+            String horaDeFin = formatter.format(horarioEnCuestion.getHoraInicio());
+            horaFinal.setValue(LocalTime.parse(horaDeFin));
+            
             cbxEmpleado.setValue(horarioEnCuestion.getEmpleado());
             
             if(horarioEnCuestion.getEstado()==true){
