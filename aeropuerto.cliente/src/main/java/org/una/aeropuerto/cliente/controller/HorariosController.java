@@ -243,7 +243,7 @@ public class HorariosController implements Initializable {
             });
             TableColumn<HorarioDTO, String> colHoraInicio = new TableColumn("Hora inicio");
             colHoraInicio.setCellValueFactory(hor -> {
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 String hora = formatter.format(hor.getValue().getHoraInicio());
                 return new ReadOnlyStringWrapper(hora);
             });
@@ -254,7 +254,7 @@ public class HorariosController implements Initializable {
             });
             TableColumn<HorarioDTO, String> colHoraFinal = new TableColumn("Hora final");
             colHoraFinal.setCellValueFactory(hor -> {
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 String hora = formatter.format(hor.getValue().getHoraFinal());
                 return new ReadOnlyStringWrapper(hora);
             });

@@ -87,7 +87,7 @@ public class HorarioService {
     public Respuesta getByEstado(boolean estado){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("term1", estado);
+            parametros.put("term", estado);
             ConexionService conexion = new ConexionService("horarios/list/estado", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
