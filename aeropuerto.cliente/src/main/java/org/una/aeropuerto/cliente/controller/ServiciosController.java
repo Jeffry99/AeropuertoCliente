@@ -37,6 +37,7 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
+import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -77,7 +78,10 @@ public class ServiciosController implements Initializable {
     private ComboBox<String> cbEstadoCobro;
     @FXML
     private Button btnBuscarEstadoCobro;
+    @FXML
     private ComboBox<AvionDTO> cbAvion;
+    @FXML
+    private Button btnBuscarAvion;
 
     /**
      * Initializes the controller class.
@@ -101,6 +105,8 @@ public class ServiciosController implements Initializable {
         estadosCobro.add("Inactivo");
         ObservableList itemsCobro = FXCollections.observableArrayList(estadosCobro);   
         cbEstadoCobro.setItems(itemsCobro);
+        
+        initAviones();
         
         SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
         SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
@@ -383,6 +389,29 @@ public class ServiciosController implements Initializable {
                 servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
             }
             cargarTabla(servicios);
+        }
+    }
+
+    @FXML
+    private void actBuscarAvion(ActionEvent event) {
+        if(validarBusquedas("Avion")){
+            ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
+            Respuesta respuesta = servicioRegistradoService.getByAvion(cbAvion.getValue().getId());
+            if(respuesta.getEstado().equals(true)){
+                servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
+            }
+            cargarTabla(servicios);
+        }
+    }
+    
+    public void initAviones(){
+        AvionService avionService = new AvionService();
+        ArrayList<AvionDTO> aviones;
+        Respuesta respuesta = avionService.getByEstado(true);
+        if(respuesta.getEstado()){
+            aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
+            ObservableList items = FXCollections.observableArrayList(aviones);
+            cbAvion.setItems(items);
         }
     }
     

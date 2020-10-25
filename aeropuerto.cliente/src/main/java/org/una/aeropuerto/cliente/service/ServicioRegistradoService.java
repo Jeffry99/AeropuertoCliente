@@ -96,6 +96,22 @@ public class ServicioRegistradoService {
         }
     }
     
+    public Respuesta getByAvion(Long avion){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("term", avion);
+            ConexionService conexion = new ConexionService("servicios_registrados/list/avion", "/{term}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al buscar los servicios registrados por avión");
+            }
+            List<ServicioRegistradoDTO> result = (List<ServicioRegistradoDTO>) conexion.readEntity(new GenericType<List<ServicioRegistradoDTO>>(){});
+            return new Respuesta(true, "ServiciosAeropuerto",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
+        }
+    }
+    
     public Respuesta getByEstadoCobro(boolean estado){
         try{
             Map<String, Object> parametros = new HashMap<>();
