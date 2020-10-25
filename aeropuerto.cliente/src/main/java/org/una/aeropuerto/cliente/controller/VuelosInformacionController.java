@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -26,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javax.json.bind.annotation.JsonbDateFormat;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.RutaDTO;
@@ -82,6 +84,8 @@ public class VuelosInformacionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initRutas();
+        initAviones();
         // TODO
         
         modalidad = AppContext.getInstance().get("ModalidadVuelo").toString();
@@ -112,6 +116,7 @@ public class VuelosInformacionController implements Initializable {
         cbAvion.setValue(vuelo.getAvion());
         cbRuta.setValue(vuelo.getRuta());
         //dpFecha.setValue();
+        fechaGuardar=vuelo.getFecha();
         
         
         if(vuelo.isEstado()){
@@ -137,16 +142,11 @@ public class VuelosInformacionController implements Initializable {
         if(validar()){
             vuelo.setAvion(cbAvion.getValue());
             vuelo.setEstado(estado);
-            Date fecha = java.util.Date.from(dpFecha.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-
-            System.out.println("--------------------------------");
-            System.out.println("Fecha de vuelo: "+fecha);
-            System.out.println("--------------------------------");
-            //vuelo.setFecha(fecha);
-           // vuelo.setRuta(cbRuta.getValue());
+            vuelo.setFecha(fechaGuardar);
+            vuelo.setRuta(cbRuta.getValue());
 
             
-            /*
+            
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=vueloService.modificar(vuelo.getId(), vuelo);
                 if(respuesta.getEstado()){
@@ -170,7 +170,7 @@ public class VuelosInformacionController implements Initializable {
                         Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de vuelo", respuesta.getMensaje());
                     }
                 }
-            }*/
+            }
         }
     }
 
@@ -247,11 +247,35 @@ public class VuelosInformacionController implements Initializable {
 
     @FXML
     private void actRutas(MouseEvent event) {
-        initRutas();
+        
     }
 
     @FXML
     private void actAviones(MouseEvent event) {
-        initAviones();
+        
+    }
+
+    
+    Calendar dateCalendar = Calendar.getInstance();
+    @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private Date fechaGuardar;
+    
+    @FXML
+    private void actSelFecha(ActionEvent event) {
+        
+        String fecha[]=dpFecha.getValue().toString().split("-");
+        
+       
+        
+        dateCalendar.set(Calendar.YEAR,Integer.valueOf(fecha[0]));
+        dateCalendar.set(Calendar.MONTH, Integer.valueOf(fecha[1])-1);
+        dateCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(fecha[2]));
+        fechaGuardar=dateCalendar.getTime();
+        System.out.println("--------------------------------");
+        System.out.println("Fecha date picker: "+dpFecha.getValue().toString());
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println("Fecha date: "+fechaGuardar);
+        System.out.println("--------------------------------");
     }
 }

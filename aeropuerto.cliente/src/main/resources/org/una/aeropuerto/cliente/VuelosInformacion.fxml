@@ -7,7 +7,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.VuelosInformacionController">
+<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.VuelosInformacionController">
    <children>
       <Label fx:id="lblCedula" layoutX="260.0" layoutY="238.0" text="Avión:" />
       <Button fx:id="btnGuardar" layoutX="639.0" layoutY="469.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
@@ -21,6 +21,6 @@
       <Label fx:id="lblIdNumero" layoutX="365.0" layoutY="181.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
       <ComboBox fx:id="cbRuta" layoutX="365.0" layoutY="287.0" onMouseClicked="#actRutas" prefHeight="37.0" prefWidth="375.0" />
       <ComboBox fx:id="cbAvion" layoutX="365.0" layoutY="230.0" onMouseClicked="#actAviones" prefHeight="37.0" prefWidth="375.0" />
-      <DatePicker fx:id="dpFecha" layoutX="365.0" layoutY="345.0" prefHeight="37.0" prefWidth="375.0" />
+      <DatePicker fx:id="dpFecha" layoutX="365.0" layoutY="345.0" onAction="#actSelFecha" prefHeight="37.0" prefWidth="375.0" />
    </children>
 </AnchorPane>
