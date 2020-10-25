@@ -88,6 +88,10 @@ public class SeleccionDeHoraController implements Initializable {
      * Initializes the controller class.
      */
     private HorariosInformacionController controllerHorarios;
+    
+    private VuelosInformacionController controllerVuelos;
+    
+    
     private String modalidad="";
     private String modalidadHorarios="";
     @FXML
@@ -112,6 +116,7 @@ public class SeleccionDeHoraController implements Initializable {
                 lbTitulo.setText("Hora final");
             }
         }else{
+            controllerVuelos=(VuelosInformacionController) AppContext.getInstance().get("ControllerVuelos");
             lbTitulo.setText("Hora de vuelo");
         }
         
@@ -281,9 +286,17 @@ public class SeleccionDeHoraController implements Initializable {
             System.out.println("Hora a guardar: "+horaAGuardarHorarios);
             String hora = lbHora.getText()+":"+lbMinutos.getText()+" "+lbTipo.getText();
             controllerHorarios.setHora(horaAGuardarHorarios, hora, modalidadHorarios);
-            Stage stage = (Stage) btn1.getScene().getWindow();
-            stage.close();
+            
+        }else{
+            
+            controllerVuelos.dateCalendar.set(Calendar.HOUR_OF_DAY,getHora());
+            controllerVuelos.dateCalendar.set(Calendar.MINUTE,getMinutos());
+            controllerVuelos.lbHora.setText(String.valueOf(getHora())+":"+String.valueOf(getMinutos()));
+            controllerVuelos.EstadoHora=true;
         }
+        
+        Stage stage = (Stage) btn1.getScene().getWindow();
+        stage.close();
         
         
     }

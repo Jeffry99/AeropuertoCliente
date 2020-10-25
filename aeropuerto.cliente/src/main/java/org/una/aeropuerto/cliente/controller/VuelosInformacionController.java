@@ -7,6 +7,9 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,15 +21,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javax.json.bind.annotation.JsonbDateFormat;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
@@ -78,6 +86,10 @@ public class VuelosInformacionController implements Initializable {
     private VueloDTO vuelo = new VueloDTO();
     private String modalidad = "";
     private VueloService vueloService = new VueloService();
+    @FXML
+    private ImageView imgHora;
+    @FXML
+    public Label lbHora;
     /**
      * 
      * Initializes the controller class.
@@ -115,9 +127,23 @@ public class VuelosInformacionController implements Initializable {
         lblIdNumero.setText(vuelo.getId().toString());
         cbAvion.setValue(vuelo.getAvion());
         cbRuta.setValue(vuelo.getRuta());
-        //dpFecha.setValue();
+        
         fechaGuardar=vuelo.getFecha();
         
+        
+        
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        lbHora.setText(formatter.format(fechaGuardar));
+        
+        
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+	Instant instant = fechaGuardar.toInstant();
+        dpFecha.setValue(instant.atZone(defaultZoneId).toLocalDate());
+        
+        getFecha();
+        setHora();
+
         
         if(vuelo.isEstado()){
             rbActivo.setSelected(true);
@@ -140,6 +166,8 @@ public class VuelosInformacionController implements Initializable {
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
+            
+            fechaGuardar=dateCalendar.getTime();
             vuelo.setAvion(cbAvion.getValue());
             vuelo.setEstado(estado);
             vuelo.setFecha(fechaGuardar);
@@ -225,6 +253,8 @@ public class VuelosInformacionController implements Initializable {
         }
     }
     
+    public Boolean EstadoHora = false;
+    
     public boolean validar(){
         if(cbAvion.getValue() == null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el avión");
@@ -241,6 +271,12 @@ public class VuelosInformacionController implements Initializable {
         if(estado==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado");
             return false;
+        }
+        if(modalidad.equals("Agregar")){
+            if(EstadoHora==false){
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione la hora del vuelo");
+                return false;
+            }
         }
         return true;
     }
@@ -260,22 +296,50 @@ public class VuelosInformacionController implements Initializable {
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private Date fechaGuardar;
     
-    @FXML
-    private void actSelFecha(ActionEvent event) {
-        
+    
+    public void getFecha(){
         String fecha[]=dpFecha.getValue().toString().split("-");
-        
-       
-        
         dateCalendar.set(Calendar.YEAR,Integer.valueOf(fecha[0]));
         dateCalendar.set(Calendar.MONTH, Integer.valueOf(fecha[1])-1);
         dateCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(fecha[2]));
         fechaGuardar=dateCalendar.getTime();
+    }
+    
+    public void setHora(){
+        String hora[]=lbHora.getText().split(":");
+        dateCalendar.set(Calendar.HOUR_OF_DAY,Integer.valueOf(hora[0]));
+        dateCalendar.set(Calendar.MINUTE,Integer.valueOf(hora[1]));
+        fechaGuardar=dateCalendar.getTime();
+    }
+    
+    
+    @FXML
+    private void actSelFecha(ActionEvent event) {
+        getFecha();
+        
         System.out.println("--------------------------------");
         System.out.println("Fecha date picker: "+dpFecha.getValue().toString());
         System.out.println("--------------------------------");
         System.out.println("--------------------------------");
         System.out.println("Fecha date: "+fechaGuardar);
         System.out.println("--------------------------------");
+    }
+
+    @FXML
+    private void actSelHora(MouseEvent event) {
+        try{
+            Stage stage = new Stage();
+            AppContext.getInstance().set("ModalidadSeleccionDeHora", "Vuelos");
+            AppContext.getInstance().set("ControllerVuelos", this);
+            Parent root = FXMLLoader.load(App.class.getResource("SeleccionDeHora" + ".fxml"));
+            stage.setScene(new Scene(root));
+            stage.setTitle("Selección de hora de vuelo");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
+            stage.show();
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
     }
 }
