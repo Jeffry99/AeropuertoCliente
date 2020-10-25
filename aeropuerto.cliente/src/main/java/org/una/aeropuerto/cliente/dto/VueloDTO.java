@@ -14,7 +14,7 @@ import javax.json.bind.annotation.JsonbDateFormat;
  */
 public class VueloDTO {
     private Long id;
-    @JsonbDateFormat(value = "yyyy-MM-dd")
+    @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private Date fecha;
     private AvionDTO avion;
     private boolean estado;
