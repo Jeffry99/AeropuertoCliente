@@ -299,6 +299,15 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actVuelos(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Vuelos" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan vuelos", "MenuPrincipal");
+
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML
