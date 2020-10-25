@@ -159,4 +159,20 @@ public class BitacoraAvionService {
             return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
         }
     }
+    
+    public Respuesta getByAvion(Long avion){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("term", avion);
+            ConexionService conexion = new ConexionService("bitacoras_aviones/list/avion", "/{term}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al buscar las bitacoras de aviones por avion");
+            }
+            List<BitacoraAvionDTO> result = (List<BitacoraAvionDTO>) conexion.readEntity(new GenericType<List<BitacoraAvionDTO>>(){});
+            return new Respuesta(true, "BitacorasAvion",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No puedo establecerce conexion con el servidor");
+        }
+    }
 }

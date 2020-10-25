@@ -6,15 +6,20 @@
 package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.service.AutenticacionService;
@@ -25,7 +30,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  *
  * @author Jeffry
  */
-public class LoginController {
+public class LoginController implements Initializable{
 
     @FXML
     private Button btnIngresar;
@@ -36,10 +41,48 @@ public class LoginController {
     
     private AutenticacionService autenticacionService = new AutenticacionService();
     
-    @FXML
-    private void actIngresar(ActionEvent event) {
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        txtUsuario.requestFocus();
         txtUsuario.setText("lujepa2");
         txtContrasena.setText("Una2020");
+    }   
+    @FXML
+    private void actIngresar(ActionEvent event) {
+        ingresar();
+    }
+    
+    public boolean validar(){
+        if(txtUsuario.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su cedula");
+            return false;
+        }
+        if(txtContrasena.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su contraseña");
+            return false;
+        }
+        return true;
+    }
+
+    @FXML
+    private void actKey(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)){
+            txtContrasena.requestFocus();
+        }
+    }
+
+    @FXML
+    private void actKey2(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)){
+            ingresar();
+        }
+    }
+    
+    public void ingresar(){
+        
         if(validar()){
             Respuesta respuesta = autenticacionService.Login(txtUsuario.getText(), txtContrasena.getText());
             if(respuesta.getEstado().equals(true)){
@@ -60,19 +103,6 @@ public class LoginController {
                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Inicio de sesión", respuesta.getMensaje());
             }
         }
-    
-    }
-    
-    public boolean validar(){
-        if(txtUsuario.getText().isBlank()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su cedula");
-            return false;
-        }
-        if(txtContrasena.getText().isBlank()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su contraseña");
-            return false;
-        }
-        return true;
     }
     
 }

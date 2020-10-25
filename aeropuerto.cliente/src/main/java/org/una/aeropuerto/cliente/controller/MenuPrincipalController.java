@@ -71,7 +71,7 @@ public class MenuPrincipalController implements Initializable {
     private MenuItem btnRutas;
     @FXML
     private MenuItem btnBitacoraAviones;
-	@FXML
+    @FXML
     private MenuItem btnServiciosTipos;
 
     /**
@@ -272,7 +272,8 @@ public class MenuPrincipalController implements Initializable {
 		}catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
-	}
+    }
+    @FXML
     private void actServiciosTipos(ActionEvent event) {
         try{
             Parent root = FXMLLoader.load(App.class.getResource("ServiciosTipos" + ".fxml"));

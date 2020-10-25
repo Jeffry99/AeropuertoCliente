@@ -311,11 +311,11 @@ public class BitacoraController implements Initializable {
     private void actBuscarAvion(ActionEvent event) { // FALTA IMPLEMENTAR BUSQUEDA POR AVION
         if(validarBusquedas("Avion")){
             ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
-            /*Respuesta respuesta = bitacoraService.getByUbicacion(txtUbicacion.getText());
+            Respuesta respuesta = bitacoraService.getByAvion(cbAvion.getValue().getId());
             if(respuesta.getEstado().equals(true)){
                 bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
             }
-            cargarTabla(bitacoras);*/
+            cargarTabla(bitacoras);
         }
     }
     

@@ -9,10 +9,10 @@
 <AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="591.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.LoginController">
    <children>
       <Button fx:id="btnIngresar" layoutX="309.0" layoutY="305.0" mnemonicParsing="false" onAction="#actIngresar" prefHeight="25.0" prefWidth="118.0" text="Iniciar" />
-      <TextField fx:id="txtUsuario" layoutX="233.0" layoutY="158.0" prefHeight="37.0" prefWidth="191.0" />
+      <TextField fx:id="txtUsuario" layoutX="233.0" layoutY="158.0" onKeyPressed="#actKey" prefHeight="37.0" prefWidth="191.0" />
       <Label layoutX="137.0" layoutY="162.0" text="Cédula:" />
       <Label layoutX="137.0" layoutY="243.0" text="Contraseña:" />
-      <PasswordField fx:id="txtContrasena" layoutX="233.0" layoutY="239.0" prefHeight="37.0" prefWidth="191.0" />
+      <PasswordField fx:id="txtContrasena" layoutX="233.0" layoutY="239.0" onKeyPressed="#actKey2" prefHeight="37.0" prefWidth="191.0" />
       <Label layoutX="223.0" layoutY="56.0" text="Bienvenido al sistema" />
       <Label layoutX="199.0" layoutY="97.0" text="Por favor ingrese sus credenciales" />
    </children>
