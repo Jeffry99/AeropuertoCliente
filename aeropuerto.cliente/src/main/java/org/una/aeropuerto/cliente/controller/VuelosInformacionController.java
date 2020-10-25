@@ -7,7 +7,9 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,12 +24,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.RutaDTO;
 import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.AerolineaService;
+import org.una.aeropuerto.cliente.service.AvionService;
+import org.una.aeropuerto.cliente.service.RutaService;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
 import org.una.aeropuerto.cliente.service.VueloService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -68,7 +73,7 @@ public class VuelosInformacionController implements Initializable {
     private ComboBox<AvionDTO> cbAvion;
     @FXML
     private DatePicker dpFecha;
-    private VueloDTO vuelo;
+    private VueloDTO vuelo = new VueloDTO();
     private String modalidad = "";
     private VueloService vueloService = new VueloService();
     /**
@@ -78,10 +83,8 @@ public class VuelosInformacionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        vuelo = (VueloDTO)AppContext.getInstance().get("VueloEnCuestion");
+        
         modalidad = AppContext.getInstance().get("ModalidadVuelo").toString();
-        initAviones();
-        initRutas();
         
         if(modalidad.equals("Ver")){
             llenarDatos();
@@ -98,6 +101,7 @@ public class VuelosInformacionController implements Initializable {
             llenarDatos();
         }
         if(modalidad.equals("Agregar")){
+            vuelo = new VueloDTO();
             lblIdNumero.setVisible(false);
         }
             
@@ -123,10 +127,11 @@ public class VuelosInformacionController implements Initializable {
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
-            vuelo.setAvion(cbAvion.getValue());
-            vuelo.setEstado(estado);
-            //vuelo.setFecha();
-            vuelo.setRuta(cbRuta.getValue());
+            //vuelo.setAvion(cbAvion.getValue());
+            //vuelo.setEstado(estado);
+            Date fecha = java.util.Date.from(dpFecha.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            //vuelo.setFecha(fecha);
+           // vuelo.setRuta(cbRuta.getValue());
             
             
             if(modalidad.equals("Modificar")){
@@ -175,9 +180,9 @@ public class VuelosInformacionController implements Initializable {
         rbInactivo.setSelected(true);
     }
     public void initAviones(){
-        AerolineaService aerolineaService = new AerolineaService();
+        AvionService avionService = new AvionService();
         ArrayList<AvionDTO> aviones;
-        Respuesta respuesta = aerolineaService.getByEstado(true);
+        Respuesta respuesta = avionService.getByEstado(true);
         if(respuesta.getEstado()){
             aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
             ObservableList items = FXCollections.observableArrayList(aviones);
@@ -186,11 +191,11 @@ public class VuelosInformacionController implements Initializable {
     }
     
     public void initRutas(){
-        TipoAvionService tipoAvionService = new TipoAvionService();
+        RutaService rutaService = new RutaService();
         ArrayList<RutaDTO> rutas;
-        Respuesta respuesta = tipoAvionService.getByEstado(true);
+        Respuesta respuesta = rutaService.getByEstado(true);
         if(respuesta.getEstado()){
-            rutas = (ArrayList<RutaDTO>) respuesta.getResultado("TiposAviones");
+            rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             ObservableList items = FXCollections.observableArrayList(rutas);
             cbRuta.setItems(items);
         }
@@ -199,7 +204,7 @@ public class VuelosInformacionController implements Initializable {
     public void volver() {
         try{
             StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
-            Parent root = FXMLLoader.load(App.class.getResource("AvionesVuelos" + ".fxml"));
+            Parent root = FXMLLoader.load(App.class.getResource("Vuelos" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
@@ -225,5 +230,15 @@ public class VuelosInformacionController implements Initializable {
             return false;
         }
         return true;
+    }
+
+    @FXML
+    private void actRutas(MouseEvent event) {
+        initRutas();
+    }
+
+    @FXML
+    private void actAviones(MouseEvent event) {
+        initAviones();
     }
 }
