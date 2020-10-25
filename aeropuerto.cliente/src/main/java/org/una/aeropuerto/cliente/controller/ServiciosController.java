@@ -358,7 +358,7 @@ public class ServiciosController implements Initializable {
     private void actBuscarCobro(ActionEvent event) {
         if(validarBusquedas("Monto")){
             ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
-            Respuesta respuesta = servicioRegistradoService.getByCobroRango(txtMinimo.getValue().floatValue(), txtMaximo.getValue().floatValue());
+            Respuesta respuesta = servicioRegistradoService.getByCobroRango(txtMaximo.getValue().floatValue(), txtMinimo.getValue().floatValue());
             if(respuesta.getEstado().equals(true)){
                 servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
             }

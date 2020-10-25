@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,15 +22,25 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AerolineaDTO;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
+import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
+import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
+import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.AerolineaService;
 import org.una.aeropuerto.cliente.service.AvionService;
+import org.una.aeropuerto.cliente.service.BitacoraAvionService;
+import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
+import org.una.aeropuerto.cliente.service.VueloService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -73,13 +84,28 @@ public class AvionesInformacionController implements Initializable {
     @FXML
     private ComboBox<TipoAvionDTO> cbTipoAvion;
     private AvionDTO avion = new AvionDTO();
+    @FXML
+    private Button btnServicios;
+    @FXML
+    private Button btnVuelos;
+    @FXML
+    private Button btnBitacora;
+    @FXML
+    private TableView<Object> tvTabla;
+    @FXML
+    private Button btnOcultar;
+    @FXML
+    private Label lblInformacion;
+    @FXML
+    private Pane pane;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
+        tvTabla.setVisible(false);
+        btnOcultar.setVisible(false);
         modalidad = (String) AppContext.getInstance().get("ModalidadAvion");
         initAerolineas();
         initTiposAvion();
@@ -99,6 +125,11 @@ public class AvionesInformacionController implements Initializable {
         }
         if(modalidad.equals("Agregar")){
             lblIdNumero.setVisible(false);
+            btnServicios.setVisible(false);
+            btnVuelos.setVisible(false);
+            btnBitacora.setVisible(false);
+            pane.setVisible(false);
+            lblInformacion.setVisible(false);
         }
     }    
     public void llenarDatos(){
@@ -225,5 +256,208 @@ public class AvionesInformacionController implements Initializable {
             cbTipoAvion.setItems(items);
         }
     }
+
+    @FXML
+    private void actServicios(ActionEvent event) {
+        tvTabla.setVisible(true);
+        btnOcultar.setVisible(true);
+        cargarTablaServicios();
+    }
+
+    @FXML
+    private void actVuelos(ActionEvent event) {
+        tvTabla.setVisible(true);
+        btnOcultar.setVisible(true);
+        cargarTablaVuelos();
+    }
+
+    @FXML
+    private void actBitacora(ActionEvent event) {
+        tvTabla.setVisible(true);
+        btnOcultar.setVisible(true);
+        cargarTablaBitacora();
+    }
+
+    @FXML
+    private void actOcultarTable(ActionEvent event) {
+        tvTabla.setVisible(false);
+        btnOcultar.setVisible(false);
+        lblInformacion.setText("Seleccione la información que quiere observar sobre este avión");
+    }
     
+    
+    public void cargarTablaServicios(){
+        ServicioRegistradoService servicioService = new ServicioRegistradoService();
+        ArrayList<Object> lista = new ArrayList<Object>();
+        Respuesta respuesta = servicioService.getByAvion(avion.getId());
+        if(respuesta.getEstado().equals(true)){
+            lista = (ArrayList<Object>) respuesta.getResultado("ServiciosAeropuerto");
+        }
+        tvTabla.getColumns().clear();
+        if(!lista.isEmpty()){
+            ObservableList items = FXCollections.observableArrayList(lista);
+            
+            TableColumn <Object, Long>colId = new TableColumn("ID");
+            colId.setCellValueFactory(new PropertyValueFactory("id"));
+            
+            TableColumn <Object, String>colTipoServicio = new TableColumn("Tipo de Servicio");
+            colTipoServicio.setCellValueFactory(new PropertyValueFactory("servicioTipo"));
+            
+            TableColumn <Object, String>colCobro = new TableColumn("Cobro");
+            colCobro.setCellValueFactory(new PropertyValueFactory("cobro"));
+            
+            TableColumn<Object, String> colEstadoCobro = new TableColumn("Estado de Cobro");
+            colEstadoCobro.setCellValueFactory(av -> {
+                String estadoString;
+                ServicioRegistradoDTO servicio = (ServicioRegistradoDTO)av.getValue();
+                if(servicio.getEstado())
+                    estadoString = "Activo";
+                else
+                    estadoString = "Inactivo";
+                return new ReadOnlyStringWrapper(estadoString);
+            });
+            
+            TableColumn<Object, String> colEstado = new TableColumn("Estado");
+            colEstado.setCellValueFactory(av -> {
+                String estadoString;
+                ServicioRegistradoDTO servicio = (ServicioRegistradoDTO)av.getValue();
+                if(servicio.getEstado())
+                    estadoString = "Activo";
+                else
+                    estadoString = "Inactivo";
+                return new ReadOnlyStringWrapper(estadoString);
+            });
+            
+            TableColumn<Object, String> colResponsable = new TableColumn("Responsable");
+            colResponsable.setCellValueFactory(new PropertyValueFactory("responsable"));
+            
+            TableColumn<Object, String> colAvion = new TableColumn("Avión");
+            colAvion.setCellValueFactory(new PropertyValueFactory("avion"));
+            
+            tvTabla.getColumns().addAll(colId);
+            tvTabla.getColumns().addAll(colTipoServicio);
+            tvTabla.getColumns().addAll(colCobro);
+            tvTabla.getColumns().addAll(colEstado);
+            tvTabla.getColumns().addAll(colEstadoCobro);
+            tvTabla.getColumns().addAll(colResponsable);
+            tvTabla.getColumns().addAll(colAvion);
+            tvTabla.setItems(items);
+        }else{
+            tvTabla.setVisible(false);
+            btnOcultar.setVisible(false);
+            lblInformacion.setText("No hay elementos para mostrar");
+        }
+    }
+    
+    public void cargarTablaVuelos(){
+        VueloService vueloService = new VueloService();
+        ArrayList<Object> lista = new ArrayList<Object>();
+        Respuesta respuesta = vueloService.getByAvion(avion.getId());
+        if(respuesta.getEstado().equals(true)){
+            lista = (ArrayList<Object>) respuesta.getResultado("Vuelos");
+        }
+        tvTabla.getColumns().clear();
+        if(!lista.isEmpty()){
+            ObservableList items = FXCollections.observableArrayList(lista);   
+            
+            TableColumn <Object, Long>colId = new TableColumn("ID");
+            colId.setCellValueFactory(new PropertyValueFactory("id"));
+            
+            TableColumn <Object, String>colAvion = new TableColumn("Avión");
+            
+            
+            TableColumn <Object, String>colOrigen = new TableColumn("Origen");
+                colOrigen.setCellValueFactory(av -> {
+                VueloDTO vuelo = (VueloDTO)av.getValue();
+                String origen = vuelo.getRuta().getOrigen();
+                return new ReadOnlyStringWrapper(origen);
+            });
+            
+            TableColumn <Object, String>colDestino = new TableColumn("Destino");
+                colDestino.setCellValueFactory(av -> {
+                VueloDTO vuelo = (VueloDTO)av.getValue();
+                String destino = vuelo.getRuta().getDestino();
+                return new ReadOnlyStringWrapper(destino);
+            });
+            
+            TableColumn <Object, String>colFecha = new TableColumn("Fecha");
+            colFecha.setCellValueFactory(new PropertyValueFactory("fecha"));
+            
+            TableColumn<Object, String> colEstado = new TableColumn("Estado");
+                colEstado.setCellValueFactory(av -> {
+                String estadoString;
+                VueloDTO vuelo = (VueloDTO)av.getValue();
+                if(vuelo.isEstado())
+                    estadoString = "Activo";
+                else
+                    estadoString = "Inactivo";
+                return new ReadOnlyStringWrapper(estadoString);
+            });
+            tvTabla.getColumns().addAll(colId);
+            tvTabla.getColumns().addAll(colOrigen);
+            tvTabla.getColumns().addAll(colDestino);
+            tvTabla.getColumns().addAll(colAvion);
+            tvTabla.getColumns().addAll(colFecha);
+            tvTabla.getColumns().addAll(colEstado);
+            tvTabla.setItems(items);
+        }else{
+            tvTabla.setVisible(false);
+            btnOcultar.setVisible(false);
+            lblInformacion.setText("No hay elementos para mostrar");
+        }
+    }
+    
+    public void cargarTablaBitacora(){
+        BitacoraAvionService bitacoraService = new BitacoraAvionService();
+        ArrayList<Object> lista = new ArrayList<Object>();
+        Respuesta respuesta = bitacoraService.getByAvion(avion.getId());
+        if(respuesta.getEstado().equals(true)){
+            lista = (ArrayList<Object>) respuesta.getResultado("BitacorasAvion");
+        }
+        
+        tvTabla.getColumns().clear();
+        if(!lista.isEmpty()){
+            ObservableList items = FXCollections.observableArrayList(lista);   
+            
+            TableColumn <Object, Long>colId = new TableColumn("ID");
+            colId.setCellValueFactory(new PropertyValueFactory("id"));
+          
+            TableColumn <Object, String>colCombustible = new TableColumn("Combustible");
+            colCombustible.setCellValueFactory(new PropertyValueFactory("combustible"));
+          
+            TableColumn <Object, String>colDistancia = new TableColumn("Distancia Recorrida");
+            colDistancia.setCellValueFactory(new PropertyValueFactory("distanciaRecorrida"));
+         
+            TableColumn <Object, String>colTiempo = new TableColumn("Tiempo en Tierra");
+            colTiempo.setCellValueFactory(new PropertyValueFactory("tiempoTierra"));
+            
+            TableColumn <Object, String>colUbicacion = new TableColumn("Ubicación");
+            colUbicacion.setCellValueFactory(new PropertyValueFactory("ubicacion"));
+           
+            TableColumn <Object, String>colAvion = new TableColumn("Avión");
+            colAvion.setCellValueFactory(new PropertyValueFactory("avion"));
+            
+            TableColumn<Object, String> colEstado = new TableColumn("Estado");
+            colEstado.setCellValueFactory(av -> {
+                BitacoraAvionDTO bitacora = (BitacoraAvionDTO)av.getValue();
+                String estadoString;
+                if(bitacora.getEstado())
+                    estadoString = "Activo";
+                else
+                    estadoString = "Inactivo";
+                return new ReadOnlyStringWrapper(estadoString);
+            });
+            tvTabla.getColumns().addAll(colId);
+            tvTabla.getColumns().addAll(colCombustible);
+            tvTabla.getColumns().addAll(colDistancia);
+            tvTabla.getColumns().addAll(colTiempo);
+            tvTabla.getColumns().addAll(colUbicacion);
+            tvTabla.getColumns().addAll(colAvion);
+            tvTabla.setItems(items);
+        }else{
+            tvTabla.setVisible(false);
+            btnOcultar.setVisible(false);
+            lblInformacion.setText("No hay elementos para mostrar");
+        }
+    }
 }

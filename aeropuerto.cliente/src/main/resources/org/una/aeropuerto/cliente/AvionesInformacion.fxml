@@ -4,23 +4,46 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 
 <AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AvionesInformacionController">
    <children>
-      <Label fx:id="lblCedula" layoutX="260.0" layoutY="238.0" text="Matrícula:" />
-      <TextField fx:id="txtMatricula" layoutX="365.0" layoutY="230.0" prefHeight="37.0" prefWidth="375.0" />
-      <Button fx:id="btnGuardar" layoutX="639.0" layoutY="469.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
-      <Button fx:id="btnVolver" layoutX="260.0" layoutY="469.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
-      <Label fx:id="lblNombre" layoutX="260.0" layoutY="181.0" text="Id:" />
-      <Label fx:id="lblTelefono" layoutX="260.0" layoutY="295.0" text="Aerolínea" />
-      <Label fx:id="lblDireccion" layoutX="260.0" layoutY="353.0" text="Tipo de Avión:" />
-      <Label fx:id="lblEstado" layoutX="260.0" layoutY="399.0" text="Estado:" />
-      <RadioButton fx:id="rbActivo" layoutX="366.0" layoutY="401.0" mnemonicParsing="false" onAction="#actActivo" text="Activo" />
-      <RadioButton fx:id="rbInactivo" layoutX="445.0" layoutY="401.0" mnemonicParsing="false" onAction="#actInactivo" text="Inactivo" />
-      <Label fx:id="lblIdNumero" layoutX="365.0" layoutY="181.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
-      <ComboBox fx:id="cbAerolinea" layoutX="365.0" layoutY="287.0" prefHeight="37.0" prefWidth="375.0" />
-      <ComboBox fx:id="cbTipoAvion" layoutX="365.0" layoutY="345.0" prefHeight="37.0" prefWidth="375.0" />
+      <Label fx:id="lblCedula" layoutX="125.0" layoutY="107.0" text="Matrícula:" />
+      <TextField fx:id="txtMatricula" layoutX="230.0" layoutY="99.0" prefHeight="37.0" prefWidth="234.0" />
+      <Button fx:id="btnGuardar" layoutX="870.0" layoutY="539.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Button fx:id="btnVolver" layoutX="29.0" layoutY="539.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <Label fx:id="lblNombre" layoutX="125.0" layoutY="50.0" text="Id:" />
+      <Label fx:id="lblTelefono" layoutX="125.0" layoutY="164.0" text="Aerolínea" />
+      <Label fx:id="lblDireccion" layoutX="520.0" layoutY="107.0" text="Tipo de Avión:" />
+      <Label fx:id="lblEstado" layoutX="520.0" layoutY="164.0" text="Estado:" />
+      <RadioButton fx:id="rbActivo" layoutX="626.0" layoutY="166.0" mnemonicParsing="false" onAction="#actActivo" text="Activo" />
+      <RadioButton fx:id="rbInactivo" layoutX="705.0" layoutY="166.0" mnemonicParsing="false" onAction="#actInactivo" text="Inactivo" />
+      <Label fx:id="lblIdNumero" layoutX="230.0" layoutY="50.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
+      <ComboBox fx:id="cbAerolinea" layoutX="230.0" layoutY="156.0" prefHeight="37.0" prefWidth="234.0" />
+      <ComboBox fx:id="cbTipoAvion" layoutX="625.0" layoutY="99.0" prefHeight="37.0" prefWidth="234.0" />
+      <Button fx:id="btnServicios" layoutX="29.0" layoutY="224.0" mnemonicParsing="false" onAction="#actServicios" text="Servicios Registrados" />
+      <Button fx:id="btnVuelos" layoutX="213.0" layoutY="224.0" mnemonicParsing="false" onAction="#actVuelos" prefHeight="35.0" prefWidth="185.0" text="Vuelos" />
+      <Button fx:id="btnBitacora" layoutX="398.0" layoutY="224.0" mnemonicParsing="false" onAction="#actBitacora" prefHeight="35.0" prefWidth="185.0" text="Bitácora" />
+      <Button fx:id="btnOcultar" layoutX="875.0" layoutY="224.0" mnemonicParsing="false" onAction="#actOcultarTable" prefHeight="35.0" prefWidth="96.0" text="Ocultar" />
+      <Pane fx:id="pane" layoutX="29.0" layoutY="259.0" prefHeight="281.0" prefWidth="942.0" style="-fx-background-color: #23BAC4;">
+         <children>
+            <Label fx:id="lblInformacion" alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="130.0" prefHeight="21.0" prefWidth="852.0" text="Seleccione la información que quiere observar sobre este avión" />
+            <TableView fx:id="tvTabla" layoutX="-1.0" prefHeight="281.0" prefWidth="942.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="C1" />
+                  <TableColumn prefWidth="75.0" text="C2" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </Pane>
+      <Line endX="880.0" layoutX="110.0" layoutY="213.0" startX="-100.0" />
    </children>
 </AnchorPane>
