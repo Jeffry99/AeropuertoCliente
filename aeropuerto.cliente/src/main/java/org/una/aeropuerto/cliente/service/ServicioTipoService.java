@@ -20,7 +20,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
 public class ServicioTipoService {
     public Respuesta crear(ServicioTipoDTO servicioTipo){
         try{
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto/crear");
+            ConexionService conexion = new ConexionService("servicios_tipos/crear");
             conexion.post(servicioTipo);
             if(conexion.isError()){
                 System.out.println("Error creacion de tipo de servicio: "+conexion.getError());
@@ -38,7 +38,7 @@ public class ServicioTipoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto/modificar", "/{id}", parametros);
+            ConexionService conexion = new ConexionService("servicios_tipos/modificar", "/{id}", parametros);
             conexion.put(servicioTipo);
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "No se pudo modificar el tipo de servicio");
@@ -55,7 +55,7 @@ public class ServicioTipoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("id", id);
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto", "/{id}", parametros);
+            ConexionService conexion = new ConexionService("servicios_tipos", "/{id}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar un tipo de servicio por su id");
@@ -69,7 +69,7 @@ public class ServicioTipoService {
     
     public Respuesta getAll(){
         try{
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto/");
+            ConexionService conexion = new ConexionService("servicios_tipos/");
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar todos los tipos de servicios");
@@ -85,7 +85,7 @@ public class ServicioTipoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", estado);
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto/list/estado", "/{term}", parametros);
+            ConexionService conexion = new ConexionService("servicios_tipos/list/estado", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los tipos de servicios por estado");
@@ -101,7 +101,7 @@ public class ServicioTipoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", nombre);
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto/list/nombre", "/{term}", parametros);
+            ConexionService conexion = new ConexionService("servicios_tipos/list/nombre", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los tipos de servicios por su nombre");
@@ -117,10 +117,26 @@ public class ServicioTipoService {
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", descripcion);
-            ConexionService conexion = new ConexionService("tipos_servicios_aeropuerto/list/descripcion", "/{term}", parametros);
+            ConexionService conexion = new ConexionService("servicios_tipos/list/descripcion", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los tipos de servicios por la descripcion");
+            }
+            List<ServicioTipoDTO> result = (List<ServicioTipoDTO>) conexion.readEntity(new GenericType<List<ServicioTipoDTO>>(){});
+            return new Respuesta(true, "TiposServicios",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
+        }
+    }
+    
+    public Respuesta getByAreaTrabajo(Long areaTrabajo){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("term", areaTrabajo);
+            ConexionService conexion = new ConexionService("servicios_tipos/list/areaTrabajo", "/{term}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al buscar los tipos de servicio por areas de trabajos");
             }
             List<ServicioTipoDTO> result = (List<ServicioTipoDTO>) conexion.readEntity(new GenericType<List<ServicioTipoDTO>>(){});
             return new Respuesta(true, "TiposServicios",result);

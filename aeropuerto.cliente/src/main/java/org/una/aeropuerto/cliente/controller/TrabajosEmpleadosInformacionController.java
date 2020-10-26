@@ -146,7 +146,11 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
    
     public boolean validar(){
         if(cbxAreaTrabajo.getItems().isEmpty()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el aerea de trabajo");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el área de trabajo");
+            return false;
+        }
+        if(cbxEmpleado.getItems().isEmpty()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor selecione el empleado");
             return false;
         }
         if(estado==null){

@@ -89,13 +89,13 @@ public class ServiciosTiposController implements Initializable {
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbEstado.setItems(items);
         
-//        ArrayList<AreaTrabajoDTO> areasTrabajos = new ArrayList<AreaTrabajoDTO>();
-//        Respuesta respuesta = areaTrabajoService.getAll();
-//        if(respuesta.getEstado()==true){
-//            areasTrabajos = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("Empleados");
-//        }
-//        ObservableList items2 = FXCollections.observableArrayList(areasTrabajos);   
-//        cbAreaTrabajo.setItems(items2);
+        ArrayList<AreaTrabajoDTO> areasTrabajos = new ArrayList<AreaTrabajoDTO>();
+        Respuesta respuesta = areaTrabajoService.getAll();
+        if(respuesta.getEstado()==true){
+            areasTrabajos = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+        }
+        ObservableList items2 = FXCollections.observableArrayList(areasTrabajos);   
+        cbAreaTrabajo.setItems(items2);
     }    
     
       public void cargarTodos(){
@@ -282,16 +282,16 @@ public class ServiciosTiposController implements Initializable {
 
     @FXML
     private void actBuscarAreaTrabajo(ActionEvent event) {
-//        if(cbAreaTrabajo.getValue()!=null){
-//            ArrayList<ServicioTipoDTO> trabajosEmpleados = new ArrayList<ServicioTipoDTO>();
-//            Respuesta respuesta = servicioTipoService.getByAreaTrabajo(cbAreaTrabajo.getValue().getId());
-//            if(respuesta.getEstado().equals(true)){
-//                trabajosEmpleados = (ArrayList<ServicioTipoDTO>) respuesta.getResultado("TrabajosEmpleados");
-//            }
-//            cargarTabla(trabajosEmpleados);
-//        }else{
-//            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del empleado que desea buscar");
-//        }
+        if(cbAreaTrabajo.getValue()!=null){
+            ArrayList<ServicioTipoDTO> trabajosEmpleados = new ArrayList<ServicioTipoDTO>();
+            Respuesta respuesta = servicioTipoService.getByAreaTrabajo(cbAreaTrabajo.getValue().getId());
+            if(respuesta.getEstado().equals(true)){
+                trabajosEmpleados = (ArrayList<ServicioTipoDTO>) respuesta.getResultado("TiposServicios");
+            }
+            cargarTabla(trabajosEmpleados);
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del empleado que desea buscar");
+        }
     }
 
     @FXML
