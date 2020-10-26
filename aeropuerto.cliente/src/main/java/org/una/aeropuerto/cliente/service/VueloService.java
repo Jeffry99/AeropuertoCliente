@@ -85,8 +85,8 @@ public class VueloService {
     public Respuesta getByEstado(boolean estado){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("id", estado);
-            ConexionService conexion = new ConexionService("vuelos", "/{id}", parametros);
+            parametros.put("term", estado);
+            ConexionService conexion = new ConexionService("vuelos/list/estado", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los vuelos por su estado");
@@ -101,7 +101,7 @@ public class VueloService {
     public Respuesta getByAvion(Long avion){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("id", avion);
+            parametros.put("term", avion);
             ConexionService conexion = new ConexionService("vuelos/list/avion", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
@@ -117,7 +117,7 @@ public class VueloService {
     public Respuesta getByRuta(Long ruta){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("id", ruta);
+            parametros.put("term", ruta);
             ConexionService conexion = new ConexionService("vuelos/list/ruta", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
@@ -133,7 +133,7 @@ public class VueloService {
     public Respuesta getByFecha(Date ruta){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("id", ruta);
+            parametros.put("term", ruta);
             ConexionService conexion = new ConexionService("vuelos/list/fecha", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){

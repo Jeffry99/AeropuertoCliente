@@ -7,6 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -115,8 +116,19 @@ public class VuelosController implements Initializable {
                 return new ReadOnlyStringWrapper(destino);
             });
             
-            TableColumn <VueloDTO, String>colFecha = new TableColumn("Fecha");
-            colFecha.setCellValueFactory(new PropertyValueFactory("fecha"));
+            TableColumn<VueloDTO, String> colFecha = new TableColumn("Fecha");
+            colFecha.setCellValueFactory(av -> {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String fecha = formatter.format(av.getValue().getFecha());
+                return new ReadOnlyStringWrapper(fecha);
+            });
+            
+            TableColumn<VueloDTO, String> colHora = new TableColumn("Hora");
+            colHora.setCellValueFactory(av -> {
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                String hora = formatter.format(av.getValue().getFecha());
+                return new ReadOnlyStringWrapper(hora);
+            });
             
             TableColumn<VueloDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(av -> {
@@ -132,6 +144,7 @@ public class VuelosController implements Initializable {
             tvVuelos.getColumns().addAll(colDestino);
             tvVuelos.getColumns().addAll(colAvion);
             tvVuelos.getColumns().addAll(colFecha);
+            tvVuelos.getColumns().addAll(colHora);
             tvVuelos.getColumns().addAll(colEstado);
             addButtonToTable();
             tvVuelos.setItems(items);
@@ -301,6 +314,14 @@ public class VuelosController implements Initializable {
 
     @FXML
     private void actRuta(ActionEvent event) {
+        if(validarBusquedas("Ruta")){
+            ArrayList<VueloDTO> vuelos = new ArrayList<VueloDTO>();
+            Respuesta respuesta = vueloService.getByRuta(cbRuta.getValue().getId());
+            if(respuesta.getEstado().equals(true)){
+                vuelos = (ArrayList<VueloDTO>) respuesta.getResultado("Vuelos");
+            }
+            cargarTabla(vuelos);
+        }
     }
     
     public void volver() {
@@ -368,7 +389,7 @@ public class VuelosController implements Initializable {
         if(respuesta.getEstado()){
             rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             ObservableList items = FXCollections.observableArrayList(rutas);
-            cbAvion.setItems(items);
+            cbRuta.setItems(items);
         }
     }
     

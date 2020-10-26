@@ -25,11 +25,11 @@
       <Label layoutX="63.0" layoutY="81.0" text="Buscar por Avión:" />
       <Label layoutX="63.0" layoutY="133.0" text="Buscar por estado:" />
       <Label layoutX="525.0" layoutY="80.0" text="Buscar por ruta:" />
-      <Label layoutX="525.0" layoutY="131.0" text="Buscar por fecha:" />
+      <Label disable="true" layoutX="525.0" layoutY="131.0" text="Buscar por fecha:" visible="false" />
       <Button fx:id="btnBuscarEstado" layoutX="384.0" layoutY="127.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarRuta" layoutX="840.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscarRuta" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
-      <Button fx:id="btnBuscarFecha" layoutX="840.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBuscarFecha" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
+      <Button fx:id="btnBuscarFecha" disable="true" layoutX="840.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBuscarFecha" prefHeight="35.0" prefWidth="97.0" text="Buscar" visible="false" />
       <ComboBox fx:id="cbAvion" layoutX="192.0" layoutY="75.0" prefHeight="35.0" prefWidth="178.0" promptText="Avión" />
-      <DatePicker fx:id="dpFecha" layoutX="649.0" layoutY="124.0" prefHeight="37.0" prefWidth="178.0" />
+      <DatePicker fx:id="dpFecha" disable="true" layoutX="649.0" layoutY="124.0" prefHeight="37.0" prefWidth="178.0" visible="false" />
    </children>
 </AnchorPane>
