@@ -59,7 +59,7 @@
                   <MenuItem fx:id="btnAlertas" mnemonicParsing="false" onAction="#actAlertas" text="Alertas" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false">
+            <Menu fx:id="TituloBtnRegistrarMarca" mnemonicParsing="false">
                <graphic>
                   <Button fx:id="btnRegistrarMarcaje" mnemonicParsing="false" onAction="#actRegistrarMarcaje" text="Registrar marcaje" />
                </graphic>

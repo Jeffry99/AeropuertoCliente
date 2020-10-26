@@ -133,6 +133,10 @@ public class HoraMarcajeInformacionController implements Initializable {
             }
             
         }
+        if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("Marcaje")){
+            btnVolver.setVisible(false);
+            btnVolver.setDisable(true);
+        }
         
         
     }    

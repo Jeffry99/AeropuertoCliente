@@ -13,14 +13,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
+import org.una.aeropuerto.cliente.dto.UsuarioDTO;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -82,6 +85,8 @@ public class MenuPrincipalController implements Initializable {
     private MenuItem btnVuelos;
     @FXML
     private MenuItem btnAlertas;
+    @FXML
+    private Menu TituloBtnRegistrarMarca;
 
     /**
      * Initializes the controller class.
@@ -95,10 +100,17 @@ public class MenuPrincipalController implements Initializable {
             TituloAdministracion.setDisable(true);
             TituloAviones.setDisable(true);
             btnRegistrarMarcaje.setDisable(true);
+            TituloEmpleados.setDisable(true);
+            TituloVuelos.setDisable(true);
+            TituloBtnRegistrarMarca.setDisable(true);
+            
             
             TituloAdministracion.setVisible(false);
             TituloAviones.setVisible(false);
             btnRegistrarMarcaje.setVisible(false);
+            TituloEmpleados.setVisible(false);
+            TituloVuelos.setVisible(false);
+            TituloBtnRegistrarMarca.setVisible(false);
             registrarMarcaje("RolMarcaje");
         }
         
@@ -168,10 +180,31 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actVerInformacion(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("VerMiUsuario" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            System.out.println(ex.getMessage());
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML
     private void actCerrarSesion(ActionEvent event) {
+        try{
+            UsuarioAutenticado.getInstance().setTokenJwt("");
+            UsuarioAutenticado.getInstance().setUsuarioLogeado(new UsuarioDTO());
+            Stage stage = (Stage) menuBar.getScene().getWindow();
+            stage.close();
+            Stage stage1 = new Stage();
+            Parent root = FXMLLoader.load(App.class.getResource("Login" + ".fxml"));
+            stage1.setScene(new Scene(root));
+            stage1.setTitle("Selección de hora de inicio");
+            stage1.show();
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML
