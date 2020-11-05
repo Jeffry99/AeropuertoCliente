@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -306,6 +307,9 @@ public class HorariosController implements Initializable {
                         });
                     }                 
                     HBox pane = new HBox(btn, btn2);
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                    }
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);

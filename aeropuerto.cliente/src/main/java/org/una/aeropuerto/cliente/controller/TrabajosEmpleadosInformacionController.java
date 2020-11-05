@@ -79,13 +79,15 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     @FXML
     private Rectangle cuadro;
     @FXML
-    private Label labelNom;
-    @FXML
     private Line barra;
     @FXML
-    private Label labelCed;
+    private Rectangle cuadro1;
     @FXML
-    private Label labelEmp;
+    private Label labelNombreAreaTrabajo;
+    @FXML
+    private Label labelDescripcionAreaTrabajo;
+    @FXML
+    private Line barra1;
     
     
     
@@ -115,6 +117,8 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
         labelCedula.setText(trabajoEmpleadoEnCuestion.getEmpleado().getCedula());
         cbxAreaTrabajo.setValue(trabajoEmpleadoEnCuestion.getAreaTrabajo());
         cbxEmpleado.setValue(trabajoEmpleadoEnCuestion.getEmpleado());
+        labelNombreAreaTrabajo.setText(trabajoEmpleadoEnCuestion.getAreaTrabajo().getNombre());
+        labelDescripcionAreaTrabajo.setText(trabajoEmpleadoEnCuestion.getAreaTrabajo().getDescripcion());
 
         if(trabajoEmpleadoEnCuestion.getEstado()){
             estado=true;
@@ -209,7 +213,7 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     }
     
    
-    private Boolean estado;
+    private Boolean estado=null;
     @FXML
     private void actSelActivo(ActionEvent event) {
         rbActivo.setSelected(true);
@@ -225,10 +229,6 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     }
     
     private AreaTrabajoDTO areaTra;
-    @FXML
-    private void cbxActAreaTrabajo(ActionEvent event) {
-
-    }
 
     public void iniAreasTrabajos(){
         ArrayList<AreaTrabajoDTO> areasTrabajos = new ArrayList<AreaTrabajoDTO>();
@@ -251,7 +251,15 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     }
 
     @FXML
-    private void cbxActEmpleado(ActionEvent event) {
+    private void actAreaTrabajo(ActionEvent event) {
+        labelDescripcionAreaTrabajo.setText(cbxAreaTrabajo.getValue().getDescripcion());
+        labelNombreAreaTrabajo.setText(cbxAreaTrabajo.getValue().getNombre());
+    }
+
+    @FXML
+    private void actEmpleado(ActionEvent event) {
+        labelNombre.setText(cbxEmpleado.getValue().getNombre());
+        labelCedula.setText(cbxEmpleado.getValue().getCedula());
     }
 
 }

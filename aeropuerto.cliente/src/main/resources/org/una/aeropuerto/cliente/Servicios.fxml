@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosController">
    <children>
       <TableView fx:id="tvServicios" layoutX="63.0" layoutY="238.0" prefHeight="254.0" prefWidth="874.0">
         <columns>
@@ -22,19 +22,19 @@
       </TableView>
       <Button fx:id="btnVolver" layoutX="63.0" layoutY="525.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label layoutX="63.0" layoutY="33.0" text="Servicios Registrados" />
-      <ComboBox fx:id="cbEstado" layoutX="63.0" layoutY="126.0" onAction="#actEstados" prefHeight="35.0" prefWidth="293.0" promptText="Buscar por Estado" />
+      <ComboBox fx:id="cbEstado" layoutX="63.0" layoutY="126.0" onAction="#actEstados" prefHeight="35.0" prefWidth="276.0" promptText="Buscar por Estado" />
       <Button fx:id="btnBorrar" layoutX="840.0" layoutY="173.0" mnemonicParsing="false" onAction="#actBorrar" prefHeight="35.0" prefWidth="97.0" text="Borrar" />
       <Button fx:id="btnBuscarTipo" layoutX="356.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscarTipo" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnAgregar" layoutX="782.0" layoutY="525.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Servicio" />
-      <TextField fx:id="txtTipo" layoutX="63.0" layoutY="73.0" prefHeight="37.0" prefWidth="293.0" promptText="Buscar por Tipo" />
-      <ComboBox fx:id="cbEstadoCobro" layoutX="491.0" layoutY="74.0" onAction="#actEstadoCobro" prefHeight="35.0" prefWidth="349.0" promptText="Buscar por Estado de cobro" />
-      <Label layoutX="492.0" layoutY="132.0" text="Buscar por monto de cobro:" />
+      <TextField fx:id="txtTipo" layoutX="63.0" layoutY="73.0" prefHeight="37.0" prefWidth="276.0" promptText="Buscar por Tipo" />
+      <ComboBox fx:id="cbEstadoCobro" layoutX="546.0" layoutY="74.0" onAction="#actEstadoCobro" prefHeight="35.0" prefWidth="276.0" promptText="Buscar por Estado de cobro" />
+      <Label layoutX="546.0" layoutY="133.0" text="Buscar por cobro:" />
       <Button fx:id="btnBuscarEstado" layoutX="356.0" layoutY="126.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarEstadoCobro" layoutX="840.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscarEstadoCobro" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarCobro" layoutX="840.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBuscarCobro" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
-      <Spinner fx:id="txtMinimo" editable="true" layoutX="684.0" layoutY="125.0" prefHeight="37.0" prefWidth="77.0" />
-      <Spinner fx:id="txtMaximo" editable="true" layoutX="763.0" layoutY="124.0" prefHeight="37.0" prefWidth="77.0" />
-      <ComboBox fx:id="cbAvion" layoutX="63.0" layoutY="173.0" prefHeight="35.0" prefWidth="293.0" promptText="Buscar por Avión" />
+      <Spinner fx:id="txtMinimo" editable="true" layoutX="666.0" layoutY="126.0" prefHeight="37.0" prefWidth="77.0" />
+      <Spinner fx:id="txtMaximo" editable="true" layoutX="745.0" layoutY="125.0" prefHeight="37.0" prefWidth="77.0" />
+      <ComboBox fx:id="cbAvion" layoutX="63.0" layoutY="173.0" prefHeight="35.0" prefWidth="276.0" promptText="Buscar por Avión" />
       <Button fx:id="btnBuscarAvion" layoutX="356.0" layoutY="173.0" mnemonicParsing="false" onAction="#actBuscarAvion" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
    </children>
 </AnchorPane>

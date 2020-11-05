@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -62,10 +63,6 @@ public class ServiciosTiposController implements Initializable {
     private Button btnBuscarEstado;
     @FXML
     private Button btnBuscarAreaTrabajo;
-    @FXML
-    private Button btnBuscarDescripcion;
-    @FXML
-    private TextField txtDescripcion;
         
     private ServicioTipoService servicioTipoService = new ServicioTipoService();
     
@@ -81,21 +78,13 @@ public class ServiciosTiposController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initEstado();
+        initAreaTrabajo();
         cargarTodos();
         
-        ArrayList estados = new ArrayList();
-        estados.add("Activo");
-        estados.add("Inactivo");
-        ObservableList items = FXCollections.observableArrayList(estados);   
-        cbEstado.setItems(items);
         
-        ArrayList<AreaTrabajoDTO> areasTrabajos = new ArrayList<AreaTrabajoDTO>();
-        Respuesta respuesta = areaTrabajoService.getAll();
-        if(respuesta.getEstado()==true){
-            areasTrabajos = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
-        }
-        ObservableList items2 = FXCollections.observableArrayList(areasTrabajos);   
-        cbAreaTrabajo.setItems(items2);
+        
+        
     }    
     
       public void cargarTodos(){
@@ -107,6 +96,25 @@ public class ServiciosTiposController implements Initializable {
         cargarTabla(tiposServicios);
     }
       
+      
+     public void initEstado(){
+        ArrayList estados = new ArrayList();
+        estados.add("Activo");
+        estados.add("Inactivo");
+        ObservableList items = FXCollections.observableArrayList(estados);   
+        cbEstado.setItems(items);
+     } 
+     
+    public void initAreaTrabajo(){
+        ArrayList<AreaTrabajoDTO> areasTrabajos = new ArrayList<AreaTrabajoDTO>();
+        Respuesta respuesta = areaTrabajoService.getAll();
+        if(respuesta.getEstado()==true){
+            areasTrabajos = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+        }
+        ObservableList items2 = FXCollections.observableArrayList(areasTrabajos);   
+        cbAreaTrabajo.setItems(items2);
+    }
+      
     public void cargarTabla(ArrayList<ServicioTipoDTO> trabajosEmpleados){
         tvTipoServicios.getColumns().clear();
         if(!trabajosEmpleados.isEmpty()){
@@ -116,8 +124,6 @@ public class ServiciosTiposController implements Initializable {
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn <ServicioTipoDTO, String>colNombre = new TableColumn("Nombre");
             colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-            TableColumn <ServicioTipoDTO, String>colDescripcion = new TableColumn("Descripcion");
-            colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
             TableColumn<ServicioTipoDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(emp -> {
                 String estadoString;
@@ -127,9 +133,15 @@ public class ServiciosTiposController implements Initializable {
                     estadoString = "Inactivo";
                 return new ReadOnlyStringWrapper(estadoString);
             });
+            TableColumn<ServicioTipoDTO, String> colAreaTrabajo = new TableColumn("Area de trabajo");
+            colAreaTrabajo.setCellValueFactory(st -> {
+                String area;
+                area = st.getValue().getAreaTrabajo().getNombre();
+                return new ReadOnlyStringWrapper(area);
+            });
             tvTipoServicios.getColumns().addAll(colId);
             tvTipoServicios.getColumns().addAll(colNombre);
-            tvTipoServicios.getColumns().addAll(colDescripcion);
+            tvTipoServicios.getColumns().addAll(colAreaTrabajo);
             tvTipoServicios.getColumns().addAll(colEstado);
             addButtonToTable();
             tvTipoServicios.setItems(items);
@@ -167,7 +179,9 @@ public class ServiciosTiposController implements Initializable {
                     }
                     
                     HBox pane = new HBox(btn, btn2);
-
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                    }
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -294,19 +308,7 @@ public class ServiciosTiposController implements Initializable {
         }
     }
 
-    @FXML
-    private void actBuscarDescripcion(ActionEvent event) {
-        if(!txtDescripcion.getText().isBlank()){
-            ArrayList<ServicioTipoDTO> tiposServices = new ArrayList<ServicioTipoDTO>();
-            Respuesta respuesta = servicioTipoService.getByDescripcionAproximate(txtDescripcion.getText());
-            if(respuesta.getEstado().equals(true)){
-                tiposServices = (ArrayList<ServicioTipoDTO>) respuesta.getResultado("TiposServicios");
-            }
-            cargarTabla(tiposServices);
-        }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion del tipo de servicio que desea buscar");
-        }
-    }
+ 
 
     @FXML
     private void actBuscarNombre(ActionEvent event) {

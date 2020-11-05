@@ -10,9 +10,9 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.RutasController">
    <children>
-      <AnchorPane id="AnchorPane" layoutX="-9.0" layoutY="3.0" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css">
+      <AnchorPane id="AnchorPane" layoutX="-4.0" layoutY="-11.0" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css">
          <children>
-            <TableView fx:id="tvRutas" layoutX="63.0" layoutY="215.0" prefHeight="354.0" prefWidth="874.0">
+            <TableView fx:id="tvRutas" layoutX="63.0" layoutY="254.0" prefHeight="315.0" prefWidth="874.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
@@ -23,18 +23,18 @@
             </TableView>
             <Button fx:id="btnVolver" layoutX="63.0" layoutY="594.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
             <Label layoutX="63.0" layoutY="33.0" text="Rutas" />
-            <Button fx:id="btnBuscarId" layoutX="255.0" layoutY="80.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
+            <Button fx:id="btnBuscarId" layoutX="303.0" layoutY="80.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
             <Button fx:id="btnAgregar" layoutX="803.0" layoutY="594.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Ruta" />
-            <TextField fx:id="txtbuscarId" layoutX="51.0" layoutY="79.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
-            <TextField fx:id="txtbuscarMin" layoutX="33.0" layoutY="137.0" prefHeight="37.0" prefWidth="97.0" promptText="Buscar min" />
-            <TextField fx:id="txtbuscarOri" layoutX="488.0" layoutY="44.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por origen" />
-            <ComboBox fx:id="cbxEstado" layoutX="488.0" layoutY="160.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
-            <Button fx:id="btnBuscarDist" layoutX="255.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBuscarDist" text="Buscar" />
-            <Button fx:id="btnBuscarOri" layoutX="691.0" layoutY="45.0" mnemonicParsing="false" onAction="#actBuscarOri" text="Buscar" />
-            <Button fx:id="btnBuscarEst" layoutX="691.0" layoutY="161.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
-            <TextField fx:id="txtbuscarDes" layoutX="488.0" layoutY="102.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por destino" />
-            <Button fx:id="btnBuscarDes" layoutX="691.0" layoutY="103.0" mnemonicParsing="false" onAction="#actBuscarDes" text="Buscar" />
-            <TextField fx:id="txtbuscarMax" layoutX="148.0" layoutY="137.0" prefHeight="37.0" prefWidth="103.0" promptText="Buscar max" />
+            <TextField fx:id="txtbuscarId" layoutX="63.0" layoutY="79.0" prefHeight="37.0" prefWidth="220.0" promptText="Buscar por id" />
+            <TextField fx:id="txtbuscarMin" layoutX="63.0" layoutY="131.0" prefHeight="37.0" prefWidth="97.0" promptText="Buscar min" />
+            <TextField fx:id="txtbuscarOri" layoutX="643.0" layoutY="79.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por origen" />
+            <ComboBox fx:id="cbxEstado" layoutX="63.0" layoutY="182.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="220.0" promptText="Buscar por estado" />
+            <Button fx:id="btnBuscarDist" layoutX="303.0" layoutY="132.0" mnemonicParsing="false" onAction="#actBuscarDist" text="Buscar" />
+            <Button fx:id="btnBuscarOri" layoutX="846.0" layoutY="80.0" mnemonicParsing="false" onAction="#actBuscarOri" text="Buscar" />
+            <Button fx:id="btnBuscarEst" layoutX="303.0" layoutY="183.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
+            <TextField fx:id="txtbuscarDes" layoutX="643.0" layoutY="131.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por destino" />
+            <Button fx:id="btnBuscarDes" layoutX="846.0" layoutY="132.0" mnemonicParsing="false" onAction="#actBuscarDes" text="Buscar" />
+            <TextField fx:id="txtbuscarMax" layoutX="178.0" layoutY="131.0" prefHeight="37.0" prefWidth="103.0" promptText="Buscar max" />
          </children>
       </AnchorPane>
    </children>

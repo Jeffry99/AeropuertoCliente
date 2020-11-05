@@ -7,6 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -205,8 +207,8 @@ public class TransaccionesController implements Initializable {
             
             TableColumn <TransaccionDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
-            TableColumn <TransaccionDTO, String>colDescripcion = new TableColumn("Descripcion");
-            colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
+            /*TableColumn <TransaccionDTO, String>colDescripcion = new TableColumn("Descripcion");
+            colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));*/
             TableColumn<TransaccionDTO, String> colUsuario = new TableColumn("Usuario");
             colUsuario.setCellValueFactory(tran -> {
                 String nombreUsuario;
@@ -215,14 +217,26 @@ public class TransaccionesController implements Initializable {
             });
             TableColumn <TransaccionDTO, String>colRol = new TableColumn("Rol");
             colRol.setCellValueFactory(new PropertyValueFactory("rol"));
-            TableColumn <TransaccionDTO, String>colFechaRegistro = new TableColumn("Fecha de registro");
-            colFechaRegistro.setCellValueFactory(new PropertyValueFactory("fechaRegistro"));
+            TableColumn<TransaccionDTO, String> colFechaRegistro = new TableColumn("Fecha");
+            colFechaRegistro.setCellValueFactory(hora -> {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String fecha = formatter.format(hora.getValue().getFechaRegistro());
+                return new ReadOnlyStringWrapper(fecha);
+            });
+            TableColumn<TransaccionDTO, String> colHora = new TableColumn("Hora");
+            colHora.setCellValueFactory(hora -> {
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                String fecha = formatter.format(hora.getValue().getFechaRegistro());
+                return new ReadOnlyStringWrapper(fecha);
+            });
+            
             
             tvTransacciones.getColumns().addAll(colId);
-            tvTransacciones.getColumns().addAll(colDescripcion);
+            //tvTransacciones.getColumns().addAll(colDescripcion);
             tvTransacciones.getColumns().addAll(colUsuario);
             tvTransacciones.getColumns().addAll(colRol);
             tvTransacciones.getColumns().addAll(colFechaRegistro);
+            tvTransacciones.getColumns().addAll(colHora);
             addButtonToTable();
             tvTransacciones.setItems(items);
         }
@@ -249,7 +263,9 @@ public class TransaccionesController implements Initializable {
                     }
                     
                     HBox pane = new HBox(btn);
-
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                    }
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);

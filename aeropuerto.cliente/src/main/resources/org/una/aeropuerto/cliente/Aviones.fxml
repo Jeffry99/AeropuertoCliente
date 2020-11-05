@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AvionesController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AvionesController">
    <children>
       <TableView fx:id="tvAviones" layoutX="63.0" layoutY="217.0" prefHeight="275.0" prefWidth="874.0">
         <columns>
@@ -21,14 +21,14 @@
       </TableView>
       <Button fx:id="btnVolver" layoutX="63.0" layoutY="525.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label layoutX="63.0" layoutY="33.0" text="Aviones Registrados" />
-      <ComboBox fx:id="cbEstado" layoutX="63.0" layoutY="126.0" onAction="#actEstados" prefHeight="35.0" prefWidth="317.0" promptText="Buscar por Estado" />
+      <ComboBox fx:id="cbEstado" layoutX="63.0" layoutY="126.0" onAction="#actEstados" prefHeight="35.0" prefWidth="277.0" promptText="Buscar por Estado" />
       <Button fx:id="btnBorrar" layoutX="840.0" layoutY="173.0" mnemonicParsing="false" onAction="#actBorrar" prefHeight="35.0" prefWidth="97.0" text="Borrar" />
-      <Button fx:id="btnBuscarMatricula" layoutX="380.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscarMatricula" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
-      <Button fx:id="btnAgregar" layoutX="795.0" layoutY="525.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Avión" />
-      <TextField fx:id="txtMatricula" layoutX="63.0" layoutY="73.0" prefHeight="37.0" prefWidth="317.0" promptText="Buscar por Matrícula" />
-      <ComboBox fx:id="cbAerolinea" layoutX="534.0" layoutY="125.0" prefHeight="35.0" prefWidth="306.0" promptText="Buscar por Aerolínea" />
-      <ComboBox fx:id="cbTipoAvion" layoutX="534.0" layoutY="74.0" prefHeight="35.0" prefWidth="306.0" promptText="Buscar por Tipo de Avión" />
-      <Button fx:id="btnBuscarEstado" layoutX="380.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
+      <Button fx:id="btnBuscarMatricula" layoutX="359.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscarMatricula" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
+      <Button fx:id="btnAgregar" layoutX="836.0" layoutY="525.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar" />
+      <TextField fx:id="txtMatricula" layoutX="63.0" layoutY="73.0" prefHeight="37.0" prefWidth="277.0" promptText="Buscar por Matrícula" />
+      <ComboBox fx:id="cbAerolinea" layoutX="539.0" layoutY="125.0" prefHeight="35.0" prefWidth="277.0" promptText="Buscar por Aerolínea" />
+      <ComboBox fx:id="cbTipoAvion" layoutX="539.0" layoutY="74.0" prefHeight="35.0" prefWidth="277.0" promptText="Buscar por Tipo de Avión" />
+      <Button fx:id="btnBuscarEstado" layoutX="359.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarTipoAvion" layoutX="840.0" layoutY="74.0" mnemonicParsing="false" onAction="#actBuscarTipoAvion" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarAerolinea" layoutX="840.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBuscarAerolinea" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
    </children>

@@ -8,6 +8,7 @@ package org.una.aeropuerto.cliente.controller;
 import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -19,8 +20,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
@@ -41,8 +44,6 @@ import org.una.aeropuerto.cliente.util.Respuesta;
 public class ServiciosTiposInformacionController implements Initializable {
 
     @FXML
-    private Label lblId;
-    @FXML
     private Label labelID;
     @FXML
     private TextField txtNombre;
@@ -55,44 +56,48 @@ public class ServiciosTiposInformacionController implements Initializable {
     @FXML
     private Button btnGuardar;
     @FXML
-    private TextField txtDescripcion;
+    private TextArea txtDescripcion;
     @FXML
     private Label labelFechaRegistro;
     @FXML
     private Label labelFechaModificacion;
-    @FXML
-    private JFXComboBox<AreaTrabajoDTO> cbxAreaTrabajo;
-    @FXML
-    private Label fechaMod;
+    
     private String modalidad="";
     
     private ServicioTipoDTO ServicioTipoEnCuestion = new ServicioTipoDTO();
    
+    
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    
     ServicioTipoService servicioTipoService = new ServicioTipoService();
     AreaTrabajoService areaTrabajoService = new AreaTrabajoService();
+    @FXML
+    private Label lbTituloFR;
+    @FXML
+    private Label lbTituloFM;
+    @FXML
+    private ComboBox<AreaTrabajoDTO> cbxAreaTrabajo;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         iniAreasTrabajos();
         
         modalidad = (String) AppContext.getInstance().get("ModalidadServicioTipo");
-        btnGuardar.setVisible(false);
-        btnGuardar.setDisable(true);  
-        labelID.setText(String.valueOf(ServicioTipoEnCuestion.getId()));
-        txtNombre.setText(ServicioTipoEnCuestion.getNombre());
-        txtDescripcion.setText(ServicioTipoEnCuestion.getDescripcion());
-        cbxAreaTrabajo.setValue(ServicioTipoEnCuestion.getAreaTrabajo());
-//        labelFechaRegistro.setText(ServicioTipoEnCuestion.getFechaRegistro().toString());
-//        labelFechaModificacion.setText(ServicioTipoEnCuestion.getFechaModificacion().toString());
         
-        if(!modalidad.equals("Ver")){
-            btnGuardar.setVisible(true);
-            btnGuardar.setDisable(false);
-        }
+        
         
         if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
-            ServicioTipoEnCuestion = (ServicioTipoDTO) AppContext.getInstance().get("ServicioTipoEnCuestion");     
+            ServicioTipoEnCuestion = (ServicioTipoDTO) AppContext.getInstance().get("ServicioTipoEnCuestion"); 
+            cbxAreaTrabajo.setValue(ServicioTipoEnCuestion.getAreaTrabajo());
+            txtNombre.setText(ServicioTipoEnCuestion.getNombre());
+            if(ServicioTipoEnCuestion.getDescripcion()!=null){
+                txtDescripcion.setText(ServicioTipoEnCuestion.getDescripcion());
+            }
+            labelFechaRegistro.setText(formatter.format(ServicioTipoEnCuestion.getFechaRegistro()));
+            labelFechaModificacion.setText(formatter.format(ServicioTipoEnCuestion.getFechaModificacion()));
+            
             cbxAreaTrabajo.setDisable(true);
+            
             if(ServicioTipoEnCuestion.getEstado()){
                 estado=true;
                 rbActivo.setSelected(true);
@@ -102,27 +107,34 @@ public class ServiciosTiposInformacionController implements Initializable {
                 rbActivo.setSelected(false);
                 rbInactivo.setSelected(true);
             }
-        }
             if(modalidad.equals("Ver")){
                 GenerarTransacciones.crearTransaccion("Se observa un tipo de servicio con id "+ServicioTipoEnCuestion.getId(), "ServicioTiposInformacion");
-                cbxAreaTrabajo.setDisable(true);
                 rbActivo.setDisable(true);
                 rbInactivo.setDisable(true);
+                txtNombre.setDisable(true);
+                txtDescripcion.setDisable(true);
+                btnGuardar.setVisible(false);
+                btnGuardar.setDisable(true);
             }
+        }else{
+            lbTituloFR.setVisible(false);
+            lbTituloFM.setVisible(false);
+        }
+            
          
     }  
     
     public boolean validar(){
-        if(cbxAreaTrabajo.getItems().isEmpty()){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el aerea de trabajo");
+        if(cbxAreaTrabajo.getValue()==null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el área de trabajo");
             return false;
         }
-        if(txtNombre.getText() == ""){
+        if(txtNombre.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del tipo de servicio");
             return false;
         }
-        if(txtDescripcion.getText() == ""){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripción swl tipo de servicio");
+        if(txtDescripcion.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripción del tipo de servicio");
             return false;
         }
         if(estado==null){
@@ -132,7 +144,7 @@ public class ServiciosTiposInformacionController implements Initializable {
         return true;
     }
     
-    private Boolean estado;
+    private Boolean estado=null;
     @FXML
     private void actEstadoActivo(ActionEvent event) {
         rbActivo.setSelected(true);
@@ -164,7 +176,9 @@ public class ServiciosTiposInformacionController implements Initializable {
          if(validar()){
             ServicioTipoEnCuestion.setNombre(txtNombre.getText());
             ServicioTipoEnCuestion.setDescripcion(txtDescripcion.getText());
-            ServicioTipoEnCuestion.setAreaTrabajo(cbxAreaTrabajo.getValue());
+            if(modalidad.equals("Agregar")){
+                ServicioTipoEnCuestion.setAreaTrabajo(cbxAreaTrabajo.getValue());
+            }
             ServicioTipoEnCuestion.setEstado(estado);
             
             if(modalidad.equals("Modificar")){
@@ -181,11 +195,11 @@ public class ServiciosTiposInformacionController implements Initializable {
                     Respuesta respuesta=servicioTipoService.crear(ServicioTipoEnCuestion);
                     if(respuesta.getEstado()){
                         ServicioTipoEnCuestion=(ServicioTipoDTO) respuesta.getResultado("ServicioTipo");
-                        GenerarTransacciones.crearTransaccion("Se asigna un nuevo tipo servicio del id "+ServicioTipoEnCuestion.getId(), "ServicioTipoInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro una area de trabajo a un empleado", "Se ha registrado un nuevo tipo de servicio correctamente");
+                        GenerarTransacciones.crearTransaccion("Se crea un nuevo tipo servicio con id "+ServicioTipoEnCuestion.getId(), "ServicioTipoInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de tipo se servicio", "Se ha registrado un nuevo tipo de servicio correctamente");
                         volver();
                     }else{
-                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro un nuevo tipo de servicio", respuesta.getMensaje());
+                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de tipo de servicio", respuesta.getMensaje());
                     }
                 }
             }

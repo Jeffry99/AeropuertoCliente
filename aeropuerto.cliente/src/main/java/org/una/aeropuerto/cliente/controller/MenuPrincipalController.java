@@ -211,8 +211,9 @@ public class MenuPrincipalController implements Initializable {
     private void actAviones(ActionEvent event) {
         try{
             Parent root = FXMLLoader.load(App.class.getResource("Aviones" + ".fxml"));
-			Contenedor.getChildren().clear();
+            Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan aviones", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -223,6 +224,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("Aerolineas" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan aerolineas", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -234,6 +236,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajo" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan areas de trabajo", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -245,6 +248,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("TrabajosEmpleados" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan trabajos de empleados", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -257,6 +261,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("Rutas" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan rutas", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -268,7 +273,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("TiposAvion" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan transacciones", "MenuPrincipal");
+            GenerarTransacciones.crearTransaccion("Se observan tipos de aviones", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -296,7 +301,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("Servicios" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan servicios", "MenuPrincipal");
+            GenerarTransacciones.crearTransaccion("Se observan servicios registrados", "MenuPrincipal");
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
@@ -319,7 +324,7 @@ public class MenuPrincipalController implements Initializable {
             Parent root = FXMLLoader.load(App.class.getResource("ServiciosTipos" + ".fxml"));
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan servicios tipos", "MenuPrincipal");
+            GenerarTransacciones.crearTransaccion("Se observan tipos de servicios", "MenuPrincipal");
 
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");

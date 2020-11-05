@@ -21,14 +21,14 @@
       </TableView>
       <Button fx:id="btnVolver" layoutX="63.0" layoutY="594.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label layoutX="63.0" layoutY="33.0" text="Aerolíneas" />
-      <Button fx:id="btnBuscarId" layoutX="255.0" layoutY="80.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
-      <Button fx:id="btnAgregar" layoutX="812.0" layoutY="594.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar Rol" />
-      <TextField fx:id="txtbuscarId" layoutX="51.0" layoutY="79.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
-      <TextField fx:id="txtbuscarNom" layoutX="51.0" layoutY="137.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
-      <TextField fx:id="txtbuscarRes" layoutX="482.0" layoutY="79.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por responsable" />
-      <ComboBox fx:id="cbxEstado" layoutX="482.0" layoutY="137.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
-      <Button fx:id="btnBuscarNom" layoutX="255.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBuscarNom" text="Buscar" />
-      <Button fx:id="btnBuscarRes" layoutX="685.0" layoutY="80.0" mnemonicParsing="false" onAction="#actBuscarRes" text="Buscar" />
-      <Button fx:id="btnBuscarEst" layoutX="685.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
+      <Button fx:id="btnBuscarId" layoutX="267.0" layoutY="81.0" mnemonicParsing="false" onAction="#actBuscarId" text="Buscar" />
+      <Button fx:id="btnAgregar" layoutX="832.0" layoutY="594.0" mnemonicParsing="false" onAction="#actAgregar" text="Agregar" />
+      <TextField fx:id="txtbuscarId" layoutX="63.0" layoutY="80.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
+      <TextField fx:id="txtbuscarNom" layoutX="63.0" layoutY="138.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
+      <TextField fx:id="txtbuscarRes" layoutX="643.0" layoutY="80.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por responsable" />
+      <ComboBox fx:id="cbxEstado" layoutX="643.0" layoutY="138.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
+      <Button fx:id="btnBuscarNom" layoutX="267.0" layoutY="139.0" mnemonicParsing="false" onAction="#actBuscarNom" text="Buscar" />
+      <Button fx:id="btnBuscarRes" layoutX="846.0" layoutY="81.0" mnemonicParsing="false" onAction="#actBuscarRes" text="Buscar" />
+      <Button fx:id="btnBuscarEst" layoutX="846.0" layoutY="139.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
    </children>
 </AnchorPane>
