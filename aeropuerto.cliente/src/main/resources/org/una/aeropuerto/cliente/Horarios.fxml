@@ -7,9 +7,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.HorariosController">
    <children>
+       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/FONDO1.png" />
+         </image>
+      </ImageView>
       <Button fx:id="btnVolver" layoutX="83.0" layoutY="587.0" mnemonicParsing="false" onAction="#actVolver" prefWidth="90.0" text="Volver" />
       <Button fx:id="btnAgregar" layoutX="822.0" layoutY="587.0" mnemonicParsing="false" onAction="#actAgregar" prefWidth="90.0" text="Agregar" />
       <TextField fx:id="txtId" layoutX="83.0" layoutY="103.0" prefHeight="37.0" prefWidth="249.0" promptText="Buscar por id" />

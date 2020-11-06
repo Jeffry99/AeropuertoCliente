@@ -4,10 +4,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="591.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="383.0" prefWidth="590.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.LoginController">
    <children>
+      <ImageView fitHeight="383.0" fitWidth="591.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/FONDO1.png" />
+         </image>
+      </ImageView>
       <Button fx:id="btnIngresar" layoutX="309.0" layoutY="305.0" mnemonicParsing="false" onAction="#actIngresar" prefHeight="25.0" prefWidth="118.0" text="Iniciar" />
       <TextField fx:id="txtUsuario" layoutX="233.0" layoutY="158.0" onKeyPressed="#actKey" prefHeight="37.0" prefWidth="191.0" />
       <Label layoutX="137.0" layoutY="162.0" text="Cédula:" />

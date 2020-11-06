@@ -5,9 +5,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.HoraMarcajeInformacionController">
    <children>
+      <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/FONDO1.png" />
+         </image>
+      </ImageView>
       <Label layoutX="409.0" layoutY="47.0" text="Registro de hora de marcaje" />
       <Button fx:id="btnVolver" layoutX="34.0" layoutY="584.0" mnemonicParsing="false" onAction="#actVolver" prefWidth="90.0" text="Volver" />
       <Button fx:id="btnMarcar" layoutX="293.0" layoutY="183.0" mnemonicParsing="false" onAction="#actMarcar" prefHeight="128.0" prefWidth="415.0" style="-fx-background-color: red;" text="MARCAR">

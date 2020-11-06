@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,11 +22,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -59,13 +59,14 @@ public class AerolineasController implements Initializable {
     @FXML
     private Button btnBuscarEst;
     @FXML
-    private TextField txtbuscarId;
+    private JFXTextField txtbuscarId;
     @FXML
-    private TextField txtbuscarNom;
+    private JFXTextField txtbuscarNom;
     @FXML
-    private TextField txtbuscarRes;
+    private JFXComboBox<String> cbxEstado;
     @FXML
-    private ComboBox<String> cbxEstado;
+    private JFXTextField txtbuscarRes;
+    
 
     /**
      * Initializes the controller class.

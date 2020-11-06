@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,11 +22,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -51,22 +51,24 @@ public class AreasTrabajoController implements Initializable {
     private Button btnAgregar;
     @FXML
     private Button btnBuscarId;
-    @FXML
-    private TextField txtbuscarId;
-    @FXML
-    private TextField txtbuscarNombre;
-    @FXML
-    private ComboBox<String> cbxEstado;
+    
     @FXML
     private Button btnBuscarDescripcion;
     @FXML
     private Button btnBuscarEst;
    
     private AreaTrabajoService AreaTrabajoService = new AreaTrabajoService();
-    @FXML
-    private TextField txtbuscarDescripcion;
+    
     @FXML
     private Button btnBuscarNombre;
+    @FXML
+    private JFXTextField txtbuscarId;
+    @FXML
+    private JFXTextField txtbuscarDescripcion;
+    @FXML
+    private JFXComboBox<String> cbxEstado;
+    @FXML
+    private JFXTextField txtbuscarNombre;
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {

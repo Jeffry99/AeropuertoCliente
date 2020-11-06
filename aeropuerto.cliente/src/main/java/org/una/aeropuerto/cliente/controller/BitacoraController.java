@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,8 +53,7 @@ public class BitacoraController implements Initializable {
     private TableView<BitacoraAvionDTO> tvEstados;
     @FXML
     private Button btnVolver;
-    @FXML
-    private ComboBox<String> cbEstado;
+
     @FXML
     private Button btnBorrar;
     @FXML
@@ -65,17 +66,21 @@ public class BitacoraController implements Initializable {
     private Button btnBuscarUbicacion;
     @FXML
     private Button btnBuscarAvion;
-    @FXML
-    private ComboBox<AvionDTO> cbAvion;
+    
 
     BitacoraAvionService bitacoraService = new BitacoraAvionService();
     BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
-    @FXML
-    private TextField txtUbicacion;
+    
     @FXML
     private Spinner<Double> spDistanciaMas;
     @FXML
     private Spinner<Double> spDistanciaMenos;
+    @FXML
+    private JFXComboBox<String> cbEstado;
+    @FXML
+    private JFXTextField txtUbicacion;
+    @FXML
+    private JFXComboBox<AvionDTO> cbAvion;
     /**
      * Initializes the controller class.
      */

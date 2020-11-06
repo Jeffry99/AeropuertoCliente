@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -59,22 +61,24 @@ public class AvionesController implements Initializable {
     private Button btnBorrar;
     @FXML
     private Button btnAgregar;
-    @FXML
-    private ComboBox<String> cbEstado;
+    
     @FXML
     private Button btnBuscarMatricula;
-    @FXML
-    private TextField txtMatricula;
-    @FXML
-    private ComboBox<AerolineaDTO> cbAerolinea;
-    @FXML
-    private ComboBox<TipoAvionDTO> cbTipoAvion;
+    
     @FXML
     private Button btnBuscarEstado;
     @FXML
     private Button btnBuscarTipoAvion;
     @FXML
     private Button btnBuscarAerolinea;
+    @FXML
+    private JFXComboBox<String> cbEstado;
+    @FXML
+    private JFXTextField txtMatricula;
+    @FXML
+    private JFXComboBox<AerolineaDTO> cbAerolinea;
+    @FXML
+    private JFXComboBox<TipoAvionDTO> cbTipoAvion;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

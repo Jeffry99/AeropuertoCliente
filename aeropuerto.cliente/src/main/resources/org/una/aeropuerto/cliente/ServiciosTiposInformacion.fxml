@@ -7,9 +7,16 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosTiposInformacionController">
    <children>
+       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/FONDO1.png" />
+         </image>
+      </ImageView>
         <Label fx:id="labelID" layoutX="411.0" layoutY="41.0" prefHeight="21.0" prefWidth="102.0" text=" " />
         <Label layoutX="87.0" layoutY="201.0" text="Nombre:" />
         <Label layoutX="600.0" layoutY="321.0" text="Estado:" />

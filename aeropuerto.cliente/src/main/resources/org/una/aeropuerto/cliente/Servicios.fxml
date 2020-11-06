@@ -8,9 +8,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosController">
+
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosController">
    <children>
+       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/FONDO1.png" />
+         </image>
+      </ImageView>
       <TableView fx:id="tvServicios" layoutX="63.0" layoutY="238.0" prefHeight="254.0" prefWidth="874.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />

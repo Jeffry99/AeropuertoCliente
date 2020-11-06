@@ -7,11 +7,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.TrabajosEmpleadosController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.TrabajosEmpleadosController">
    <children>
-      <AnchorPane id="AnchorPane" layoutX="10.0" layoutY="10.0" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css">
-         <children>
+       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/FONDO1.png" />
+         </image>
+      </ImageView>
             <TableView fx:id="tvAreaTrabajo" layoutX="63.0" layoutY="207.0" prefHeight="362.0" prefWidth="874.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
@@ -32,7 +37,6 @@
             <Button fx:id="btnBuscarEst" layoutX="846.0" layoutY="140.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
             <ComboBox fx:id="cbxEmpleadoID" layoutX="644.0" layoutY="80.0" onAction="#actSelEmpleadoID" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id empleado" />
             <ComboBox fx:id="cbxAreaID" layoutX="63.0" layoutY="137.0" onAction="#actSelAreaID" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id área " />
-         </children>
-      </AnchorPane>
+         
    </children>
 </AnchorPane>

@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -50,27 +52,32 @@ public class HoraMarcajeController implements Initializable {
     private TableView<HoraMarcajeDTO> tvHorasMarcaje;
     @FXML
     private Button btnVolver;
-    @FXML
-    private TextField txtId;
+    
     @FXML
     private Button btnBuscarId;
-    @FXML
-    private ComboBox<String> cbxEstado;
+    
     @FXML
     private Button btnBuscarEstado;
-    @FXML
-    private ComboBox<EmpleadoDTO> cbxEmpleado;
+    
     @FXML
     private Button btnBuscarEmpleado;
-    @FXML
-    private ComboBox<String> cbxTipo;
+    
     @FXML
     private Button btnBuscarTipo;
 
     /**
      * Initializes the controller class.
      */
-    private EmpleadoService empleadoService = new EmpleadoService();
+    private EmpleadoService empleadoService = new EmpleadoService();    
+    @FXML
+    private JFXTextField txtId;
+    @FXML
+    private JFXComboBox<String> cbxEstado;
+    @FXML
+    private JFXComboBox<String> cbxTipo;
+    @FXML
+    private JFXComboBox<EmpleadoDTO> cbxEmpleado;
+    
     private HoraMarcajeService horaService = new HoraMarcajeService();
     
     @Override

@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
@@ -35,7 +36,6 @@ import org.una.aeropuerto.cliente.util.Mensaje;
  */
 public class MenuPrincipalController implements Initializable {
 
-    @FXML
     private MenuBar menuBar;
     @FXML
     private MenuItem btnRoles;
@@ -86,7 +86,9 @@ public class MenuPrincipalController implements Initializable {
     @FXML
     private MenuItem btnAlertas;
     @FXML
-    private Menu TituloBtnRegistrarMarca;
+    private HBox hbMenuBar;
+    @FXML
+    private HBox hbMarcaje;
 
     /**
      * Initializes the controller class.
@@ -95,14 +97,16 @@ public class MenuPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         AppContext.getInstance().set("Contenedor", this.Contenedor);
         TituloUsuario.setText(UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
-        
+        hbMenuBar.setPrefHeight(50);
+        hbMenuBar.setPrefWidth(832);
+        hbMarcaje.setPrefHeight(50);
+        hbMarcaje.setPrefWidth(168);
         if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("Marcaje")){
             TituloAdministracion.setDisable(true);
             TituloAviones.setDisable(true);
             btnRegistrarMarcaje.setDisable(true);
             TituloEmpleados.setDisable(true);
             TituloVuelos.setDisable(true);
-            TituloBtnRegistrarMarca.setDisable(true);
             
             
             TituloAdministracion.setVisible(false);
@@ -110,7 +114,6 @@ public class MenuPrincipalController implements Initializable {
             btnRegistrarMarcaje.setVisible(false);
             TituloEmpleados.setVisible(false);
             TituloVuelos.setVisible(false);
-            TituloBtnRegistrarMarca.setVisible(false);
             registrarMarcaje("RolMarcaje");
         }
         
