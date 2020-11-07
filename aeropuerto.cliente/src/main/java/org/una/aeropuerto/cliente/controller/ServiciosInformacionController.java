@@ -60,8 +60,6 @@ public class ServiciosInformacionController implements Initializable {
     @FXML
     private RadioButton rbInactivo;
     @FXML
-    private Label lblIdNumero;
-    @FXML
     private ComboBox<ServicioTipoDTO> cbTipoServicio;
     @FXML
     private Spinner<Double> txtCobro;
@@ -131,7 +129,6 @@ public class ServiciosInformacionController implements Initializable {
     
     public void llenarDatos(){
         servicio = (ServicioRegistradoDTO)AppContext.getInstance().get("ServicioRegistradoEnCuestion");
-        lblIdNumero.setText(servicio.getId().toString());
         txtCobro.getValueFactory().setValue(Double.valueOf(servicio.getCobro()));
         cbTipoServicio.setValue(servicio.getServicioTipo());
         cbResponsable.setValue(servicio.getResponsable());

@@ -34,10 +34,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  */
 public class TiposAvionesInformacionController implements Initializable {
 
-    @FXML
-    private Label lblId;
-    @FXML
-    private Label lblIdNumero;
+    
     @FXML
     private TextField txtNombre;
     @FXML

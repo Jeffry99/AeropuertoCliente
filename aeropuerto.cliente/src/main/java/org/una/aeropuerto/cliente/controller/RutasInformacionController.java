@@ -36,10 +36,6 @@ import org.una.aeropuerto.cliente.util.Respuesta;
 public class RutasInformacionController implements Initializable {
 
     @FXML
-    private Label lblId;
-    @FXML
-    private Label lblIdNumero;
-    @FXML
     private RadioButton rbActivo;
     @FXML
     private RadioButton rbInactivo;

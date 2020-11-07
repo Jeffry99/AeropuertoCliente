@@ -119,6 +119,7 @@ public class VuelosInformacionController implements Initializable {
         if(modalidad.equals("Agregar")){
             vuelo = new VueloDTO();
             lblIdNumero.setVisible(false);
+            lblNombre.setVisible(false);
         }
             
     }    

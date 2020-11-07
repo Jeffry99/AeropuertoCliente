@@ -43,8 +43,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  */
 public class ServiciosTiposInformacionController implements Initializable {
 
-    @FXML
-    private Label labelID;
+    
     @FXML
     private TextField txtNombre;
     @FXML

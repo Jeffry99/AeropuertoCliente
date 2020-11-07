@@ -6,11 +6,11 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosInformacionController">
+<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosInformacionController">
    <children>
        <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -20,13 +20,11 @@
       <Label layoutX="56.0" layoutY="151.0" text="Tipo de Servicio:" />
       <Button fx:id="btnGuardar" layoutX="640.0" layoutY="526.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
       <Button fx:id="btnVolver" layoutX="261.0" layoutY="526.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
-      <Label layoutX="57.0" layoutY="43.0" text="Id:" />
       <Label layoutX="56.0" layoutY="208.0" text="Cobro (Colones):" />
       <Label layoutX="56.0" layoutY="266.0" text="Estado de Cobro:" />
       <Label layoutX="56.0" layoutY="312.0" text="Estado:" />
       <RadioButton fx:id="rbActivo" layoutX="180.0" layoutY="314.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
       <RadioButton fx:id="rbInactivo" layoutX="265.0" layoutY="314.0" mnemonicParsing="false" onAction="#actEstadoInactivo" text="Inactivo" />
-      <Label fx:id="lblIdNumero" layoutX="181.0" layoutY="43.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
       <Label layoutX="55.0" layoutY="358.0" text="Responsable:" />
       <ComboBox fx:id="cbTipoServicio" layoutX="180.0" layoutY="143.0" prefHeight="37.0" prefWidth="356.0" />
       <Label layoutX="57.0" layoutY="420.0" text="Fecha de Registro:" />

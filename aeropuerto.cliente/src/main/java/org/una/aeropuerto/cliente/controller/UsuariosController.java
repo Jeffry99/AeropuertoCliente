@@ -223,8 +223,6 @@ public class UsuariosController implements Initializable {
         if(!usuarios.isEmpty()){
             ObservableList items = FXCollections.observableArrayList(usuarios);   
             
-            TableColumn <UsuarioDTO, Long>colId = new TableColumn("ID");
-            colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn<UsuarioDTO, String> colNombre = new TableColumn("Nombre");
             colNombre.setCellValueFactory(usu -> {
                 String nombreUsuario;
@@ -253,7 +251,6 @@ public class UsuariosController implements Initializable {
                 return new ReadOnlyStringWrapper(estadoString);
             });
  
-            tvUsuarios.getColumns().addAll(colId);
             tvUsuarios.getColumns().addAll(colNombre);
             tvUsuarios.getColumns().addAll(colCedula);
             tvUsuarios.getColumns().addAll(colRol);

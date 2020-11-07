@@ -125,6 +125,7 @@ public class AvionesInformacionController implements Initializable {
         }
         if(modalidad.equals("Agregar")){
             lblIdNumero.setVisible(false);
+            lblNombre.setVisible(false);
             btnServicios.setVisible(false);
             btnVuelos.setVisible(false);
             btnBitacora.setVisible(false);

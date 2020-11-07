@@ -198,7 +198,7 @@ public class MenuPrincipalController implements Initializable {
         try{
             UsuarioAutenticado.getInstance().setTokenJwt("");
             UsuarioAutenticado.getInstance().setUsuarioLogeado(new UsuarioDTO());
-            Stage stage = (Stage) menuBar.getScene().getWindow();
+            Stage stage = (Stage) btnRegistrarMarcaje.getScene().getWindow();
             stage.close();
             Stage stage1 = new Stage();
             Parent root = FXMLLoader.load(App.class.getResource("Login" + ".fxml"));
@@ -220,7 +220,7 @@ public class MenuPrincipalController implements Initializable {
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
-	}
+    }
     @FXML
     private void actAerolineas(ActionEvent event) {
          try{
@@ -336,6 +336,14 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actParamentros(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Parametros" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan parámetros", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 
     @FXML

@@ -7,6 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,7 +71,9 @@ public class TransaccionesInformacionController implements Initializable {
             txtCedula.setText(transaccion.getUsuario().getEmpleado().getCedula());
             txtDescripcion.setText(transaccion.getDescripcion());
             txtDireccion.setText(transaccion.getUsuario().getEmpleado().getDireccion());
-            txtFechaRegistro.setText(transaccion.getFechaRegistro().toString());
+            SimpleDateFormat formatterF = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatterH = new SimpleDateFormat("HH:mm:ss");
+            txtFechaRegistro.setText(formatterF.format(transaccion.getFechaRegistro())+"  Hora: "+formatterH.format(transaccion.getFechaRegistro()));
             txtId.setText(String.valueOf(transaccion.getId()));
             txtLugar.setText(transaccion.getLugar());
             txtNombre.setText(transaccion.getUsuario().getEmpleado().getNombre());

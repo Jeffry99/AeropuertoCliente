@@ -35,8 +35,6 @@ import org.una.aeropuerto.cliente.util.Respuesta;
 public class RolesInformacionController implements Initializable {
 
     @FXML
-    private Label lblId;
-    @FXML
     private TextField txtNombre;
     @FXML
     private RadioButton rbActivo;
@@ -44,8 +42,6 @@ public class RolesInformacionController implements Initializable {
     private RadioButton rbInactivo;
     @FXML
     private Button btnGuardar;
-    @FXML
-    private Label txtId;
     @FXML
     private TextField txtDescripcion;
     @FXML
@@ -64,7 +60,6 @@ public class RolesInformacionController implements Initializable {
         
         btnGuardar.setVisible(false);
         btnGuardar.setDisable(true);
-        txtId.setVisible(false);
         
         if(!modalidad.equals("Ver")){
             btnGuardar.setVisible(true);
@@ -72,8 +67,6 @@ public class RolesInformacionController implements Initializable {
         }
         if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
             rol = (RolDTO) AppContext.getInstance().get("RolEnCuestion");
-            txtId.setVisible(true);
-            txtId.setText(String.valueOf(rol.getId()));
             txtDescripcion.setText(rol.getDescripcion());
             txtNombre.setText(rol.getNombre());
             if(rol.getEstado()==true){

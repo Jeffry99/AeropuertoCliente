@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ParametrosController">
+    <children>
+        <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../recursos/FONDO2.png" />
+            </image>
+        </ImageView>
+      <Label layoutX="59.0" layoutY="35.0" text="Parámetros de la aplicación" />
+      <Button fx:id="btnBuscarNombre" layoutX="263.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarNombre" text="Buscar" />
+      <JFXTextField fx:id="txtBuscarNombre" labelFloat="true" layoutX="59.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
+      <Button fx:id="btnBuscarEstado" layoutX="262.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarEstado" text="Buscar" />
+      <JFXComboBox fx:id="cbxBuscarEstado" labelFloat="true" layoutX="59.0" layoutY="145.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
+      <TableView fx:id="tvParametros" layoutX="59.0" layoutY="225.0" prefHeight="300.0" prefWidth="368.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="410.0" layoutX="500.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="2.0" y="5.0" />
+      <Label fx:id="lbTituloDetalle" layoutX="687.0" layoutY="81.0" text="Información de parámetro" />
+      <JFXTextField fx:id="txtNombre" labelFloat="true" layoutX="608.0" layoutY="145.0" prefHeight="37.0" prefWidth="328.0" promptText="Nombre" />
+      <JFXTextField fx:id="txtValor" labelFloat="true" layoutX="608.0" layoutY="214.0" prefHeight="37.0" prefWidth="328.0" promptText="Valor" />
+      <JFXTextArea fx:id="txtDescripcion" labelFloat="true" layoutX="608.0" layoutY="291.0" prefHeight="112.0" prefWidth="328.0" promptText="Descripción del parámetro" />
+      <JFXComboBox fx:id="cbxEstado" labelFloat="true" layoutX="608.0" layoutY="442.0" onAction="#actEstado" prefHeight="37.0" prefWidth="328.0" promptText="Estado del parámetro" />
+      <Label fx:id="lbFechaRegistro" layoutX="608.0" layoutY="504.0" text="Fecha de registro:" />
+      <Label fx:id="lbFechaModificacion" layoutX="608.0" layoutY="534.0" text="Fecha de modificación:" />
+      <Button fx:id="btnGuardar" layoutX="845.0" layoutY="580.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Button fx:id="btnVolver" layoutX="59.0" layoutY="580.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <Button fx:id="btnLimpiar" layoutX="608.0" layoutY="580.0" mnemonicParsing="false" onAction="#actLimpiar" text="Limpiar" />
+    </children>
+</AnchorPane>

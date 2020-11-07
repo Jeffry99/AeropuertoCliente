@@ -101,11 +101,7 @@ public class VuelosController implements Initializable {
             TableColumn <VueloDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             
-            TableColumn <VueloDTO, String>colAvion = new TableColumn("Avión");
-            colAvion.setCellValueFactory(av -> {
-                String avion = av.getValue().getAvion().getMatricula();
-                return new ReadOnlyStringWrapper(avion);
-            });
+            
             
             TableColumn <VueloDTO, String>colOrigen = new TableColumn("Origen");
             colOrigen.setCellValueFactory(av -> {
@@ -133,22 +129,12 @@ public class VuelosController implements Initializable {
                 return new ReadOnlyStringWrapper(hora);
             });
             
-            TableColumn<VueloDTO, String> colEstado = new TableColumn("Estado");
-            colEstado.setCellValueFactory(av -> {
-            String estadoString;
-                if(av.getValue().isEstado())
-                    estadoString = "Activo";
-                else
-                    estadoString = "Inactivo";
-                return new ReadOnlyStringWrapper(estadoString);
-            });
+            
             tvVuelos.getColumns().addAll(colId);
             tvVuelos.getColumns().addAll(colOrigen);
             tvVuelos.getColumns().addAll(colDestino);
-            tvVuelos.getColumns().addAll(colAvion);
             tvVuelos.getColumns().addAll(colFecha);
             tvVuelos.getColumns().addAll(colHora);
-            tvVuelos.getColumns().addAll(colEstado);
             addButtonToTable();
             tvVuelos.setItems(items);
         }

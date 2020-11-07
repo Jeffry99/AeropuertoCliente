@@ -141,28 +141,6 @@ public class ServiciosController implements Initializable {
             TableColumn <ServicioRegistradoDTO, String>colCobro = new TableColumn("Cobro");
             colCobro.setCellValueFactory(new PropertyValueFactory("cobro"));
             
-            TableColumn<ServicioRegistradoDTO, String> colEstadoCobro = new TableColumn("Estado de Cobro");
-            colEstadoCobro.setCellValueFactory(av -> {
-            String estadoString;
-                if(av.getValue().getEstado())
-                    estadoString = "Activo";
-                else
-                    estadoString = "Inactivo";
-                return new ReadOnlyStringWrapper(estadoString);
-            });
-            
-            TableColumn<ServicioRegistradoDTO, String> colEstado = new TableColumn("Estado");
-            colEstado.setCellValueFactory(av -> {
-            String estadoString;
-                if(av.getValue().getEstado())
-                    estadoString = "Activo";
-                else
-                    estadoString = "Inactivo";
-                return new ReadOnlyStringWrapper(estadoString);
-            });
-            
-            TableColumn<ServicioRegistradoDTO, String> colResponsable = new TableColumn("Responsable");
-            colResponsable.setCellValueFactory(new PropertyValueFactory("responsable"));
             
             TableColumn<ServicioRegistradoDTO, String> colAvion = new TableColumn("Avión");
             colAvion.setCellValueFactory(new PropertyValueFactory("avion"));
@@ -170,9 +148,6 @@ public class ServiciosController implements Initializable {
             tvServicios.getColumns().addAll(colId);
             tvServicios.getColumns().addAll(colTipoServicio);
             tvServicios.getColumns().addAll(colCobro);
-            tvServicios.getColumns().addAll(colEstado);
-            tvServicios.getColumns().addAll(colEstadoCobro);
-            tvServicios.getColumns().addAll(colResponsable);
             tvServicios.getColumns().addAll(colAvion);
             addButtonToTable();
             tvServicios.setItems(items);

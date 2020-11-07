@@ -99,8 +99,6 @@ public class RutasController implements Initializable {
         if(!aerolineas.isEmpty()){
             ObservableList items = FXCollections.observableArrayList(aerolineas);   
             
-            TableColumn <RutaDTO, Long>colId = new TableColumn("ID");
-            colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn <RutaDTO, String>colDistancia = new TableColumn("Distancia");
             colDistancia.setCellValueFactory(new PropertyValueFactory("distancia"));
             TableColumn <RutaDTO, String>colOrigen = new TableColumn("Origen");
@@ -116,7 +114,6 @@ public class RutasController implements Initializable {
                     estadoString = "Inactivo";
                 return new ReadOnlyStringWrapper(estadoString);
             });
-            tvRutas.getColumns().addAll(colId);
             tvRutas.getColumns().addAll(colDistancia);
             tvRutas.getColumns().addAll(colOrigen);
             tvRutas.getColumns().addAll(colDestino);
