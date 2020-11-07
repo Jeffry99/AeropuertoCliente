@@ -5,14 +5,12 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
-import java.io.File;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,14 +22,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -63,29 +58,30 @@ public class UsuariosController implements Initializable {
     @FXML
     private Button btnBuscarId;
     @FXML
-    private TextField txtCedula;
-    @FXML
     private Button btnBuscarCedula;
     @FXML
     private Button btnBuscarNombre;
     @FXML
-    private ComboBox<String> cbxEstado;
-    @FXML
     private Button btnBuscarEstado;
     @FXML
-    private ComboBox<RolDTO> cbxRol;
-    @FXML
     private Button btnBuscarRol;
-
+    @FXML
+    private AnchorPane anPane;
+    @FXML
+    private JFXTextField txtCedula;
+    @FXML
+    private JFXTextField txtNombre;
+    @FXML
+    private JFXComboBox<String> cbxEstado;
+    @FXML
+    private JFXComboBox<RolDTO> cbxRol;
     /**
      * Initializes the controller class.
      */
     private RolService rolService = new RolService();
     private UsuarioService usuarioService = new UsuarioService();
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private AnchorPane anPane;
+    
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

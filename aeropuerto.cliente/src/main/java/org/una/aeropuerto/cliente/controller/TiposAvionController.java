@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,19 +49,11 @@ public class TiposAvionController implements Initializable {
     private TipoAvionService tipoAvionesService = new TipoAvionService();
 
     @FXML
-    private TableView<TipoAvionDTO> tvtTiposAviones;
-    @FXML
     private Button btnVolver;
     @FXML
     private Button btnBuscarId;
     @FXML
     private Button btnAgregar;
-    @FXML
-    private TextField txtbuscarId;
-    @FXML
-    private TextField txtbuscarNombre;
-    @FXML
-    private ComboBox<String> cbxEstado;
     @FXML
     private Button btnBuscarDist;
     @FXML
@@ -66,9 +61,17 @@ public class TiposAvionController implements Initializable {
     @FXML
     private Button btnBuscarEst;
     @FXML
-    private TextField txtbuscarMin;
+    private TableView<TipoAvionDTO> tvtTiposAviones;
     @FXML
-    private TextField txtbuscarMax;
+    private JFXComboBox<String> cbxEstado;
+    @FXML
+    private JFXTextField txtbuscarNombre;
+    @FXML
+    private JFXTextField txtbuscarId;
+    @FXML
+    private Spinner<Double> spDistanciaMas;
+    @FXML
+    private Spinner<Double> spDistanciaMenos;
 
     /**
      * Initializes the controller class.
@@ -245,9 +248,9 @@ public class TiposAvionController implements Initializable {
 
     @FXML
     private void actBuscarDist(ActionEvent event) {
-        if(!txtbuscarMax.getText().isBlank()&&!txtbuscarMin.getText().isBlank()){
+        if(spDistanciaMenos.getValue() == null || spDistanciaMas.getValue() == null){
             ArrayList<TipoAvionDTO> tipoAviones = new ArrayList<TipoAvionDTO>();
-            Respuesta respuesta = tipoAvionesService.getByDistanciaRango(Float.valueOf(txtbuscarMax.getText()),Float.valueOf(txtbuscarMin.getText()));
+            Respuesta respuesta = tipoAvionesService.getByDistanciaRango(spDistanciaMas.getValue().floatValue(), spDistanciaMenos.getValue().floatValue());
             if(respuesta.getEstado().equals(true)){
                 tipoAviones = (ArrayList<TipoAvionDTO>) respuesta.getResultado("TiposAviones");
             }

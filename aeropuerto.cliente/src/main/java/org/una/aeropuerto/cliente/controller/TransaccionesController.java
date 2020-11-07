@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -53,25 +55,25 @@ public class TransaccionesController implements Initializable {
     @FXML
     private TableView<TransaccionDTO> tvTransacciones;
     @FXML
-    private ComboBox<String> cbxRol;
-    @FXML
     private Button btnBuscarRol;
     @FXML
     private TextField txtId;
     @FXML
     private Button btnBuscarId;
     @FXML
-    private TextField txtLugar;
-    @FXML
     private Button btnBuscarLugar;
-    @FXML
-    private TextField txtNombreUsuario;
     @FXML
     private Button btnBuscarNombreUsuario;
     @FXML
-    private TextField txtDescripcion;
-    @FXML
     private Button btnBuscarDescripcion;
+    @FXML
+    private JFXTextField txtLugar;
+    @FXML
+    private JFXTextField txtNombreUsuario;
+    @FXML
+    private JFXTextField txtDescripcion;
+    @FXML
+    private JFXComboBox<RolDTO> cbxRol;
 
     /**
      * Initializes the controller class.
@@ -80,21 +82,17 @@ public class TransaccionesController implements Initializable {
     private RolService rolService = new RolService();
     private EmpleadoService empleadoService = new EmpleadoService();
     
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ArrayList<RolDTO> roles = new ArrayList<RolDTO>();
-        ArrayList rolesCBX = new ArrayList();
         Respuesta respuesta = rolService.getAll();
         if(respuesta.getEstado()==true){
             roles = (ArrayList<RolDTO>) respuesta.getResultado("Roles");
-            if(!roles.isEmpty()){
-                for(int i=0; i<roles.size(); i++){
-                    rolesCBX.add(roles.get(i).getNombre());
-                }
-            }
+            
         }
         
-        ObservableList items = FXCollections.observableArrayList(rolesCBX);   
+        ObservableList items = FXCollections.observableArrayList(roles);   
         cbxRol.setItems(items);
         
         cargarTodos();
@@ -113,9 +111,9 @@ public class TransaccionesController implements Initializable {
 
     @FXML
     private void actBuscarRol(ActionEvent event) {
-        if(!cbxRol.getValue().isBlank()){
+        if(cbxRol.getValue()!=null){
             ArrayList<TransaccionDTO>  transacciones= new ArrayList<TransaccionDTO>();
-            Respuesta respuesta = transaccionService.getByRolAproximate(cbxRol.getValue());
+            Respuesta respuesta = transaccionService.getByRolAproximate(cbxRol.getValue().getNombre());
             if(respuesta.getEstado().equals(true)){
                 transacciones = (ArrayList<TransaccionDTO>) respuesta.getResultado("Transacciones");
             }

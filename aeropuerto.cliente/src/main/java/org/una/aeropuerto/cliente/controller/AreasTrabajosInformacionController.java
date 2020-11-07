@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -34,10 +33,6 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  */
 public class AreasTrabajosInformacionController implements Initializable {
 
-    @FXML
-    private Label lblId;
-    @FXML
-    private Label lblIdNumero;
     @FXML
     private TextField txtNombre;
     @FXML

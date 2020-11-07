@@ -15,8 +15,6 @@
             <Image url="@../recursos/FONDO1.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblId" layoutX="285.0" layoutY="140.0" text="Id:" />
-      <Label fx:id="lblIdNumero" layoutX="411.0" layoutY="140.0" text="Numero ID" />
       <Label layoutX="285.0" layoutY="200.0" text="Nombre:" />
       <Label layoutX="285.0" layoutY="260.0" text="Responsable:" />
       <Label layoutX="285.0" layoutY="320.0" text="Estado:" />

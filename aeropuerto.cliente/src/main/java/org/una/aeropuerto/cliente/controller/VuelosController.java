@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -53,27 +54,28 @@ public class VuelosController implements Initializable {
     @FXML
     private Button btnVolver;
     @FXML
-    private ComboBox<String> cbEstado;
-    @FXML
     private Button btnBuscarAvion;
     @FXML
     private Button btnAgregar;
-    @FXML
-    private ComboBox<RutaDTO> cbRuta;
     @FXML
     private Button btnBuscarEstado;
     @FXML
     private Button btnBuscarFecha;
     @FXML
-    private ComboBox<AvionDTO> cbAvion;
-    @FXML
     private DatePicker dpFecha;
-    private VueloService vueloService = new VueloService();
     @FXML
     private Button btnBuscarRuta;
+    @FXML
+    private JFXComboBox<String> cbEstado;
+    @FXML
+    private JFXComboBox<AvionDTO> cbAvion;
+    @FXML
+    private JFXComboBox<RutaDTO> cbRuta;
     /**
      * Initializes the controller class.
      */
+    private VueloService vueloService = new VueloService();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initEstados();

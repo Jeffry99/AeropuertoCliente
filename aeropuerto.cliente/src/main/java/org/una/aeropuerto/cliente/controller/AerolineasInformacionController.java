@@ -7,10 +7,7 @@ package org.una.aeropuerto.cliente.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,10 +34,6 @@ import org.una.aeropuerto.cliente.util.Mensaje;
  */
 public class AerolineasInformacionController implements Initializable {
     
-    @FXML
-    private Label lblId;
-    @FXML
-    private Label lblIdNumero;
     @FXML
     private TextField txtNombre;
     @FXML

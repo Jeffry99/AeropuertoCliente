@@ -98,9 +98,9 @@ public class MenuPrincipalController implements Initializable {
         AppContext.getInstance().set("Contenedor", this.Contenedor);
         TituloUsuario.setText(UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
         hbMenuBar.setPrefHeight(50);
-        hbMenuBar.setPrefWidth(832);
+        hbMenuBar.setPrefWidth(809);
         hbMarcaje.setPrefHeight(50);
-        hbMarcaje.setPrefWidth(168);
+        hbMarcaje.setPrefWidth(191);
         if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("Marcaje")){
             TituloAdministracion.setDisable(true);
             TituloAviones.setDisable(true);
