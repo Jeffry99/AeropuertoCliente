@@ -6,6 +6,8 @@ package org.una.aeropuerto.cliente.controller;
  * and open the template in the editor.
  */
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,11 +23,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -53,28 +54,28 @@ public class RutasController implements Initializable {
     @FXML
     private Button btnAgregar;
     @FXML
-    private TextField txtbuscarId;
-    @FXML
-    private TextField txtbuscarOri;
-    @FXML
-    private ComboBox<String> cbxEstado;
-    @FXML
     private Button btnBuscarDist;
     @FXML
     private Button btnBuscarOri;
     @FXML
     private Button btnBuscarEst;
     @FXML
-    private TextField txtbuscarDes;
+    private Spinner<Double> spDistanciaMas;
+    @FXML
+    private Spinner<Double> spDistanciaMenos;
     @FXML
     private Button btnBuscarDes;
-
+    @FXML
+    private JFXTextField txtbuscarId;
+    @FXML
+    private JFXTextField txtbuscarOri;
+    @FXML
+    private JFXTextField txtbuscarDes;
+    @FXML
+    private JFXComboBox<String> cbxEstado;
+    
     private RutaService rutaService = new RutaService();
-    @FXML
-    private TextField txtbuscarMin;
-    @FXML
-    private TextField txtbuscarMax;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTodos();
@@ -251,9 +252,9 @@ public class RutasController implements Initializable {
 
     @FXML
     private void actBuscarDist(ActionEvent event) {
-        if(!txtbuscarMax.getText().isBlank()&&!txtbuscarMin.getText().isBlank()){
+        if(spDistanciaMenos.getValue() == null || spDistanciaMas.getValue() == null){
             ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
-            Respuesta respuesta = rutaService.getByDistanciaRango(Float.valueOf(txtbuscarMax.getText()),Float.valueOf(txtbuscarMin.getText()));
+            Respuesta respuesta = rutaService.getByDistanciaRango(spDistanciaMas.getValue().floatValue(), spDistanciaMenos.getValue().floatValue());
             if(respuesta.getEstado().equals(true)){
                 rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
             }

@@ -5,6 +5,8 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,29 +52,30 @@ public class ServiciosTiposController implements Initializable {
     @FXML
     private Button btnVolver;
     @FXML
-    private ComboBox<String> cbEstado;
-    @FXML
     private Button btnBorrar;
     @FXML
     private Button btnBuscarID;
     @FXML
     private Button btnAgregar;
     @FXML
-    private ComboBox<AreaTrabajoDTO> cbAreaTrabajo;
-    @FXML
     private Button btnBuscarEstado;
     @FXML
     private Button btnBuscarAreaTrabajo;
-        
-    private ServicioTipoService servicioTipoService = new ServicioTipoService();
-    
-    private AreaTrabajoService areaTrabajoService = new AreaTrabajoService();
-    @FXML
-    private TextField txtBuscarID;
     @FXML
     private Button btnBuscarNombre;
     @FXML
-    private TextField txtNombre;
+    private JFXTextField txtBuscarID;
+    @FXML
+    private JFXTextField txtNombre;
+    @FXML
+    private JFXComboBox<String> cbEstado;
+    @FXML
+    private JFXComboBox<AreaTrabajoDTO> cbAreaTrabajo;
+        
+    private ServicioTipoService servicioTipoService = new ServicioTipoService();
+    private AreaTrabajoService areaTrabajoService = new AreaTrabajoService();
+    
+    
     /**
      * Initializes the controller class.
      */
