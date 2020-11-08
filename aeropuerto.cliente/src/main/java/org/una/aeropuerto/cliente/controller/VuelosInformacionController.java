@@ -143,7 +143,7 @@ public class VuelosInformacionController implements Initializable {
         setHora();
 
         
-        if(vuelo.isEstado()){
+        if(vuelo.getEstado()==1){
             rbActivo.setSelected(true);
             rbInactivo.setSelected(false);
             estado = true;
@@ -167,7 +167,7 @@ public class VuelosInformacionController implements Initializable {
             
             fechaGuardar=dateCalendar.getTime();
             vuelo.setAvion(cbAvion.getValue());
-            vuelo.setEstado(estado);
+            vuelo.setEstado(1);
             vuelo.setFecha(fechaGuardar);
             vuelo.setRuta(cbRuta.getValue());
 

@@ -388,7 +388,7 @@ public class AvionesInformacionController implements Initializable {
                 colEstado.setCellValueFactory(av -> {
                 String estadoString;
                 VueloDTO vuelo = (VueloDTO)av.getValue();
-                if(vuelo.isEstado())
+                if(vuelo.getEstado()==1)
                     estadoString = "Activo";
                 else
                     estadoString = "Inactivo";

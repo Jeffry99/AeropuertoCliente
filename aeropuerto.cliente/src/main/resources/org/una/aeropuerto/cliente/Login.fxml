@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="383.0" fitWidth="591.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../recursos/FONDO1.png" />
+            <Image url="@../recursos/FONDO0.png" />
          </image>
       </ImageView>
       <Button fx:id="btnIngresar" layoutX="309.0" layoutY="305.0" mnemonicParsing="false" onAction="#actIngresar" prefHeight="25.0" prefWidth="118.0" text="Iniciar" />

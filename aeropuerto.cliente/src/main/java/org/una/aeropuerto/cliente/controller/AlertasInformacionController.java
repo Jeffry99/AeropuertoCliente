@@ -1,0 +1,192 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.una.aeropuerto.cliente.controller;
+
+import com.jfoenix.controls.JFXTextArea;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import org.una.aeropuerto.cliente.App;
+import org.una.aeropuerto.cliente.dto.AlertaGeneradaDTO;
+import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
+import org.una.aeropuerto.cliente.service.AlertaGeneradaService;
+import org.una.aeropuerto.cliente.service.BitacoraAvionService;
+import org.una.aeropuerto.cliente.service.VueloService;
+import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Mensaje;
+import org.una.aeropuerto.cliente.util.Respuesta;
+
+/**
+ * FXML Controller class
+ *
+ * @author Pablo-VE
+ */
+public class AlertasInformacionController implements Initializable {
+
+    @FXML
+    private Label lbTituloDetalle;
+    @FXML
+    private JFXTextArea descripcionAlerta;
+    @FXML
+    private Label matriculaAvion;
+    @FXML
+    private Label idVuelo;
+    @FXML
+    private Label fechaVuelo;
+    @FXML
+    private Label horaVuelo;
+    @FXML
+    private Label ruta;
+    @FXML
+    private Label distanciaRuta;
+    @FXML
+    private Label tipoAvion;
+    @FXML
+    private Label distanciaRecomendada;
+    @FXML
+    private Label distanciaRecorrida;
+    @FXML
+    private Label combustibleActual;
+    @FXML
+    private Label ubicacionActual;
+    @FXML
+    private Label fechaAlerta;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnAutorizar;
+    @FXML
+    private Button btnRechazar;
+    @FXML
+    private Label estado;
+
+    /**
+     * Initializes the controller class.
+     */
+    String modalidad="";
+    AlertaGeneradaDTO alerta = new AlertaGeneradaDTO();
+    
+    SimpleDateFormat formaHora = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat formaFecha = new SimpleDateFormat("dd/MM/yyyy");
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        modalidad=(String) AppContext.getInstance().get("ModalidadAlerta");
+        alerta=(AlertaGeneradaDTO) AppContext.getInstance().get("AlertaGenerada");
+        if(modalidad.equals("Ver")){
+            btnAutorizar.setDisable(true);
+            btnRechazar.setDisable(true);
+            btnAutorizar.setVisible(false);
+            btnRechazar.setVisible(false);
+        }
+        
+        descripcionAlerta.setText(alerta.getTipoAlerta().getDescripcion());
+        if(alerta.getEstado()){
+            estado.setText(alerta.getAutorizacion());
+        }else{
+            estado.setText("No autorizada");
+        }
+        idVuelo.setText(alerta.getVuelo().getId().toString());
+        fechaVuelo.setText(formaFecha.format(alerta.getVuelo().getFecha()));
+        horaVuelo.setText(formaHora.format(alerta.getVuelo().getFecha()));
+        ruta.setText(alerta.getVuelo().getRuta().getOrigen()+" - "+alerta.getVuelo().getRuta().getDestino());
+        distanciaRuta.setText(String.valueOf(alerta.getVuelo().getRuta().getDistancia())+" Km");
+        fechaAlerta.setText(formaFecha.format(alerta.getFechaModificacion())+ "a las "+formaHora.format(alerta.getFechaModificacion()));
+        matriculaAvion.setText(alerta.getVuelo().getAvion().getMatricula());
+        tipoAvion.setText(alerta.getVuelo().getAvion().getTipoAvion().getNombre());
+        distanciaRecomendada.setText(String.valueOf(alerta.getVuelo().getAvion().getTipoAvion().getDistanciaRecomendada())+" Km");
+        
+        BitacoraAvionService bitacoraService = new BitacoraAvionService();
+        Respuesta res = bitacoraService.getByAvion(alerta.getVuelo().getAvion().getId());
+        ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+        if(res.getEstado()){
+            bitacoras = (ArrayList<BitacoraAvionDTO>) res.getResultado("BitacorasAvion");
+            BitacoraAvionDTO bitacoraMayor = new BitacoraAvionDTO();
+            if(bitacoras.size()>0){
+                bitacoraMayor=bitacoras.get(0);
+                if(bitacoras.size()>1){
+                    for(int i = 1; i<bitacoras.size(); i++){
+                        if(bitacoras.get(i).getId()>bitacoraMayor.getId()){
+                            bitacoraMayor = bitacoras.get(i);
+                        }
+                    }
+                }
+            }
+            distanciaRecorrida.setText(String.valueOf(bitacoraMayor.getDistanciaRecorrida()));
+            combustibleActual.setText(String.valueOf(bitacoraMayor.getCombustible()));
+            ubicacionActual.setText(bitacoraMayor.getUbicacion());
+        }
+        
+    }    
+
+    @FXML
+    private void actVolver(ActionEvent event) {
+        volver();
+    }
+
+    AlertaGeneradaService alertaService = new AlertaGeneradaService();
+    VueloService vueloService = new VueloService();
+    
+    @FXML
+    private void actAutorizar(ActionEvent event) {
+        alerta.setEstado(true);
+        alerta.setAutorizacion("Autorizada por "+UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
+        Respuesta res = alertaService.modificar(alerta.getId(), alerta);
+        if(res.getEstado()){
+            alerta.getVuelo().setEstado(3);
+            res = vueloService.modificar(alerta.getVuelo().getId(), alerta.getVuelo());
+            if(res.getEstado()){
+                AlertasController aController = (AlertasController) AppContext.getInstance().get("ControllerAlertas");
+                aController.cargarTodasAlertas();
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Autorización de vuelo", "Se ha autorizado esta alerta");
+                volver();
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Autorizar solicitud de vuelo", "Ocurrió un error al modificar el estado del vuelo");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Autorizar solicitud de vuelo", "Ocurrió un error al modificar el estado de la alerta");
+        }
+    
+    }
+
+    @FXML
+    private void actRechazar(ActionEvent event) {
+        alerta.setEstado(false);
+        Respuesta res = alertaService.modificar(alerta.getId(), alerta);
+        if(res.getEstado()){
+            alerta.getVuelo().setEstado(4);
+            res = vueloService.modificar(alerta.getVuelo().getId(), alerta.getVuelo());
+            if(res.getEstado()){
+                
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Rechazar solicitud de vuelo", "Ocurrió un error al modificar el estado del vuelo");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Rechazar solicitud de vuelo", "Ocurrió un error al modificar el estado de la alerta");
+        }
+    }
+    
+    public void volver() {
+        Stage stage = new Stage();
+        stage = (Stage) btnAutorizar.getScene().getWindow();
+        stage.close();
+    }
+
+    
+}

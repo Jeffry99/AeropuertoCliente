@@ -113,11 +113,11 @@ public class AlertaGeneradaService {
         }
     }
     
-    public Respuesta getByVuelo(Long empleado){
+    public Respuesta getByVuelo(Long vuelo){
         try{
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("term", empleado);
-            ConexionService conexion = new ConexionService("alertas_generadas/list/empleado", "/{term}", parametros);
+            parametros.put("term", vuelo);
+            ConexionService conexion = new ConexionService("alertas_generadas/list/vuelo", "/{term}", parametros);
             conexion.get();
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar las alertas generadas por su vuelo");

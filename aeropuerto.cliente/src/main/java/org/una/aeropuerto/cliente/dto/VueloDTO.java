@@ -17,13 +17,13 @@ public class VueloDTO {
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private Date fecha;
     private AvionDTO avion;
-    private boolean estado;
+    private int estado;
     private RutaDTO ruta;
 
     public VueloDTO() {
     }
 
-    public VueloDTO(Long id, Date fecha, AvionDTO avion, boolean estado, RutaDTO ruta) {
+    public VueloDTO(Long id, Date fecha, AvionDTO avion, int estado, RutaDTO ruta) {
         this.id = id;
         this.fecha = fecha;
         this.avion = avion;
@@ -55,11 +55,11 @@ public class VueloDTO {
         this.avion = avion;
     }
 
-    public boolean isEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 
@@ -71,5 +71,9 @@ public class VueloDTO {
         this.ruta = ruta;
     }
     
+    @Override
+    public String toString(){
+        return id.toString();
+    }
     
 }
