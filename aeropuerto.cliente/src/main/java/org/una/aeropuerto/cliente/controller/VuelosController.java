@@ -100,20 +100,18 @@ public class VuelosController implements Initializable {
             
             TableColumn <VueloDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
+            colId.setPrefWidth(50);
             
             
             
-            TableColumn <VueloDTO, String>colOrigen = new TableColumn("Origen");
-            colOrigen.setCellValueFactory(av -> {
-                String origen = av.getValue().getRuta().getOrigen();
+            TableColumn <VueloDTO, String>colRuta = new TableColumn("Ruta");
+            colRuta.setCellValueFactory(av -> {
+                String origen = av.getValue().getRuta().getOrigen()+" - "+av.getValue().getRuta().getDestino();
                 return new ReadOnlyStringWrapper(origen);
             });
+            colRuta.setPrefWidth(300);
             
-            TableColumn <VueloDTO, String>colDestino = new TableColumn("Destino");
-            colDestino.setCellValueFactory(av -> {
-                String destino = av.getValue().getRuta().getDestino();
-                return new ReadOnlyStringWrapper(destino);
-            });
+            
             
             TableColumn<VueloDTO, String> colFecha = new TableColumn("Fecha");
             colFecha.setCellValueFactory(av -> {
@@ -121,6 +119,8 @@ public class VuelosController implements Initializable {
                 String fecha = formatter.format(av.getValue().getFecha());
                 return new ReadOnlyStringWrapper(fecha);
             });
+            colFecha.setPrefWidth(75);
+            
             
             TableColumn<VueloDTO, String> colHora = new TableColumn("Hora");
             colHora.setCellValueFactory(av -> {
@@ -128,13 +128,37 @@ public class VuelosController implements Initializable {
                 String hora = formatter.format(av.getValue().getFecha());
                 return new ReadOnlyStringWrapper(hora);
             });
+            colHora.setPrefWidth(75);
+            
+            TableColumn<VueloDTO, String> colEstado = new TableColumn("Estado");
+            colEstado.setCellValueFactory(av -> {
+                int e = av.getValue().getEstado();
+                String estado="";
+                if(e==1){
+                    estado="En revisión";
+                }else{
+                    if(e==2){
+                        estado="Autorizado";
+                    }else{
+                        if(e==3){
+                            estado="No autorizado";
+                        }else{
+                            if(e==4){
+                                estado="Cancelado";
+                            }
+                        }
+                    }
+                }
+                return new ReadOnlyStringWrapper(estado);
+            });
+            colEstado.setPrefWidth(150);
             
             
             tvVuelos.getColumns().addAll(colId);
-            tvVuelos.getColumns().addAll(colOrigen);
-            tvVuelos.getColumns().addAll(colDestino);
+            tvVuelos.getColumns().addAll(colRuta);
             tvVuelos.getColumns().addAll(colFecha);
             tvVuelos.getColumns().addAll(colHora);
+            tvVuelos.getColumns().addAll(colEstado);
             addButtonToTable();
             tvVuelos.setItems(items);
         }
@@ -142,6 +166,7 @@ public class VuelosController implements Initializable {
     
     private void addButtonToTable() {
         TableColumn<VueloDTO, Void> colBtn = new TableColumn("Acciones");
+        colBtn.setPrefWidth(175);
 
         Callback<TableColumn<VueloDTO, Void>, TableCell<VueloDTO, Void>> cellFactory = new Callback<TableColumn<VueloDTO, Void>, TableCell<VueloDTO, Void>>() {
             @Override
@@ -224,14 +249,20 @@ public class VuelosController implements Initializable {
     private void actVolver(ActionEvent event) {
         volver();
     }
-    private boolean estado;
+    private Integer estado = null;
     @FXML
     private void actEstados(ActionEvent event) {
-        if(cbEstado.getValue().equals("Activo")){
-            estado = true;
+        if(cbEstado.getValue().equals("En revisión")){
+            estado = 1;
         }else{
-            if(cbEstado.getValue().equals("Inactivo")){
-                estado = false;
+            if(cbEstado.getValue().equals("Autorizado")){
+                estado = 2;
+            }else{
+                if(cbEstado.getValue().equals("No autorizado")){
+                    estado = 3;
+                }else{
+                    estado=4;
+                }
             }
         }
     }
@@ -306,14 +337,14 @@ public class VuelosController implements Initializable {
 
     @FXML
     private void actRuta(ActionEvent event) {
-        if(validarBusquedas("Ruta")){
+        /*if(validarBusquedas("Ruta")){
             ArrayList<VueloDTO> vuelos = new ArrayList<VueloDTO>();
             Respuesta respuesta = vueloService.getByRuta(cbRuta.getValue().getId());
             if(respuesta.getEstado().equals(true)){
                 vuelos = (ArrayList<VueloDTO>) respuesta.getResultado("Vuelos");
             }
             cargarTabla(vuelos);
-        }
+        }*/
     }
     
     public void volver() {
@@ -357,8 +388,10 @@ public class VuelosController implements Initializable {
 
     public void initEstados(){
         ArrayList<String> estados = new ArrayList<String>();
-        estados.add("Activo");
-        estados.add("Inactivo");
+        estados.add("En revisión");
+        estados.add("Autorizado");
+        estados.add("No autorizado");
+        estados.add("Cancelado");
         ObservableList items = FXCollections.observableArrayList(estados);
         cbEstado.setItems(items);
     }

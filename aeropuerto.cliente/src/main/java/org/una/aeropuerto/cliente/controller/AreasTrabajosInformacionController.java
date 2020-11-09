@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -36,10 +37,6 @@ public class AreasTrabajosInformacionController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
@@ -50,10 +47,15 @@ public class AreasTrabajosInformacionController implements Initializable {
     private AreaTrabajoDTO areaTrabajoEnCuestion = new AreaTrabajoDTO();
     private String modalidad="";
     private Boolean estado;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       
+    btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
     modalidad = (String) AppContext.getInstance().get("ModalidadAreaTrabajo");
     btnGuardar.setVisible(false);
     btnGuardar.setDisable(true);  
@@ -69,21 +71,25 @@ public class AreasTrabajosInformacionController implements Initializable {
             txtDescripcion.setText(areaTrabajoEnCuestion.getDescripcion());
             if(areaTrabajoEnCuestion.getEstado()){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             
             if(modalidad.equals("Ver")){
-                GenerarTransacciones.crearTransaccion("Se observa aerolinea con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
+                GenerarTransacciones.crearTransaccion("Se observa area de trabajo con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
                 txtDescripcion.setDisable(true);
                 txtNombre.setDisable(true);
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
             }
+        }else{
+            txtEstado.setText("Activo");
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
     }
     
@@ -94,10 +100,6 @@ public class AreasTrabajosInformacionController implements Initializable {
         }
         if(txtNombre.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del area de trabajo");
             return false;
         }
         return true;
@@ -113,7 +115,7 @@ public class AreasTrabajosInformacionController implements Initializable {
         if(validar()){
             areaTrabajoEnCuestion.setNombre(txtNombre.getText());
             areaTrabajoEnCuestion.setDescripcion(txtDescripcion.getText());
-            areaTrabajoEnCuestion.setEstado(estado);
+            
             
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=areaTrabajoService.modificar(areaTrabajoEnCuestion.getId(), areaTrabajoEnCuestion);
@@ -128,6 +130,7 @@ public class AreasTrabajosInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
+                    areaTrabajoEnCuestion.setEstado(true);
                     Respuesta respuesta=areaTrabajoService.crear(areaTrabajoEnCuestion);
                     if(respuesta.getEstado()){
                         areaTrabajoEnCuestion = (AreaTrabajoDTO) respuesta.getResultado("AreaTrabajo");
@@ -153,16 +156,24 @@ public class AreasTrabajosInformacionController implements Initializable {
     }
 
     @FXML
-    private void actEstadoInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            areaTrabajoEnCuestion.setEstado(false);
+            mensaje="Se anula el area de trabajo con id "+areaTrabajoEnCuestion.getId();
+        }else{
+            areaTrabajoEnCuestion.setEstado(true);
+            mensaje="Se activa el area de trabajo con id "+areaTrabajoEnCuestion.getId();
+        }
+        Respuesta respuesta=areaTrabajoService.modificar(areaTrabajoEnCuestion.getId(), areaTrabajoEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "AreaTrabajosInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del area de trabajo", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del area de trabajo", respuesta.getMensaje());
+        }
     }
 
-    @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
+    
 }

@@ -59,19 +59,11 @@ public class AvionesInformacionController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
-    @FXML
     private Label lblNombre;
     @FXML
     private Label lblTelefono;
     @FXML
     private Label lblDireccion;
-    @FXML
-    private Label lblEstado;
-    @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Label lblIdNumero;
     
     private String modalidad="";
@@ -98,12 +90,19 @@ public class AvionesInformacionController implements Initializable {
     private Label lblInformacion;
     @FXML
     private Pane pane;
+    @FXML
+    private Label lblCedula1;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         tvTabla.setVisible(false);
         btnOcultar.setVisible(false);
         modalidad = (String) AppContext.getInstance().get("ModalidadAvion");
@@ -117,8 +116,9 @@ public class AvionesInformacionController implements Initializable {
             txtMatricula.setDisable(true);
             cbAerolinea.setDisable(true);
             cbTipoAvion.setDisable(true);
-            rbActivo.setDisable(true);
-            rbInactivo.setDisable(true);
+            
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
         if(modalidad.equals("Modificar")){
             llenarDatos();
@@ -131,6 +131,9 @@ public class AvionesInformacionController implements Initializable {
             btnBitacora.setVisible(false);
             pane.setVisible(false);
             lblInformacion.setVisible(false);
+            txtEstado.setText("Activo");
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
     }    
     public void llenarDatos(){
@@ -141,20 +144,20 @@ public class AvionesInformacionController implements Initializable {
         cbTipoAvion.setValue(avion.getTipoAvion());
         
         if(avion.getEstado()){
-            rbActivo.setSelected(true);
-            rbInactivo.setSelected(false);
             estado = true;
+            txtEstado.setText("Activo");
+            btnCambiarEstado.setText("Anular");
         }else{
-            rbActivo.setSelected(false);
-            rbInactivo.setSelected(true);
             estado = false;
+            txtEstado.setText("Inactivo");
+            btnCambiarEstado.setText("Activar");
         }
     }
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
             avion.setMatricula(txtMatricula.getText());
-            avion.setEstado(estado);
+            
             avion.setAerolinea(cbAerolinea.getValue());
             avion.setTipoAvion(cbTipoAvion.getValue());
             
@@ -171,9 +174,19 @@ public class AvionesInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
+                    avion.setEstado(true);
                     Respuesta respuesta=avionService.crear(avion);
                     if(respuesta.getEstado()){
                         avion = (AvionDTO) respuesta.getResultado("Avion");
+                        BitacoraAvionService bitacoraService = new BitacoraAvionService();
+                        BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
+                        bitacora.setAvion(avion);
+                        bitacora.setCombustible(100);
+                        bitacora.setDistanciaRecorrida(0);
+                        bitacora.setEstado(true);
+                        bitacora.setTiempoTierra(0);
+                        bitacora.setUbicacion("Hangar");
+                        respuesta = bitacoraService.crear(bitacora);
                         GenerarTransacciones.crearTransaccion("Se crea empleado con id "+avion.getId(), "AvionesInformacion");
                         Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de avión", "Se ha registrado el avión correctamente");
                         volver();
@@ -191,19 +204,7 @@ public class AvionesInformacionController implements Initializable {
     }
     
     private Boolean estado;
-    @FXML
-    private void actActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
-
-    @FXML
-    private void actInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
     
     public void volver() {
         try{
@@ -227,10 +228,6 @@ public class AvionesInformacionController implements Initializable {
         }
         if(cbTipoAvion.getValue() == null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del cliente");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del empleado");
             return false;
         }
         return true;
@@ -459,6 +456,26 @@ public class AvionesInformacionController implements Initializable {
             tvTabla.setVisible(false);
             btnOcultar.setVisible(false);
             lblInformacion.setText("No hay elementos para mostrar");
+        }
+    }
+
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            avion.setEstado(false);
+            mensaje="Se anula el avion con id "+avion.getId();
+        }else{
+            avion.setEstado(true);
+            mensaje="Se activa el avion con id "+avion.getId();
+        }
+        Respuesta respuesta=avionService.modificar(avion.getId(), avion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "AvionesInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del avion", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del avion", respuesta.getMensaje());
         }
     }
 }

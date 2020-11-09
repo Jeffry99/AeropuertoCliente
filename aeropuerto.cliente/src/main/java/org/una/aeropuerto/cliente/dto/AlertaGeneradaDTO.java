@@ -14,7 +14,7 @@ import javax.json.bind.annotation.JsonbDateFormat;
  */
 public class AlertaGeneradaDTO {
     private Long id;
-    private boolean estado;
+    private int estado;
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private java.util.Date fechaRegistro;
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
@@ -26,7 +26,7 @@ public class AlertaGeneradaDTO {
     public AlertaGeneradaDTO() {
     }
 
-    public AlertaGeneradaDTO(Long id, boolean estado, Date fechaRegistro, Date fechaModificacion, String autorizacion, VueloDTO vuelo, TipoAlertaDTO tipoAlerta) {
+    public AlertaGeneradaDTO(Long id, int estado, Date fechaRegistro, Date fechaModificacion, String autorizacion, VueloDTO vuelo, TipoAlertaDTO tipoAlerta) {
         this.id = id;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
@@ -44,11 +44,11 @@ public class AlertaGeneradaDTO {
         this.id = id;
     }
 
-    public boolean getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 

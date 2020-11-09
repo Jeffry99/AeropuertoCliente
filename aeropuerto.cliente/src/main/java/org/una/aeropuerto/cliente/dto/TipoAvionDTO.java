@@ -14,16 +14,28 @@ public class TipoAvionDTO {
     private String nombre;
     private float distanciaRecomendada;
     private boolean estado;
+    private float distanciaMaxima;
 
     public TipoAvionDTO() {
     }
 
-    public TipoAvionDTO(Long id, String nombre, float distanciaRecomendada, boolean estado) {
+    public TipoAvionDTO(Long id, String nombre, float distanciaRecomendada, boolean estado, float distanciaMaxima) {
         this.id = id;
         this.nombre = nombre;
         this.distanciaRecomendada = distanciaRecomendada;
         this.estado = estado;
+        this.distanciaMaxima = distanciaMaxima;
     }
+
+    public float getDistanciaMaxima() {
+        return distanciaMaxima;
+    }
+
+    public void setDistanciaMaxima(float distanciaMaxima) {
+        this.distanciaMaxima = distanciaMaxima;
+    }
+
+    
 
     public Long getId() {
         return id;

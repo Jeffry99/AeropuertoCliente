@@ -25,6 +25,7 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AlertaGeneradaDTO;
 import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
+import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.AlertaGeneradaService;
 import org.una.aeropuerto.cliente.service.BitacoraAvionService;
 import org.una.aeropuerto.cliente.service.VueloService;
@@ -97,17 +98,23 @@ public class AlertasInformacionController implements Initializable {
         }
         
         descripcionAlerta.setText(alerta.getTipoAlerta().getDescripcion());
-        if(alerta.getEstado()){
+        if(alerta.getEstado()==2){
             estado.setText(alerta.getAutorizacion());
         }else{
-            estado.setText("No autorizada");
+            if(alerta.getEstado()==3){
+                estado.setText(alerta.getAutorizacion());
+            }else{
+                if(alerta.getEstado()==1){
+                    estado.setText("Sin autorizar");
+                }
+            }
         }
         idVuelo.setText(alerta.getVuelo().getId().toString());
         fechaVuelo.setText(formaFecha.format(alerta.getVuelo().getFecha()));
         horaVuelo.setText(formaHora.format(alerta.getVuelo().getFecha()));
         ruta.setText(alerta.getVuelo().getRuta().getOrigen()+" - "+alerta.getVuelo().getRuta().getDestino());
         distanciaRuta.setText(String.valueOf(alerta.getVuelo().getRuta().getDistancia())+" Km");
-        fechaAlerta.setText(formaFecha.format(alerta.getFechaModificacion())+ "a las "+formaHora.format(alerta.getFechaModificacion()));
+        fechaAlerta.setText(formaFecha.format(alerta.getFechaModificacion())+" a las "+formaHora.format(alerta.getFechaModificacion()));
         matriculaAvion.setText(alerta.getVuelo().getAvion().getMatricula());
         tipoAvion.setText(alerta.getVuelo().getAvion().getTipoAvion().getNombre());
         distanciaRecomendada.setText(String.valueOf(alerta.getVuelo().getAvion().getTipoAvion().getDistanciaRecomendada())+" Km");
@@ -145,12 +152,11 @@ public class AlertasInformacionController implements Initializable {
     
     @FXML
     private void actAutorizar(ActionEvent event) {
-        alerta.setEstado(true);
+        alerta.setEstado(2);
         alerta.setAutorizacion("Autorizada por "+UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
         Respuesta res = alertaService.modificar(alerta.getId(), alerta);
         if(res.getEstado()){
-            alerta.getVuelo().setEstado(3);
-            res = vueloService.modificar(alerta.getVuelo().getId(), alerta.getVuelo());
+            autorizacionVuelo();
             if(res.getEstado()){
                 AlertasController aController = (AlertasController) AppContext.getInstance().get("ControllerAlertas");
                 aController.cargarTodasAlertas();
@@ -167,13 +173,16 @@ public class AlertasInformacionController implements Initializable {
 
     @FXML
     private void actRechazar(ActionEvent event) {
-        alerta.setEstado(false);
+        alerta.setEstado(3);
+        alerta.setAutorizacion("No autorizada por "+UsuarioAutenticado.getInstance().getUsuarioLogeado().getEmpleado().getNombre());
         Respuesta res = alertaService.modificar(alerta.getId(), alerta);
         if(res.getEstado()){
-            alerta.getVuelo().setEstado(4);
-            res = vueloService.modificar(alerta.getVuelo().getId(), alerta.getVuelo());
+            autorizacionVuelo();
             if(res.getEstado()){
-                
+                AlertasController aController = (AlertasController) AppContext.getInstance().get("ControllerAlertas");
+                aController.cargarTodasAlertas();
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Autorización de vuelo", "Se ha rechazado esta alerta");
+                volver();
             }else{
                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Rechazar solicitud de vuelo", "Ocurrió un error al modificar el estado del vuelo");
             }
@@ -186,6 +195,33 @@ public class AlertasInformacionController implements Initializable {
         Stage stage = new Stage();
         stage = (Stage) btnAutorizar.getScene().getWindow();
         stage.close();
+    }
+    
+    private void autorizacionVuelo(){
+        VueloDTO vuelo = alerta.getVuelo();
+        ArrayList<AlertaGeneradaDTO> alertas = new ArrayList<AlertaGeneradaDTO>();
+        Respuesta respuesta = alertaService.getByVuelo(vuelo.getId());
+        boolean ban=true;
+        int autorizacion = 1;
+        if(respuesta.getEstado().equals(true)){
+            alertas = (ArrayList<AlertaGeneradaDTO>) respuesta.getResultado("AlertasGeneradas");
+            for(int i=0; i<alertas.size(); i++){
+                if(alertas.get(i).getEstado()!=2){
+                    if(alertas.get(i).getEstado()==3){
+                        autorizacion=3;
+                    }
+                    ban=false;
+                }
+            }
+        }
+        if(ban){
+            vuelo.setEstado(2);
+        }else{
+            vuelo.setEstado(autorizacion);
+        }
+        vueloService = new VueloService();
+        respuesta = vueloService.modificar(vuelo.getId(), vuelo);
+        
     }
 
     

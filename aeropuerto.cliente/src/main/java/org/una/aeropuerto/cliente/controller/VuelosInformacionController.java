@@ -43,6 +43,7 @@ import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.RutaService;
 import org.una.aeropuerto.cliente.service.VueloService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.GenerarAlertasVuelos;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -69,10 +70,6 @@ public class VuelosInformacionController implements Initializable {
     @FXML
     private Label lblEstado;
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Label lblIdNumero;
     @FXML
     private ComboBox<RutaDTO> cbRuta;
@@ -80,22 +77,27 @@ public class VuelosInformacionController implements Initializable {
     private ComboBox<AvionDTO> cbAvion;
     @FXML
     private DatePicker dpFecha;
-    private VueloDTO vuelo = new VueloDTO();
-    private String modalidad = "";
-    private VueloService vueloService = new VueloService();
     @FXML
     private ImageView imgHora;
     @FXML
     public Label lbHora;
+    @FXML
+    private Button btnCancelar;
     /**
      * 
      * Initializes the controller class.
      */
+    private VueloDTO vuelo = new VueloDTO();
+    private String modalidad = "";
+    private VueloService vueloService = new VueloService();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initRutas();
         initAviones();
         // TODO
+        
+        lblEstado.setText("En revisión");
         
         modalidad = AppContext.getInstance().get("ModalidadVuelo").toString();
         
@@ -107,8 +109,8 @@ public class VuelosInformacionController implements Initializable {
             cbAvion.setDisable(true);
             cbRuta.setDisable(true);
             dpFecha.setDisable(true);
-            rbActivo.setDisable(true);
-            rbInactivo.setDisable(true);
+            btnCancelar.setDisable(true);
+            btnCancelar.setVisible(false);
         }
         if(modalidad.equals("Modificar")){
             llenarDatos();
@@ -117,6 +119,8 @@ public class VuelosInformacionController implements Initializable {
             vuelo = new VueloDTO();
             lblIdNumero.setVisible(false);
             lblNombre.setVisible(false);
+            btnCancelar.setDisable(true);
+            btnCancelar.setVisible(false);
         }
             
     }    
@@ -125,32 +129,28 @@ public class VuelosInformacionController implements Initializable {
         lblIdNumero.setText(vuelo.getId().toString());
         cbAvion.setValue(vuelo.getAvion());
         cbRuta.setValue(vuelo.getRuta());
-        
         fechaGuardar=vuelo.getFecha();
-        
-        
-        
-        
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         lbHora.setText(formatter.format(fechaGuardar));
-        
-        
         ZoneId defaultZoneId = ZoneId.systemDefault();
 	Instant instant = fechaGuardar.toInstant();
         dpFecha.setValue(instant.atZone(defaultZoneId).toLocalDate());
-        
         getFecha();
-        setHora();
-
-        
+        setHora(); 
         if(vuelo.getEstado()==1){
-            rbActivo.setSelected(true);
-            rbInactivo.setSelected(false);
-            estado = true;
+            lblEstado.setText("En revisión");// = true;
         }else{
-            rbActivo.setSelected(false);
-            rbInactivo.setSelected(true);
-            estado = false;
+            if(vuelo.getEstado()==2){
+                lblEstado.setText("Autorizado");
+            }else{
+                if(vuelo.getEstado()==3){
+                    lblEstado.setText("No autorizado");
+                }else{
+                    if(vuelo.getEstado()==4){
+                        lblEstado.setText("Cancelado");
+                    }
+                }
+            }
         }
     }
     
@@ -189,8 +189,9 @@ public class VuelosInformacionController implements Initializable {
                     Respuesta respuesta=vueloService.crear(vuelo);
                     if(respuesta.getEstado()){
                         vuelo = (VueloDTO) respuesta.getResultado("Vuelo");
+                        GenerarAlertasVuelos.generarAlerta(vuelo);
                         GenerarTransacciones.crearTransaccion("Se crea vuelo con id "+vuelo.getId(), "VuelosInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de vuelo", "Se ha registrado el vuelo correctamente");
+                        //Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de vuelo", "Se ha registrado el vuelo correctamente");
                         volver();
                     }else{
                         Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de vuelo", respuesta.getMensaje());
@@ -204,20 +205,8 @@ public class VuelosInformacionController implements Initializable {
     private void actVolver(ActionEvent event) {
         volver();
     }
-    private Boolean estado;
-    @FXML
-    private void actActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
+    
 
-    @FXML
-    private void actInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
     public void initAviones(){
         AvionService avionService = new AvionService();
         ArrayList<AvionDTO> aviones;
@@ -266,10 +255,10 @@ public class VuelosInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione la fecha");
             return false;
         }
-        if(estado==null){
+        /*if(estado==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado");
             return false;
-        }
+        }*/
         if(modalidad.equals("Agregar")){
             if(EstadoHora==false){
                 Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione la hora del vuelo");
@@ -339,5 +328,18 @@ public class VuelosInformacionController implements Initializable {
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         };
+    }
+
+    @FXML
+    private void actCancelar(ActionEvent event) {
+        vuelo.setEstado(4);
+        Respuesta respuesta=vueloService.modificar(vuelo.getId(), vuelo);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion("Se cancela vuelo con id "+vuelo.getId(), "VuelosInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Cancelación de vuelo", "Se ha cancelado el vuelo correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Cancelación de vuelo", respuesta.getMensaje());
+        }
     }
 }

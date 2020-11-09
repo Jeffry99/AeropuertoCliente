@@ -22,9 +22,6 @@
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
       </TableView>
       <Button fx:id="btnVolver" layoutX="85.0" layoutY="594.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label layoutX="85.0" layoutY="35.0" text="Vuelos registrados" />

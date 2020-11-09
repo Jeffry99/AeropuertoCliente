@@ -3,17 +3,17 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AvionesInformacionController">
+<AnchorPane id="AnchorPane" pickOnBounds="false" prefHeight="600.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.AvionesInformacionController">
    <children>
        <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -22,25 +22,20 @@
       </ImageView>
       <Label fx:id="lblCedula" layoutX="125.0" layoutY="107.0" text="Matrícula:" />
       <TextField fx:id="txtMatricula" layoutX="230.0" layoutY="99.0" prefHeight="37.0" prefWidth="234.0" />
-      <Button fx:id="btnGuardar" layoutX="870.0" layoutY="539.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
-      <Button fx:id="btnVolver" layoutX="29.0" layoutY="539.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
-      <Label fx:id="lblNombre" layoutX="125.0" layoutY="50.0" text="Id:" />
+      <Button fx:id="btnGuardar" layoutX="758.0" layoutY="157.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Button fx:id="btnVolver" layoutX="29.0" layoutY="584.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label fx:id="lblTelefono" layoutX="125.0" layoutY="164.0" text="Aerolínea" />
       <Label fx:id="lblDireccion" layoutX="520.0" layoutY="107.0" text="Tipo de Avión:" />
-      <Label fx:id="lblEstado" layoutX="520.0" layoutY="164.0" text="Estado:" />
-      <RadioButton fx:id="rbActivo" layoutX="626.0" layoutY="166.0" mnemonicParsing="false" onAction="#actActivo" text="Activo" />
-      <RadioButton fx:id="rbInactivo" layoutX="705.0" layoutY="166.0" mnemonicParsing="false" onAction="#actInactivo" text="Inactivo" />
-      <Label fx:id="lblIdNumero" layoutX="230.0" layoutY="50.0" prefHeight="21.0" prefWidth="115.0" text="Id Número" />
       <ComboBox fx:id="cbAerolinea" layoutX="230.0" layoutY="156.0" prefHeight="37.0" prefWidth="234.0" />
       <ComboBox fx:id="cbTipoAvion" layoutX="625.0" layoutY="99.0" prefHeight="37.0" prefWidth="234.0" />
-      <Button fx:id="btnServicios" layoutX="29.0" layoutY="224.0" mnemonicParsing="false" onAction="#actServicios" text="Servicios Registrados" />
-      <Button fx:id="btnVuelos" layoutX="213.0" layoutY="224.0" mnemonicParsing="false" onAction="#actVuelos" prefHeight="35.0" prefWidth="185.0" text="Vuelos" />
-      <Button fx:id="btnBitacora" layoutX="398.0" layoutY="224.0" mnemonicParsing="false" onAction="#actBitacora" prefHeight="35.0" prefWidth="185.0" text="Bitácora" />
-      <Button fx:id="btnOcultar" layoutX="875.0" layoutY="224.0" mnemonicParsing="false" onAction="#actOcultarTable" prefHeight="35.0" prefWidth="96.0" text="Ocultar" />
-      <Pane fx:id="pane" layoutX="29.0" layoutY="259.0" prefHeight="281.0" prefWidth="942.0" style="-fx-background-color: #23BAC4;">
+      <Button fx:id="btnServicios" layoutX="125.0" layoutY="224.0" mnemonicParsing="false" onAction="#actServicios" text="Servicios Registrados" />
+      <Button fx:id="btnVuelos" layoutX="309.0" layoutY="224.0" mnemonicParsing="false" onAction="#actVuelos" prefHeight="35.0" prefWidth="101.0" text="Vuelos" />
+      <Button fx:id="btnBitacora" layoutX="410.0" layoutY="224.0" mnemonicParsing="false" onAction="#actBitacora" prefHeight="35.0" prefWidth="101.0" text="Bitácora" />
+      <Button fx:id="btnOcultar" layoutX="765.0" layoutY="224.0" mnemonicParsing="false" onAction="#actOcultarTable" prefHeight="35.0" prefWidth="101.0" text="Ocultar" />
+      <Pane fx:id="pane" layoutX="126.0" layoutY="259.0" prefHeight="281.0" prefWidth="740.0" style="-fx-background-color: #23BAC4;">
          <children>
-            <Label fx:id="lblInformacion" alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="130.0" prefHeight="21.0" prefWidth="852.0" text="Seleccione la información que quiere observar sobre este avión" />
-            <TableView fx:id="tvTabla" layoutX="-1.0" prefHeight="281.0" prefWidth="942.0">
+            <Label fx:id="lblInformacion" alignment="CENTER" contentDisplay="CENTER" layoutY="130.0" prefHeight="21.0" prefWidth="741.0" text="Seleccione la información que quiere observar sobre este avión" />
+            <TableView fx:id="tvTabla" prefHeight="281.0" prefWidth="741.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
@@ -51,6 +46,18 @@
             </TableView>
          </children>
       </Pane>
-      <Line endX="880.0" layoutX="110.0" layoutY="213.0" startX="-100.0" />
+      <Line endX="749.0" layoutX="110.0" layoutY="213.0" startX="17.0" />
+      <Label fx:id="lblCedula1" layoutX="415.0" layoutY="41.0" text="INFORMACIÓN DE AVIÓN" />
+      <Label layoutX="437.0" layoutY="575.0" text="Estado:">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtEstado" layoutX="501.0" layoutY="576.0" prefHeight="17.0" prefWidth="149.0" />
+      <Button fx:id="btnCambiarEstado" layoutX="751.0" layoutY="566.0" mnemonicParsing="false" onAction="#actCambiarEstado" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #aaf2db;" text="Anular">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

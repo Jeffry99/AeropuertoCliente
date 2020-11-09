@@ -82,7 +82,7 @@ public class VueloService {
         }
     }
     
-    public Respuesta getByEstado(boolean estado){
+    public Respuesta getByEstado(int estado){
         try{
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("term", estado);

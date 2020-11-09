@@ -48,11 +48,6 @@ public class BitacoraInformacionController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
-    @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Label lblIdNumero;
     @FXML
     private ComboBox<AvionDTO> cbAvion;
@@ -71,6 +66,8 @@ public class BitacoraInformacionController implements Initializable {
     private String modalidad = "";
     BitacoraAvionService bitacoraService = new BitacoraAvionService();
     BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
+    @FXML
+    private Label txtEstado;
     /**
      * Initializes the controller class.
      */
@@ -92,8 +89,6 @@ public class BitacoraInformacionController implements Initializable {
             spDistancia.setDisable(true);
             cbAvion.setDisable(true);
             spCombustible.setDisable(true);
-            rbActivo.setDisable(true);
-            rbInactivo.setDisable(true);
             txtUbicacion.setDisable(true);
         }
         if(modalidad.equals("Modificar")){
@@ -103,6 +98,7 @@ public class BitacoraInformacionController implements Initializable {
             lblFechaCreacion.setText("");
             lblFechaModificacion.setText("");
             lblIdNumero.setVisible(false);
+            txtEstado.setText("Activo");
         }
     }
     
@@ -122,13 +118,11 @@ public class BitacoraInformacionController implements Initializable {
             lblFechaModificacion.setText("");
         }
         if(bitacora.getEstado()){
-            rbActivo.setSelected(true);
-            rbInactivo.setSelected(false);
             estado = true;
+            txtEstado.setText("Activo");
         }else{
-            rbActivo.setSelected(false);
-            rbInactivo.setSelected(true);
             estado = false;
+            txtEstado.setText("Inactivo");
         }
         
     }
@@ -139,7 +133,6 @@ public class BitacoraInformacionController implements Initializable {
             bitacora.setAvion(cbAvion.getValue());
             bitacora.setCombustible(spCombustible.getValue());
             bitacora.setDistanciaRecorrida(spDistancia.getValue().floatValue());
-            bitacora.setEstado(estado);
             bitacora.setTiempoTierra(spTiempo.getValue());
             bitacora.setUbicacion(txtUbicacion.getText());
             
@@ -157,6 +150,7 @@ public class BitacoraInformacionController implements Initializable {
                 }
             }else{
                 if(modalidad.equals("Agregar")){
+                    bitacora.setEstado(true);
                     Respuesta respuesta=bitacoraService.crear(bitacora);
                     if(respuesta.getEstado()){
                         bitacora = (BitacoraAvionDTO) respuesta.getResultado("BitacoraAvion");
@@ -187,19 +181,7 @@ public class BitacoraInformacionController implements Initializable {
     }
     
     private Boolean estado;
-    @FXML
-    private void actActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
-
-    @FXML
-    private void actInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
     
     public boolean validar(){
         if(spTiempo.getValue() == null){
@@ -216,10 +198,6 @@ public class BitacoraInformacionController implements Initializable {
         }
         if(cbAvion.getValue() == null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el avión");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del servicio registrado");
             return false;
         }
         if(txtUbicacion.getText().isEmpty()){

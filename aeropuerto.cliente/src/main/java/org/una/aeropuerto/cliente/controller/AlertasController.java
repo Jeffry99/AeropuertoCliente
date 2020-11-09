@@ -79,6 +79,7 @@ public class AlertasController implements Initializable {
         ArrayList estados = new ArrayList();
         estados.add("Autorizada");
         estados.add("No autorizada");
+        estados.add("Sin autorizar");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxBuscarEstado.setItems(items);
     }
@@ -119,10 +120,16 @@ public class AlertasController implements Initializable {
             TableColumn<AlertaGeneradaDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(av -> {
             String estadoString;
-                if(av.getValue().getEstado())
+                if(av.getValue().getEstado()==2){
                     estadoString = "Autorizada";
-                else
-                    estadoString = "No autorizada";
+                }else{
+                    if(av.getValue().getEstado()==3){
+                       estadoString = "No autorizada"; 
+                    }else{
+                        estadoString="Sin autorizar";
+                    }
+                    
+                }
                 return new ReadOnlyStringWrapper(estadoString);
             });
             tvAlertas.getColumns().addAll(colVuelo);
@@ -235,14 +242,16 @@ public class AlertasController implements Initializable {
         }
     }
     
-    private Boolean estado = null;
+    private Integer estado = null;
     @FXML
     private void actSelEstado(ActionEvent event) {
         if(cbxBuscarEstado.getValue().equals("Autorizada")){
-            estado = true;
+            estado = 2;
         }else{
             if(cbxBuscarEstado.getValue().equals("No autorizada")){
-                estado = false;
+                estado = 3;
+            }else{
+                estado=1;
             }
         }
     }

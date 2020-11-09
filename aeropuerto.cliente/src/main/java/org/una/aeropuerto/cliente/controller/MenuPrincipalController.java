@@ -361,5 +361,13 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actAlertas(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("Alertas" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            GenerarTransacciones.crearTransaccion("Se observan alertas", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
     }
 }

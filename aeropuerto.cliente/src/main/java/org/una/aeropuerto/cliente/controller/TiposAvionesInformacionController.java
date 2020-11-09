@@ -52,6 +52,8 @@ public class TiposAvionesInformacionController implements Initializable {
     private TipoAvionDTO tipoAvionEnCuestion = new TipoAvionDTO();
     private String modalidad="";
     private Boolean estado;
+    @FXML
+    private TextField txtDistanciaMaxima;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
      
@@ -68,6 +70,7 @@ public class TiposAvionesInformacionController implements Initializable {
             tipoAvionEnCuestion = (TipoAvionDTO) AppContext.getInstance().get("TipoAvionEnCuestion");
             txtNombre.setText(tipoAvionEnCuestion.getNombre());
             txtDistancia.setText(String.valueOf(tipoAvionEnCuestion.getDistanciaRecomendada()));
+            txtDistanciaMaxima.setText(String.valueOf(tipoAvionEnCuestion.getDistanciaMaxima()));
             if(tipoAvionEnCuestion.getEstado()){
                 estado=true;
                 rbActivo.setSelected(true);
@@ -84,12 +87,17 @@ public class TiposAvionesInformacionController implements Initializable {
                 txtNombre.setDisable(true);
                 rbActivo.setDisable(true);
                 rbInactivo.setDisable(true);
+                txtDistanciaMaxima.setDisable(true);
             }
         }
     } 
     public boolean validar(){
         if(txtDistancia.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la distancia recomendada del tipo de avion");
+            return false;
+        }
+        if(txtDistanciaMaxima.getText().isBlank()){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la distancia máxima del tipo de avion");
             return false;
         }
         if(txtNombre.getText().isBlank()){
@@ -110,11 +118,12 @@ public class TiposAvionesInformacionController implements Initializable {
 
     @FXML
     private void actGuardar(ActionEvent event) {
-if(validar()){
-            
+        if(validar()){
+                
             tipoAvionEnCuestion.setNombre(txtNombre.getText());
             tipoAvionEnCuestion.setDistanciaRecomendada(Float.parseFloat(txtDistancia.getText()));
             tipoAvionEnCuestion.setEstado(estado);
+            tipoAvionEnCuestion.setDistanciaMaxima(Float.valueOf(txtDistanciaMaxima.getText()));
             
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=tipoAvionService.modificar(tipoAvionEnCuestion.getId(), tipoAvionEnCuestion);

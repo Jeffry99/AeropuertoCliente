@@ -36,10 +36,7 @@ public class AerolineasInformacionController implements Initializable {
     
     @FXML
     private TextField txtNombre;
-    @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
+    
     @FXML
     private Button btnCancelar;
     @FXML
@@ -51,11 +48,15 @@ public class AerolineasInformacionController implements Initializable {
     private AerolineaDTO aerolineaEnCuestion = new AerolineaDTO();
     private String modalidad="";
     private Boolean estado;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        
+    btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
     modalidad = (String) AppContext.getInstance().get("ModalidadAerolinea");
     btnGuardar.setVisible(false);
     btnGuardar.setDisable(true);  
@@ -63,6 +64,7 @@ public class AerolineasInformacionController implements Initializable {
     if(!modalidad.equals("Ver")){
         btnGuardar.setVisible(true);
         btnGuardar.setDisable(false);
+        
     }   
       
      if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
@@ -71,21 +73,25 @@ public class AerolineasInformacionController implements Initializable {
             txtResponsable.setText(aerolineaEnCuestion.getResponsable());
             if(aerolineaEnCuestion.getEstado()){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             
             if(modalidad.equals("Ver")){
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
                 GenerarTransacciones.crearTransaccion("Se observa aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
                 txtResponsable.setDisable(true);
                 txtNombre.setDisable(true);
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
             }
+        }else{
+            txtEstado.setText("Activo");
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
     }
     
@@ -96,10 +102,6 @@ public class AerolineasInformacionController implements Initializable {
         }
         if(txtNombre.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre de la aerolinea");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la aerolinea");
             return false;
         }
         return true;
@@ -119,7 +121,6 @@ public class AerolineasInformacionController implements Initializable {
             
             aerolineaEnCuestion.setNombre(txtNombre.getText());
             aerolineaEnCuestion.setResponsable(txtResponsable.getText());
-            aerolineaEnCuestion.setEstado(estado);
             
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=aerolineaService.modificar(aerolineaEnCuestion.getId(), aerolineaEnCuestion);
@@ -134,6 +135,7 @@ public class AerolineasInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
+                    aerolineaEnCuestion.setEstado(true);
                     Respuesta respuesta=aerolineaService.crear(aerolineaEnCuestion);
                     if(respuesta.getEstado()){
                         aerolineaEnCuestion = (AerolineaDTO) respuesta.getResultado("Aerolinea");
@@ -161,18 +163,26 @@ public class AerolineasInformacionController implements Initializable {
     }
 
     @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            aerolineaEnCuestion.setEstado(false);
+            mensaje="Se anula la aerolinea con id "+aerolineaEnCuestion.getId();
+        }else{
+            aerolineaEnCuestion.setEstado(true);
+            mensaje="Se activa la aerolinea con id "+aerolineaEnCuestion.getId();
+        }
+        Respuesta respuesta=aerolineaService.modificar(aerolineaEnCuestion.getId(), aerolineaEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "AerolineasInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado de la aerolinea", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado de la aerolinea", respuesta.getMensaje());
+        }
     }
 
-    @FXML
-    private void actEstadoIctivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
     
 }
 
