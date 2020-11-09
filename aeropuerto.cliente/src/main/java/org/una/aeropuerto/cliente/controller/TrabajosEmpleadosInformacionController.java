@@ -44,10 +44,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  */
 public class TrabajosEmpleadosInformacionController implements Initializable {
 
-    @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
+
     @FXML
     private Button btnCancelar;
     @FXML
@@ -70,81 +67,81 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     AreaTrabajoService areaTrabajoService = new AreaTrabajoService();
     EmpleadoService empleadosService = new EmpleadoService();
     
-    private TrabajoEmpleadoDTO trabajoEmpleado = new TrabajoEmpleadoDTO();
+ 
     private EmpleadoDTO empleado = new EmpleadoDTO();
     
     
     @FXML
     private ComboBox<EmpleadoDTO> cbxEmpleado;
     @FXML
-    private Rectangle cuadro;
-    @FXML
-    private Line barra;
-    @FXML
-    private Rectangle cuadro1;
-    @FXML
     private Label labelNombreAreaTrabajo;
     @FXML
     private Label labelDescripcionAreaTrabajo;
     @FXML
     private Line barra1;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
-    iniAreasTrabajos();
-    iniEmpleados();
-    
-    modalidad = (String) AppContext.getInstance().get("ModalidadTrabajoEmpleado");
-    btnGuardar.setVisible(false);
-    btnGuardar.setDisable(true);  
-    cbxAreaTrabajo.setValue(trabajoEmpleadoEnCuestion.getAreaTrabajo());
-    cbxEmpleado.setValue(trabajoEmpleadoEnCuestion.getEmpleado());
-    
-    
-    if(!modalidad.equals("Ver")){
-        btnGuardar.setVisible(true);
-        btnGuardar.setDisable(false);
-    }   
-      
-    if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
+        iniAreasTrabajos();
+        iniEmpleados();
 
-        trabajoEmpleadoEnCuestion = (TrabajoEmpleadoDTO) AppContext.getInstance().get("TrabajoEmpleadoEnCuestion");
-       
-        labelNombre.setText(trabajoEmpleadoEnCuestion.getEmpleado().getNombre());
-        labelCedula.setText(trabajoEmpleadoEnCuestion.getEmpleado().getCedula());
+        modalidad = (String) AppContext.getInstance().get("ModalidadTrabajoEmpleado");
+        btnGuardar.setVisible(false);
+        btnGuardar.setDisable(true);  
         cbxAreaTrabajo.setValue(trabajoEmpleadoEnCuestion.getAreaTrabajo());
         cbxEmpleado.setValue(trabajoEmpleadoEnCuestion.getEmpleado());
-        labelNombreAreaTrabajo.setText(trabajoEmpleadoEnCuestion.getAreaTrabajo().getNombre());
-        labelDescripcionAreaTrabajo.setText(trabajoEmpleadoEnCuestion.getAreaTrabajo().getDescripcion());
 
-        if(trabajoEmpleadoEnCuestion.getEstado()){
-            estado=true;
-            rbActivo.setSelected(true);
-            rbInactivo.setSelected(false);
-        }else{
-            estado=false;
-            rbActivo.setSelected(false);
-            rbInactivo.setSelected(true);
+
+        if(!modalidad.equals("Ver")){
+            btnGuardar.setVisible(true);
+            btnGuardar.setDisable(false);
+        }   
+
+        if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
+
+            trabajoEmpleadoEnCuestion = (TrabajoEmpleadoDTO) AppContext.getInstance().get("TrabajoEmpleadoEnCuestion");
+
+            labelNombre.setText(trabajoEmpleadoEnCuestion.getEmpleado().getNombre());
+            labelCedula.setText(trabajoEmpleadoEnCuestion.getEmpleado().getCedula());
+            cbxAreaTrabajo.setValue(trabajoEmpleadoEnCuestion.getAreaTrabajo());
+            cbxEmpleado.setValue(trabajoEmpleadoEnCuestion.getEmpleado());
+            labelNombreAreaTrabajo.setText(trabajoEmpleadoEnCuestion.getAreaTrabajo().getNombre());
+            labelDescripcionAreaTrabajo.setText(trabajoEmpleadoEnCuestion.getAreaTrabajo().getDescripcion());
+
+            if(trabajoEmpleadoEnCuestion.getEstado()){
+                estado=true;
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
+            }else{
+                estado=false;
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
+            }
         }
-    }
-            
-    if(modalidad.equals("Ver")){
-        GenerarTransacciones.crearTransaccion("Se observa trabajo empleado con id "+trabajoEmpleadoEnCuestion.getId(), "TrabajosEmpleadosInformacion");
-        cbxAreaTrabajo.setDisable(true);
-        rbActivo.setDisable(true);
-        rbInactivo.setDisable(true);
-        cbxEmpleado.setDisable(true);
-        
-    }
-    if(modalidad.equals("Modificar")){
-          cbxEmpleado.setDisable(true);
-    }
-    if(modalidad.equals("Agregar")){
-          cbxEmpleado.setDisable(false);
-    }
+
+        if(modalidad.equals("Ver")){
+            GenerarTransacciones.crearTransaccion("Se observa trabajo empleado con id "+trabajoEmpleadoEnCuestion.getId(), "TrabajosEmpleadosInformacion");
+            cbxAreaTrabajo.setDisable(true);
+            cbxEmpleado.setDisable(true);
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
+
+        }
+        if(modalidad.equals("Modificar")){
+            cbxEmpleado.setDisable(true);
+        }
+        if(modalidad.equals("Agregar")){
+            cbxEmpleado.setDisable(false);
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
+        }
 }
 
    
@@ -155,10 +152,6 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
         }
         if(cbxEmpleado.getItems().isEmpty()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor selecione el empleado");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del area de trabajo");
             return false;
         }
         return true;
@@ -184,7 +177,7 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     private void actGuardar(ActionEvent event) {
        if(validar()){
             trabajoEmpleadoEnCuestion.setAreaTrabajo(cbxAreaTrabajo.getValue());
-            trabajoEmpleadoEnCuestion.setEstado(estado);
+            
             trabajoEmpleadoEnCuestion.setEmpleado(cbxEmpleado.getValue());
             
             if(modalidad.equals("Modificar")){
@@ -198,6 +191,7 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
                 } 
             }else{
                 if(modalidad.equals("Agregar")){
+                    trabajoEmpleadoEnCuestion.setEstado(true);
                     Respuesta respuesta=trabajoEmpleadoService.crear(trabajoEmpleadoEnCuestion);
                     if(respuesta.getEstado()){
                         trabajoEmpleadoEnCuestion=(TrabajoEmpleadoDTO) respuesta.getResultado("TrabajoEmpleado");
@@ -214,19 +208,7 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     
    
     private Boolean estado=null;
-    @FXML
-    private void actSelActivo(ActionEvent event) {
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-        estado=true;
-    }
-
-    @FXML
-    private void actSecInactivo(ActionEvent event) {
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-        estado=false;
-    }
+    
     
     private AreaTrabajoDTO areaTra;
 
@@ -260,6 +242,26 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
     private void actEmpleado(ActionEvent event) {
         labelNombre.setText(cbxEmpleado.getValue().getNombre());
         labelCedula.setText(cbxEmpleado.getValue().getCedula());
+    }
+
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            trabajoEmpleadoEnCuestion.setEstado(false);
+            mensaje="Se anula el trabajo empleado con id "+trabajoEmpleadoEnCuestion.getId();
+        }else{
+            trabajoEmpleadoEnCuestion.setEstado(true);
+            mensaje="Se activa el trabajo empleado con id "+trabajoEmpleadoEnCuestion.getId();
+        }
+        Respuesta respuesta=trabajoEmpleadoService.modificar(trabajoEmpleadoEnCuestion.getId(), trabajoEmpleadoEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "TrabajosEmpleadosInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del trabajo de empleado", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del trabajo de empleado", respuesta.getMensaje());
+        }
     }
 
 }

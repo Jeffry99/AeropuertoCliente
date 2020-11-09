@@ -3,12 +3,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.TrabajosEmpleadosInformacionController">
    <children>
@@ -17,29 +16,34 @@
             <Image url="@../recursos/FONDO1.png" />
          </image>
       </ImageView>
-        <ComboBox fx:id="cbxAreaTrabajo" layoutX="283.0" layoutY="306.0" onAction="#actAreaTrabajo" prefHeight="35.0" prefWidth="303.0" />
-        <Rectangle fx:id="cuadro" arcHeight="5.0" arcWidth="5.0" fill="#ffffeb" height="111.0" layoutX="174.0" layoutY="156.0" stroke="BLACK" strokeType="INSIDE" width="652.0" />
-        <Label layoutX="174.0" layoutY="313.0" text="Area trabajo:" />
-        <Label layoutX="184.0" layoutY="204.0" text="Nombre:" />
-        <Label layoutX="174.0" layoutY="506.0" text="Estado:" />
-        <RadioButton fx:id="rbActivo" layoutX="279.0" layoutY="508.0" mnemonicParsing="false" onAction="#actSelActivo" text="Activo" />
-        <RadioButton fx:id="rbInactivo" layoutX="364.0" layoutY="508.0" mnemonicParsing="false" onAction="#actSecInactivo" text="Inactivo" />
+        <ComboBox fx:id="cbxAreaTrabajo" layoutX="239.0" layoutY="252.0" onAction="#actAreaTrabajo" prefHeight="35.0" prefWidth="303.0" />
+        <Label layoutX="130.0" layoutY="259.0" text="Area trabajo:" />
+        <Label layoutX="563.0" layoutY="138.0" text="Nombre:" />
         <Button fx:id="btnCancelar" layoutX="51.0" layoutY="579.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="35.0" prefWidth="115.0" text="Volver" />
-        <Button fx:id="btnGuardar" layoutX="839.0" layoutY="579.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
-        <Label fx:id="labelNombre" layoutX="269.0" layoutY="205.0" prefHeight="21.0" prefWidth="443.0" />
-        <Line fx:id="barra" endX="759.0" layoutX="196.0" layoutY="287.0" startX="-151.6666717529297" />
-        <Label layoutX="20.0" layoutY="18.0" text="Detalle trabajos empleados" />
-        <Label layoutX="186.0" layoutY="238.0" text="Cédula:" />
-        <Label fx:id="labelCedula" layoutX="271.0" layoutY="239.0" prefHeight="21.0" prefWidth="443.0" />
-        <Label layoutX="471.0" layoutY="171.0" text="Empleado" />
-        <ComboBox fx:id="cbxEmpleado" layoutX="273.0" layoutY="113.0" onAction="#actEmpleado" prefHeight="35.0" prefWidth="303.0" />
-        <Label layoutX="174.0" layoutY="120.0" text="Empleado:" />
-      <Rectangle fx:id="cuadro1" arcHeight="5.0" arcWidth="5.0" fill="#ffffeb" height="111.0" layoutX="174.0" layoutY="349.0" stroke="BLACK" strokeType="INSIDE" width="652.0" />
-      <Label layoutX="184.0" layoutY="397.0" text="Nombre:" />
-      <Label fx:id="labelNombreAreaTrabajo" layoutX="271.0" layoutY="397.0" prefHeight="21.0" prefWidth="443.0" />
-      <Label layoutX="186.0" layoutY="431.0" text="Descripción:" />
-      <Label fx:id="labelDescripcionAreaTrabajo" layoutX="276.0" layoutY="432.0" prefHeight="21.0" prefWidth="443.0" />
-      <Label layoutX="455.0" layoutY="362.0" text="Area de trabajo" />
-      <Line fx:id="barra1" endX="759.0" layoutX="201.0" layoutY="480.0" startX="-151.6666717529297" />
+        <Button fx:id="btnGuardar" layoutX="714.0" layoutY="367.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
+        <Label fx:id="labelNombre" layoutX="648.0" layoutY="139.0" prefHeight="21.0" prefWidth="218.0" />
+        <Label layoutX="358.0" layoutY="40.0" text="INFORMACIÓN DE TRABAJO DE EMPLEADO" />
+        <Label layoutX="563.0" layoutY="172.0" text="Cédula:" />
+        <Label fx:id="labelCedula" layoutX="643.0" layoutY="172.0" prefHeight="21.0" prefWidth="218.0" />
+        <Label layoutX="598.0" layoutY="103.0" text="Datos de empleado seleccionado" />
+        <ComboBox fx:id="cbxEmpleado" layoutX="229.0" layoutY="132.0" onAction="#actEmpleado" prefHeight="35.0" prefWidth="303.0" />
+        <Label layoutX="130.0" layoutY="139.0" text="Empleado:" />
+      <Label layoutX="563.0" layoutY="259.0" text="Nombre:" />
+      <Label fx:id="labelNombreAreaTrabajo" layoutX="655.0" layoutY="259.0" prefHeight="21.0" prefWidth="215.0" />
+      <Label layoutX="564.0" layoutY="294.0" text="Descripción:" />
+      <Label fx:id="labelDescripcionAreaTrabajo" layoutX="655.0" layoutY="294.0" prefHeight="21.0" prefWidth="215.0" />
+      <Label layoutX="582.0" layoutY="224.0" text="Datos de área de trabajo seleccionada" />
+      <Line fx:id="barra1" endX="626.0" layoutX="199.0" layoutY="433.0" startX="-68.0" />
+      <Label layoutX="397.0" layoutY="477.0" text="Estado:">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtEstado" layoutX="461.0" layoutY="478.0" prefHeight="17.0" prefWidth="149.0" />
+      <Button fx:id="btnCambiarEstado" layoutX="711.0" layoutY="468.0" mnemonicParsing="false" onAction="#actCambiarEstado" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #aaf2db;" text="Anular">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

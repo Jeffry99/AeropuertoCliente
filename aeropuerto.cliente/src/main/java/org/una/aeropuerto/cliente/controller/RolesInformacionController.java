@@ -37,10 +37,6 @@ public class RolesInformacionController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Button btnGuardar;
     @FXML
     private TextField txtDescripcion;
@@ -53,9 +49,14 @@ public class RolesInformacionController implements Initializable {
     private String modalidad;
     private RolService rolService = new RolService();
     private RolDTO rol = new RolDTO();
+    @FXML
+    private Button btnCambiarEstado;
+    @FXML
+    private Label txtEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         modalidad = (String) AppContext.getInstance().get("ModalidadRol");
         
         btnGuardar.setVisible(false);
@@ -71,20 +72,23 @@ public class RolesInformacionController implements Initializable {
             txtNombre.setText(rol.getNombre());
             if(rol.getEstado()==true){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             if(modalidad.equals("Ver")){
                 GenerarTransacciones.crearTransaccion("Se observa rol con id "+rol.getId(), "RolesInformacion");
                 txtDescripcion.setDisable(true);
                 txtNombre.setDisable(true);
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
             }      
+        }else{
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
     }    
 
@@ -97,7 +101,6 @@ public class RolesInformacionController implements Initializable {
         if(validar()){
             rol.setNombre(txtNombre.getText());
             rol.setDescripcion(txtDescripcion.getText());
-            rol.setEstado(estado);
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=rolService.modificar(rol.getId(), rol);
                 if(respuesta.getEstado()){
@@ -109,6 +112,7 @@ public class RolesInformacionController implements Initializable {
                 }
             }else{
                 if(modalidad.equals("Agregar")){
+                    rol.setEstado(true);
                     Respuesta respuesta=rolService.crear(rol);
                     if(respuesta.getEstado()){
                         rol=(RolDTO) respuesta.getResultado("Rol");
@@ -137,29 +141,13 @@ public class RolesInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion del rol");
             return false;
         }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del rol");
-            return false;
-        }
         
         return true;
     }
 
     private Boolean estado;
     
-    @FXML
-    private void actActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
-
-    @FXML
-    private void actInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
 
     
     public void volver(){
@@ -170,6 +158,26 @@ public class RolesInformacionController implements Initializable {
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
             
+        }
+    }
+
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            rol.setEstado(false);
+            mensaje="Se anula el rol con id "+rol.getId();
+        }else{
+            rol.setEstado(true);
+            mensaje="Se activa el rol con id "+rol.getId();
+        }
+        Respuesta respuesta=rolService.modificar(rol.getId(), rol);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "RolesInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del rol", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del rol", respuesta.getMensaje());
         }
     }
     

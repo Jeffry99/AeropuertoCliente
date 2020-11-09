@@ -56,10 +56,6 @@ public class ServiciosInformacionController implements Initializable {
     @FXML
     private Button btnVolver;
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private ComboBox<ServicioTipoDTO> cbTipoServicio;
     @FXML
     private Spinner<Double> txtCobro;
@@ -86,13 +82,17 @@ public class ServiciosInformacionController implements Initializable {
     private ServicioRegistradoService servicioService;
     @FXML
     private ComboBox<AvionDTO> cbAviones;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         servicioService = new ServicioRegistradoService();
         servicio = new ServicioRegistradoDTO();
         modalidad = (String) AppContext.getInstance().get("ModalidadServicioRegistrado");
@@ -112,16 +112,18 @@ public class ServiciosInformacionController implements Initializable {
             cbAviones.setDisable(true);
             rbActivoCobro.setDisable(true);
             rbInactivoCobro.setDisable(true);
-            rbActivo.setDisable(true);
-            rbInactivo.setDisable(true);
             cbResponsable.setDisable(true);
             txtObservaciones.setDisable(true);
             txtDuracion.setDisable(true);
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
         if(modalidad.equals("Modificar")){
             llenarDatos();
         }
         if(modalidad.equals("Agregar")){
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
             lblFechaRegistro.setText("");
             
         }
@@ -143,13 +145,13 @@ public class ServiciosInformacionController implements Initializable {
             lblFechaModificacion.setText("");
         }
         if(servicio.getEstado()){
-            rbActivo.setSelected(true);
-            rbInactivo.setSelected(false);
             estado = true;
+            txtEstado.setText("Activo");
+            btnCambiarEstado.setText("Anular");
         }else{
-            rbActivo.setSelected(false);
-            rbInactivo.setSelected(true);
             estado = false;
+            txtEstado.setText("Inactivo");
+            btnCambiarEstado.setText("Activar");
         }
         if(servicio.getEstadoCobro()){
             rbActivoCobro.setSelected(true);
@@ -180,10 +182,6 @@ public class ServiciosInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el empleado responsable");
             return false;
         }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del servicio registrado");
-            return false;
-        }
         if(estadoCobro==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de cobro");
             return false;
@@ -194,7 +192,7 @@ public class ServiciosInformacionController implements Initializable {
     private void actGuardar(ActionEvent event) {
         if(validar()){
             servicio.setCobro(txtCobro.getValue().floatValue());
-            servicio.setEstado(estado);
+            
             servicio.setResponsable(cbResponsable.getValue());
             servicio.setAvion(cbAviones.getValue());
             servicio.setDuracion(txtDuracion.getValue().floatValue());
@@ -213,6 +211,7 @@ public class ServiciosInformacionController implements Initializable {
                 }
             }else{
                 if(modalidad.equals("Agregar")){
+                    servicio.setEstado(true);
                     Respuesta respuesta=servicioService.crear(servicio);
                     if(respuesta.getEstado()){
                         servicio = (ServicioRegistradoDTO) respuesta.getResultado("ServicioAeropuerto");
@@ -275,19 +274,7 @@ public class ServiciosInformacionController implements Initializable {
         }
     }
 
-    @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
-
-    @FXML
-    private void actEstadoInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
 
     @FXML
     private void actEstadoCobroActivo(ActionEvent event) {
@@ -301,6 +288,26 @@ public class ServiciosInformacionController implements Initializable {
         estadoCobro = false;
         rbActivoCobro.setSelected(false);
         rbInactivoCobro.setSelected(true);
+    }
+
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            servicio.setEstado(false);
+            mensaje="Se anula el servicio registrado con id "+servicio.getId();
+        }else{
+            servicio.setEstado(true);
+            mensaje="Se activa el servicio registrado con id "+servicio.getId();
+        }
+        Respuesta respuesta=servicioService.modificar(servicio.getId(), servicio);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "serviciosInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del servicio registrado", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del servicio registrado", respuesta.getMensaje());
+        }
     }
     
 }

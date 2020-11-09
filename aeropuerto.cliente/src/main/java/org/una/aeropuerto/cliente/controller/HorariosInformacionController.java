@@ -63,12 +63,6 @@ public class HorariosInformacionController implements Initializable {
     @FXML
     private ComboBox<EmpleadoDTO> cbxEmpleado;
     @FXML
-    private Label lblEstado2;
-    @FXML
-    private RadioButton rbActivoUsuario;
-    @FXML
-    private RadioButton rbInactivoUsuario;
-    @FXML
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
@@ -99,9 +93,14 @@ public class HorariosInformacionController implements Initializable {
     
     int diaInicio=1;
     int diaFinal=1;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         initDias();
         cbxDiaInicio.setValue("Lunes");
         cbxDiaFinal.setValue("Lunes");
@@ -129,12 +128,12 @@ public class HorariosInformacionController implements Initializable {
             
             if(horarioEnCuestion.getEstado()==true){
                 estado = true;
-                rbActivoUsuario.setSelected(true);
-                rbInactivoUsuario.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado = false;
-                rbActivoUsuario.setSelected(false);
-                rbInactivoUsuario.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             cbxEmpleado.setDisable(true);
             
@@ -147,10 +146,13 @@ public class HorariosInformacionController implements Initializable {
                 imgHoraInicio.setDisable(true);
                 imgHoraFinal.setVisible(false);
                 imgHoraFinal.setDisable(true);
-                rbActivoUsuario.setDisable(true);
-                rbInactivoUsuario.setDisable(true);
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
             }
             
+        }else{
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
         
     }    
@@ -195,19 +197,7 @@ public class HorariosInformacionController implements Initializable {
     
     
     private Boolean estado;
-    @FXML
-    private void actEstadoActivoUsuario(ActionEvent event) {
-        estado = true;
-        rbActivoUsuario.setSelected(true);
-        rbInactivoUsuario.setSelected(false);
-    }
-
-    @FXML
-    private void actEstadoInactivoUsuario(ActionEvent event) {
-        estado = false;
-        rbActivoUsuario.setSelected(false);
-        rbInactivoUsuario.setSelected(true);
-    }
+    
 
     public boolean validar(){
         if(horaInicio.getText().isBlank()){
@@ -220,10 +210,6 @@ public class HorariosInformacionController implements Initializable {
         }
         if(cbxEmpleado.getValue()==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el empleado al que le desea registrar un horario");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de este horario");
             return false;
         }
         
@@ -240,7 +226,7 @@ public class HorariosInformacionController implements Initializable {
             horarioEnCuestion.setDiaFinal(diaFinal);
             horarioEnCuestion.setHoraInicio(horaInicioGuardar);
             horarioEnCuestion.setHoraFinal(horaFinalGuardar);
-            horarioEnCuestion.setEstado(estado);
+            
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=horarioService.modificar(horarioEnCuestion.getId(), horarioEnCuestion);
                 if(respuesta.getEstado()){
@@ -252,6 +238,7 @@ public class HorariosInformacionController implements Initializable {
                 }
             }else{
                 if(modalidad.equals("Agregar")){
+                    horarioEnCuestion.setEstado(true);
                     Respuesta respuesta=horarioService.crear(horarioEnCuestion);
                     if(respuesta.getEstado()){
                         horarioEnCuestion=(HorarioDTO) respuesta.getResultado("Horario");
@@ -402,5 +389,25 @@ public class HorariosInformacionController implements Initializable {
     @FXML
     private void actSelDiaFinal(ActionEvent event) {
         diaFinal=getDiaInt(cbxDiaFinal.getValue());
+    }
+
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            horarioEnCuestion.setEstado(false);
+            mensaje="Se anula el horario con id "+horarioEnCuestion.getId();
+        }else{
+            horarioEnCuestion.setEstado(true);
+            mensaje="Se activa el horario con id "+horarioEnCuestion.getId();
+        }
+        Respuesta respuesta=horarioService.modificar(horarioEnCuestion.getId(), horarioEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "HorariosInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del horario", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del horario", respuesta.getMensaje());
+        }
     }
 }

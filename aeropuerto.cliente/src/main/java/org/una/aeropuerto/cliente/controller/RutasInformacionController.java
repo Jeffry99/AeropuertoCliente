@@ -36,10 +36,6 @@ import org.una.aeropuerto.cliente.util.Respuesta;
 public class RutasInformacionController implements Initializable {
 
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
@@ -54,10 +50,14 @@ public class RutasInformacionController implements Initializable {
     private RutaDTO rutaEnCuestion = new RutaDTO();
     private String modalidad="";
     private Boolean estado;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {    
-
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         modalidad = (String) AppContext.getInstance().get("ModalidadRuta");
         btnGuardar.setVisible(false);
         btnGuardar.setDisable(true);  
@@ -74,12 +74,12 @@ public class RutasInformacionController implements Initializable {
             txtDestino.setText(rutaEnCuestion.getDestino());
             if(rutaEnCuestion.getEstado()){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
 
             if(modalidad.equals("Ver")){
@@ -87,9 +87,12 @@ public class RutasInformacionController implements Initializable {
                 txtDestino.setDisable(true);
                 txtOrigen.setDisable(true);
                 txtDistancia.setDisable(true);
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
             }
+        }else{
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
     }    
 
@@ -106,10 +109,6 @@ public class RutasInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la distancia de la ruta");
             return false;
         }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la ruta");
-            return false;
-        }
         return true;
     }
      
@@ -124,7 +123,7 @@ public class RutasInformacionController implements Initializable {
             rutaEnCuestion.setDestino(txtDestino.getText());
             rutaEnCuestion.setOrigen(txtOrigen.getText());
             rutaEnCuestion.setDistancia(Float.parseFloat(txtDistancia.getText()));
-            rutaEnCuestion.setEstado(estado);
+            
             
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=rutaService.modificar(rutaEnCuestion.getId(), rutaEnCuestion);
@@ -139,6 +138,7 @@ public class RutasInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
+                    rutaEnCuestion.setEstado(true);
                     Respuesta respuesta=rutaService.crear(rutaEnCuestion);
                     if(respuesta.getEstado()){
                         rutaEnCuestion = (RutaDTO) respuesta.getResultado("Ruta");
@@ -166,17 +166,24 @@ public class RutasInformacionController implements Initializable {
     }
 
     @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            rutaEnCuestion.setEstado(false);
+            mensaje="Se anula la ruta con id "+rutaEnCuestion.getId();
+        }else{
+            rutaEnCuestion.setEstado(true);
+            mensaje="Se activa la ruta con id "+rutaEnCuestion.getId();
+        }
+        Respuesta respuesta=rutaService.modificar(rutaEnCuestion.getId(), rutaEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "RutasInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado de la ruta", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado de la ruta", respuesta.getMensaje());
+        }
     }
 
-    @FXML
-    private void actEstadoInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
     
 }

@@ -127,7 +127,7 @@ public class GenerarAlertasVuelos {
             }
         }
         
-        if(bitacoraMayor.getDistanciaRecorrida()>=distancia80){
+        if(bitacoraMayor.getDistanciaRecorrida()>=distancia80 && bitacoraMayor.getTiempoTierra()<24){
             AlertaGeneradaDTO alerta = new AlertaGeneradaDTO();
             alerta.setEstado(1);
             alerta.setTipoAlerta(tiposDeAlerta.get(2));

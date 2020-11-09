@@ -2,11 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.RutasInformacionController">
 <children>
@@ -16,16 +17,30 @@
          </image>
       </ImageView>
         <Label layoutX="285.0" layoutY="255.0" text="Destino:" />
-        <Label layoutX="285.0" layoutY="305.0" text="Estado:" />
-        <RadioButton fx:id="rbActivo" layoutX="411.0" layoutY="305.0" mnemonicParsing="false" onAction="#actEstadoActivo" text="Activo" />
-        <RadioButton fx:id="rbInactivo" layoutX="517.0" layoutY="305.0" mnemonicParsing="false" onAction="#actEstadoInactivo" text="Inactivo" />
-        <Button fx:id="btnCancelar" layoutX="285.0" layoutY="405.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="35.0" prefWidth="115.0" text="Volver" />
-        <Button fx:id="btnGuardar" layoutX="600.0" layoutY="405.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
+        <Button fx:id="btnCancelar" layoutX="57.0" layoutY="580.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="35.0" prefWidth="115.0" text="Volver" />
+        <Button fx:id="btnGuardar" layoutX="600.0" layoutY="325.0" mnemonicParsing="false" onAction="#actGuardar" prefHeight="35.0" prefWidth="115.0" text="Guardar" />
         <TextField fx:id="txtDestino" layoutX="412.0" layoutY="247.0" prefHeight="37.0" prefWidth="303.0" />
         <Label layoutX="285.0" layoutY="135.0" prefHeight="21.0" prefWidth="85.0" text="Distancia: " />
         <TextField fx:id="txtDistancia" layoutX="412.0" layoutY="126.0" prefHeight="37.0" prefWidth="303.0" />
         <Label layoutX="285.0" layoutY="192.0" text="Origen:" />
         <TextField fx:id="txtOrigen" layoutX="412.0" layoutY="183.0" prefHeight="37.0" prefWidth="303.0" />
+      <Label layoutX="419.0" layoutY="63.0" text="INFORMACIÓN DE RUTA">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="286.0" layoutY="470.0" text="Estado:">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtEstado" layoutX="350.0" layoutY="471.0" prefHeight="17.0" prefWidth="149.0" />
+      <Button fx:id="btnCambiarEstado" layoutX="600.0" layoutY="461.0" mnemonicParsing="false" onAction="#actCambiarEstado" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #aaf2db;" text="Anular">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="285.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="427.0" />
         
    </children>
 </AnchorPane>

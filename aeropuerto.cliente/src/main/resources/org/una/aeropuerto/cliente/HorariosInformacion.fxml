@@ -3,13 +3,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.HorariosInformacionController">
    <children>
@@ -19,37 +17,45 @@
          </image>
       </ImageView>
       <Label layoutX="426.0" layoutY="36.0" text="Información de horario" />
-      <Label layoutX="109.0" layoutY="204.0" text="Hora:" />
-      <Label layoutX="181.0" layoutY="95.0" text="Inicio jornada laboral" />
-      <Label layoutX="109.0" layoutY="149.0" text="Día:" />
-      <ComboBox fx:id="cbxDiaInicio" layoutX="170.0" layoutY="141.0" onAction="#actSelDiaInicio" prefHeight="37.0" prefWidth="215.0" />
-      <Label layoutX="618.0" layoutY="204.0" text="Hora:" />
-      <Label layoutX="725.0" layoutY="101.0" text="Fin jornada laboral" />
-      <Label layoutX="618.0" layoutY="149.0" text="Día:" />
-      <ComboBox fx:id="cbxDiaFinal" layoutX="682.0" layoutY="141.0" onAction="#actSelDiaFinal" prefHeight="37.0" prefWidth="215.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="109.0" layoutY="259.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="782.0" />
-      <ComboBox fx:id="cbxEmpleado" layoutX="194.0" layoutY="288.0" prefHeight="37.0" prefWidth="249.0" promptText="Seleccionar empleado" />
-      <Label layoutX="109.0" layoutY="295.0" text="Empleado:" />
-      <Label fx:id="lblEstado2" layoutX="665.0" layoutY="296.0" text="Estado:" />
-      <RadioButton fx:id="rbActivoUsuario" layoutX="748.0" layoutY="298.0" mnemonicParsing="false" onAction="#actEstadoActivoUsuario" text="Activo" />
-      <RadioButton fx:id="rbInactivoUsuario" layoutX="825.0" layoutY="298.0" mnemonicParsing="false" onAction="#actEstadoInactivoUsuario" text="Inactivo" />
-      <Button fx:id="btnGuardar" layoutX="796.0" layoutY="584.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
+      <Label layoutX="107.0" layoutY="283.0" text="Hora:" />
+      <Label layoutX="179.0" layoutY="174.0" text="Inicio jornada laboral" />
+      <Label layoutX="107.0" layoutY="228.0" text="Día:" />
+      <ComboBox fx:id="cbxDiaInicio" layoutX="168.0" layoutY="220.0" onAction="#actSelDiaInicio" prefHeight="37.0" prefWidth="215.0" />
+      <Label layoutX="616.0" layoutY="283.0" text="Hora:" />
+      <Label layoutX="723.0" layoutY="180.0" text="Fin jornada laboral" />
+      <Label layoutX="616.0" layoutY="228.0" text="Día:" />
+      <ComboBox fx:id="cbxDiaFinal" layoutX="680.0" layoutY="220.0" onAction="#actSelDiaFinal" prefHeight="37.0" prefWidth="215.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="109.0" layoutY="422.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="782.0" />
+      <ComboBox fx:id="cbxEmpleado" layoutX="192.0" layoutY="93.0" prefHeight="37.0" prefWidth="215.0" promptText="Seleccionar empleado" />
+      <Label layoutX="107.0" layoutY="100.0" text="Empleado:" />
+      <Button fx:id="btnGuardar" layoutX="794.0" layoutY="356.0" mnemonicParsing="false" onAction="#actGuardar" text="Guardar" />
       <Button fx:id="btnVolver" layoutX="109.0" layoutY="584.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b7dcff" height="37.0" layoutX="170.0" layoutY="198.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="215.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d5483" height="30.0" layoutX="347.0" layoutY="202.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b7dcff" height="37.0" layoutX="682.0" layoutY="196.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="215.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d5483" height="30.0" layoutX="859.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b7dcff" height="37.0" layoutX="168.0" layoutY="277.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="215.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d5483" height="30.0" layoutX="345.0" layoutY="281.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b7dcff" height="37.0" layoutX="680.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="215.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d5483" height="30.0" layoutX="858.0" layoutY="279.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1.0" />
       <Label fx:id="horaInicio" layoutX="182.0" layoutY="206.0" />
       <Label fx:id="horaDeFin" layoutX="695.0" layoutY="204.0" />
-      <ImageView fx:id="imgHoraInicio" fitHeight="28.0" fitWidth="25.0" layoutX="353.0" layoutY="204.0" onMouseClicked="#actSelHoraInicio" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgHoraInicio" fitHeight="28.0" fitWidth="25.0" layoutX="351.0" layoutY="283.0" onMouseClicked="#actSelHoraInicio" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/reloj.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="imgHoraFinal" fitHeight="28.0" fitWidth="25.0" layoutX="867.0" layoutY="204.0" onMouseClicked="#actSelHoraFinal" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgHoraFinal" fitHeight="28.0" fitWidth="25.0" layoutX="866.0" layoutY="283.0" onMouseClicked="#actSelHoraFinal" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/reloj.png" />
          </image>
       </ImageView>
+      <Label layoutX="466.0" layoutY="470.0" text="Estado:">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtEstado" layoutX="530.0" layoutY="471.0" prefHeight="17.0" prefWidth="149.0" />
+      <Button fx:id="btnCambiarEstado" layoutX="780.0" layoutY="461.0" mnemonicParsing="false" onAction="#actCambiarEstado" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #aaf2db;" text="Anular">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

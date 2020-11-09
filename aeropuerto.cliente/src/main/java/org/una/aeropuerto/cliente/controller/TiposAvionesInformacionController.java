@@ -38,10 +38,6 @@ public class TiposAvionesInformacionController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
@@ -54,41 +50,48 @@ public class TiposAvionesInformacionController implements Initializable {
     private Boolean estado;
     @FXML
     private TextField txtDistanciaMaxima;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
-    modalidad = (String) AppContext.getInstance().get("ModalidadTipoAvion");
-    btnGuardar.setVisible(false);
-    btnGuardar.setDisable(true);  
-        
-    if(!modalidad.equals("Ver")){
-        btnGuardar.setVisible(true);
-        btnGuardar.setDisable(false);
-    }   
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
+        modalidad = (String) AppContext.getInstance().get("ModalidadTipoAvion");
+        btnGuardar.setVisible(false);
+        btnGuardar.setDisable(true);  
+
+        if(!modalidad.equals("Ver")){
+            btnGuardar.setVisible(true);
+            btnGuardar.setDisable(false);
+        }   
       
-     if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
+        if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
             tipoAvionEnCuestion = (TipoAvionDTO) AppContext.getInstance().get("TipoAvionEnCuestion");
             txtNombre.setText(tipoAvionEnCuestion.getNombre());
             txtDistancia.setText(String.valueOf(tipoAvionEnCuestion.getDistanciaRecomendada()));
             txtDistanciaMaxima.setText(String.valueOf(tipoAvionEnCuestion.getDistanciaMaxima()));
             if(tipoAvionEnCuestion.getEstado()){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             
             if(modalidad.equals("Ver")){
                 GenerarTransacciones.crearTransaccion("Se observa tipoAvion con id "+tipoAvionEnCuestion.getId(), "TiposAvionesInformacion");
                 txtDistancia.setDisable(true);
                 txtNombre.setDisable(true);
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
                 txtDistanciaMaxima.setDisable(true);
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
             }
+        }else{
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
     } 
     public boolean validar(){
@@ -102,10 +105,6 @@ public class TiposAvionesInformacionController implements Initializable {
         }
         if(txtNombre.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del tipo de avion");
-            return false;
-        }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del tipo de avion");
             return false;
         }
         return true;
@@ -122,7 +121,7 @@ public class TiposAvionesInformacionController implements Initializable {
                 
             tipoAvionEnCuestion.setNombre(txtNombre.getText());
             tipoAvionEnCuestion.setDistanciaRecomendada(Float.parseFloat(txtDistancia.getText()));
-            tipoAvionEnCuestion.setEstado(estado);
+            
             tipoAvionEnCuestion.setDistanciaMaxima(Float.valueOf(txtDistanciaMaxima.getText()));
             
             if(modalidad.equals("Modificar")){
@@ -138,6 +137,7 @@ public class TiposAvionesInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
+                    tipoAvionEnCuestion.setEstado(true);
                     Respuesta respuesta=tipoAvionService.crear(tipoAvionEnCuestion);
                     if(respuesta.getEstado()){
                         tipoAvionEnCuestion = (TipoAvionDTO) respuesta.getResultado("TipoAvion");
@@ -166,17 +166,25 @@ public class TiposAvionesInformacionController implements Initializable {
     }
 
     @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            tipoAvionEnCuestion.setEstado(false);
+            mensaje="Se anula el tipo de avion con id "+tipoAvionEnCuestion.getId();
+        }else{
+            tipoAvionEnCuestion.setEstado(true);
+            mensaje="Se activa el tipo de avion con id "+tipoAvionEnCuestion.getId();
+        }
+        Respuesta respuesta=tipoAvionService.modificar(tipoAvionEnCuestion.getId(), tipoAvionEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "TiposAvionesInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del tipo de avion", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del tipo de avion", respuesta.getMensaje());
+        }
     }
 
-    @FXML
-    private void actEstadoInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
     
 }

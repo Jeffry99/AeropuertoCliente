@@ -47,10 +47,6 @@ public class ServiciosTiposInformacionController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
@@ -76,11 +72,15 @@ public class ServiciosTiposInformacionController implements Initializable {
     private Label lbTituloFM;
     @FXML
     private ComboBox<AreaTrabajoDTO> cbxAreaTrabajo;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         iniAreasTrabajos();
-        
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         modalidad = (String) AppContext.getInstance().get("ModalidadServicioTipo");
         
         
@@ -99,25 +99,27 @@ public class ServiciosTiposInformacionController implements Initializable {
             
             if(ServicioTipoEnCuestion.getEstado()){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             if(modalidad.equals("Ver")){
                 GenerarTransacciones.crearTransaccion("Se observa un tipo de servicio con id "+ServicioTipoEnCuestion.getId(), "ServicioTiposInformacion");
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
                 txtNombre.setDisable(true);
                 txtDescripcion.setDisable(true);
                 btnGuardar.setVisible(false);
                 btnGuardar.setDisable(true);
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
             }
         }else{
             lbTituloFR.setVisible(false);
             lbTituloFM.setVisible(false);
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
         }
             
          
@@ -136,28 +138,11 @@ public class ServiciosTiposInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripción del tipo de servicio");
             return false;
         }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del tipo de servicio");
-            return false;
-        }
         return true;
     }
     
     private Boolean estado=null;
-    @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-        estado=true;
-    }
-
-    @FXML
-    private void actEstadoInactivo(ActionEvent event) {
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-        estado=false;
-    }
-
+    
     @FXML
     private void actCancelar(ActionEvent event) {
         try{
@@ -178,7 +163,7 @@ public class ServiciosTiposInformacionController implements Initializable {
             if(modalidad.equals("Agregar")){
                 ServicioTipoEnCuestion.setAreaTrabajo(cbxAreaTrabajo.getValue());
             }
-            ServicioTipoEnCuestion.setEstado(estado);
+            
             
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=servicioTipoService.modificar(ServicioTipoEnCuestion.getId(), ServicioTipoEnCuestion);
@@ -191,6 +176,7 @@ public class ServiciosTiposInformacionController implements Initializable {
                 } 
             }else{
                 if(modalidad.equals("Agregar")){
+                    ServicioTipoEnCuestion.setEstado(true);
                     Respuesta respuesta=servicioTipoService.crear(ServicioTipoEnCuestion);
                     if(respuesta.getEstado()){
                         ServicioTipoEnCuestion=(ServicioTipoDTO) respuesta.getResultado("ServicioTipo");
@@ -224,6 +210,26 @@ public class ServiciosTiposInformacionController implements Initializable {
             Contenedor.getChildren().add(root);
         }catch(IOException ex){
             
+        }
+    }
+
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            ServicioTipoEnCuestion.setEstado(false);
+            mensaje="Se anula el tipo de servicio con id "+ServicioTipoEnCuestion.getId();
+        }else{
+            ServicioTipoEnCuestion.setEstado(true);
+            mensaje="Se activa el tipo de servicio con id "+ServicioTipoEnCuestion.getId();
+        }
+        Respuesta respuesta=servicioTipoService.modificar(ServicioTipoEnCuestion.getId(), ServicioTipoEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "ServiciosTipoInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del tipo se servicio", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del tipo se servicio", respuesta.getMensaje());
         }
     }
 }

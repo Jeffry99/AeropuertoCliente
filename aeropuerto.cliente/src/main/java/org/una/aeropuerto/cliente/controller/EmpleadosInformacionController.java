@@ -24,6 +24,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.RolDTO;
@@ -74,12 +75,6 @@ public class EmpleadosInformacionController implements Initializable {
     @FXML
     private TextField txtDireccion;
     @FXML
-    private Label lblEstado;
-    @FXML
-    private RadioButton rbActivo;
-    @FXML
-    private RadioButton rbInactivo;
-    @FXML
     private RadioButton rbNo;
     @FXML
     private Label lblFechaCreacion1;
@@ -89,10 +84,6 @@ public class EmpleadosInformacionController implements Initializable {
     private ComboBox<EmpleadoDTO> cbxJefeDirecto;
     @FXML
     private ComboBox<RolDTO> cbRol;
-    @FXML
-    private RadioButton rbActivoUsuario;
-    @FXML
-    private RadioButton rbInactivoUsuario;
     @FXML
     private TextField txtContrasenaActual;
     @FXML
@@ -112,20 +103,24 @@ public class EmpleadosInformacionController implements Initializable {
     @FXML
     private Label lblEstado1;
     @FXML
-    private Label lblEstado2;
-    @FXML
     private Label lbContrasenaNueva;
     @FXML
     private Label lbContrasenaConfirmar;
     @FXML
     private Label lbContrasenaActual;
+    @FXML
+    private Label txtEstado;
+    @FXML
+    private Button btnCambiarEstado;
+    @FXML
+    private Rectangle rectangulo;
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initEmpleadosJefe();
         initRoles();
-          
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         
         modalidad = (String) AppContext.getInstance().get("ModalidadEmpleadoUsuario");
         btnGuardar.setVisible(false);
@@ -166,12 +161,12 @@ public class EmpleadosInformacionController implements Initializable {
             }
             if(empleadoEnCuestion.getEstado()){
                 estado=true;
-                rbActivo.setSelected(true);
-                rbInactivo.setSelected(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setText("Anular");
             }else{
                 estado=false;
-                rbActivo.setSelected(false);
-                rbInactivo.setSelected(true);
+                txtEstado.setText("Inactivo");
+                btnCambiarEstado.setText("Activar");
             }
             lblFechaCreacion1.setText("Creado el "+empleadoEnCuestion.getFechaRegistro());
             lblFechaModificacion1.setText("Modificado el "+empleadoEnCuestion.getFechaModificacion());
@@ -182,35 +177,24 @@ public class EmpleadosInformacionController implements Initializable {
             //////////////////////////////////////////////////////////////////////
             //sets usuario
             cbRol.setValue(usuarioEnCuestion.getRol());
-            if(usuarioEnCuestion.getEstado()==true){
-                estadoUsuario=true;
-                rbActivoUsuario.setSelected(true);
-                rbInactivoUsuario.setSelected(false);
-            }else{
-                estadoUsuario=false;
-                rbActivoUsuario.setSelected(false);
-                rbInactivoUsuario.setSelected(true);
-            }
             //////////////////////////////////////////////////////////////////////
             
             
             
             
             if(modalidad.equals("Ver")){
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
                 GenerarTransacciones.crearTransaccion("Se observa empleado con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
                 txtCedula.setDisable(true);
                 txtNombre.setDisable(true);
                 txtTelefono.setDisable(true);
                 txtDireccion.setDisable(true);
-                rbActivo.setDisable(true);
-                rbInactivo.setDisable(true);
                 rbSi.setDisable(true);
                 rbNo.setDisable(true);
                 cbxJefeDirecto.setDisable(true);
                 
                 
-                rbActivoUsuario.setDisable(true);
-                rbInactivoUsuario.setDisable(true);
                 cbRol.setDisable(true);
                 txtContrasenaActual.setDisable(true);
                 txtContrasenaActual.setVisible(false);
@@ -221,6 +205,7 @@ public class EmpleadosInformacionController implements Initializable {
                 lbContrasenaConfirmar.setVisible(false);
                 lbContrasenaNueva.setVisible(false);
                 lbContrasenaActual.setVisible(false);
+                rectangulo.setVisible(false);
                 
                 
                 
@@ -229,6 +214,10 @@ public class EmpleadosInformacionController implements Initializable {
             lbContrasenaActual.setVisible(false);
             txtContrasenaActual.setVisible(false);
             txtContrasenaActual.setDisable(true);
+            txtEstado.setText("Activo");
+            btnCambiarEstado.setDisable(true);
+            btnCambiarEstado.setVisible(false);
+            rectangulo.setVisible(false);
         }
         
         
@@ -270,10 +259,6 @@ public class EmpleadosInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del cliente");
             return false;
         }
-        if(estado==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del empleado");
-            return false;
-        }
         if(esJefe==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione si el empleado es jefe o no");
             return false;
@@ -288,10 +273,6 @@ public class EmpleadosInformacionController implements Initializable {
         
         if(cbRol.getValue()==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el rol que va tener el usuario");
-            return false;
-        }
-        if(estadoUsuario==null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del usuario");
             return false;
         }
         if(!txtContrasenaNueva.getText().isBlank()){
@@ -339,7 +320,7 @@ public class EmpleadosInformacionController implements Initializable {
             empleadoEnCuestion.setCedula(txtCedula.getText());
             empleadoEnCuestion.setDireccion(txtDireccion.getText());
             empleadoEnCuestion.setTelefono(txtTelefono.getText());
-            empleadoEnCuestion.setEstado(estado);
+            
 
             if(!esJefe){
                 empleadoEnCuestion.setJefe(cbxJefeDirecto.getValue());
@@ -350,10 +331,7 @@ public class EmpleadosInformacionController implements Initializable {
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
                 if(respuesta.getEstado()){
-                    empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
-                    
-                    usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
-                    usuarioEnCuestion.setEstado(estadoUsuario);
+                    empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
                     usuarioEnCuestion.setRol(cbRol.getValue());
                     
                     if(cambioContrasena==true){
@@ -373,12 +351,13 @@ public class EmpleadosInformacionController implements Initializable {
                 
             }else{
                 if(modalidad.equals("Agregar")){
+                    empleadoEnCuestion.setEstado(true);
                     Respuesta respuesta=empleadoService.crear(empleadoEnCuestion);
                     if(respuesta.getEstado()){
                         empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
                         
                         usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
-                        usuarioEnCuestion.setEstado(estadoUsuario);
+                        usuarioEnCuestion.setEstado(true);
                         usuarioEnCuestion.setRol(cbRol.getValue());
                         usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
                         
@@ -425,19 +404,7 @@ public class EmpleadosInformacionController implements Initializable {
 
     private Boolean estado;
     
-    @FXML
-    private void actEstadoActivo(ActionEvent event) {
-        estado = true;
-        rbActivo.setSelected(true);
-        rbInactivo.setSelected(false);
-    }
-
-    @FXML
-    private void actEstadoInactivo(ActionEvent event) {
-        estado = false;
-        rbActivo.setSelected(false);
-        rbInactivo.setSelected(true);
-    }
+    
     
     
     public void volver() {
@@ -451,20 +418,30 @@ public class EmpleadosInformacionController implements Initializable {
         }
     }
 
+    @FXML
+    private void actCambiarEstado(ActionEvent event) {
+        String mensaje="";
+        if(estado){
+            empleadoEnCuestion.setEstado(false);
+            usuarioEnCuestion.setEstado(false);
+            mensaje="Se anula el empleado con id "+empleadoEnCuestion.getId();
+        }else{
+            empleadoEnCuestion.setEstado(true);
+            usuarioEnCuestion.setEstado(true);
+            mensaje="Se activa el empleado con id "+empleadoEnCuestion.getId();
+        }
+        Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
+        respuesta=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
+        if(respuesta.getEstado()){
+            GenerarTransacciones.crearTransaccion(mensaje, "EmpleadosInformacion");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del empleado", mensaje+" correctamente");
+            volver();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del empleado", respuesta.getMensaje());
+        }
+    }
+
 
     
-    private Boolean estadoUsuario;
-    @FXML
-    private void actEstadoActivoUsuario(ActionEvent event) {
-        rbActivoUsuario.setSelected(true);
-        rbInactivoUsuario.setSelected(false);
-        estadoUsuario=true;
-    }
-
-    @FXML
-    private void actEstadoInactivoUsuario(ActionEvent event) {
-        rbActivoUsuario.setSelected(false);
-        rbInactivoUsuario.setSelected(true);
-        estadoUsuario=false;
-    }
+    
 }
