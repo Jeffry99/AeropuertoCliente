@@ -179,7 +179,7 @@ public class ServiciosTiposInformacionController implements Initializable {
                     ServicioTipoEnCuestion.setEstado(true);
                     Respuesta respuesta=servicioTipoService.crear(ServicioTipoEnCuestion);
                     if(respuesta.getEstado()){
-                        ServicioTipoEnCuestion=(ServicioTipoDTO) respuesta.getResultado("ServicioTipo");
+                        ServicioTipoEnCuestion=(ServicioTipoDTO) respuesta.getResultado("TipoServicio");
                         GenerarTransacciones.crearTransaccion("Se crea un nuevo tipo servicio con id "+ServicioTipoEnCuestion.getId(), "ServicioTipoInformacion");
                         Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de tipo se servicio", "Se ha registrado un nuevo tipo de servicio correctamente");
                         volver();
