@@ -233,7 +233,7 @@ public class AvionesController implements Initializable {
 
 
     @FXML
-    private void actAgregar(ActionEvent event) {
+    private void actAgregar(ActionEvent event) throws IOException {
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadAvion", "Agregar");
         try{

@@ -59,12 +59,10 @@ public class AvionesInformacionController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
-    private Label lblNombre;
     @FXML
     private Label lblTelefono;
     @FXML
     private Label lblDireccion;
-    private Label lblIdNumero;
     
     private String modalidad="";
     AerolineaService aerolineaService = new AerolineaService();
@@ -102,7 +100,7 @@ public class AvionesInformacionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
+        //btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         tvTabla.setVisible(false);
         btnOcultar.setVisible(false);
         modalidad = (String) AppContext.getInstance().get("ModalidadAvion");
@@ -124,8 +122,6 @@ public class AvionesInformacionController implements Initializable {
             llenarDatos();
         }
         if(modalidad.equals("Agregar")){
-            lblIdNumero.setVisible(false);
-            lblNombre.setVisible(false);
             btnServicios.setVisible(false);
             btnVuelos.setVisible(false);
             btnBitacora.setVisible(false);
@@ -138,7 +134,6 @@ public class AvionesInformacionController implements Initializable {
     }    
     public void llenarDatos(){
         avion = (AvionDTO)AppContext.getInstance().get("AvionEnCuestion");
-        lblIdNumero.setText(avion.getId().toString());
         txtMatricula.setText(avion.getMatricula());
         cbAerolinea.setValue(avion.getAerolinea());
         cbTipoAvion.setValue(avion.getTipoAvion());

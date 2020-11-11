@@ -48,7 +48,6 @@ public class BitacoraInformacionController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnVolver;
-    private Label lblIdNumero;
     @FXML
     private ComboBox<AvionDTO> cbAvion;
     @FXML
@@ -97,14 +96,12 @@ public class BitacoraInformacionController implements Initializable {
         if(modalidad.equals("Agregar")){
             lblFechaCreacion.setText("");
             lblFechaModificacion.setText("");
-            lblIdNumero.setVisible(false);
             txtEstado.setText("Activo");
         }
     }
     
     public void llenarDatos(){
         bitacora = (BitacoraAvionDTO)AppContext.getInstance().get("BitacoraEnCuestion");
-        lblIdNumero.setText(bitacora.getId().toString());
         spTiempo.getValueFactory().setValue(bitacora.getTiempoTierra());
         spCombustible.getValueFactory().setValue(bitacora.getCombustible());
         spDistancia.getValueFactory().setValue(Double.valueOf(bitacora.getDistanciaRecorrida()));
