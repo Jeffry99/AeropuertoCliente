@@ -5,6 +5,9 @@
  */
 package org.una.aeropuerto.cliente.dto;
 
+import org.una.aeropuerto.cliente.service.ParametroAplicacionService;
+import org.una.aeropuerto.cliente.util.Respuesta;
+
 /**
  *
  * @author Pablo-VE
@@ -42,6 +45,14 @@ public class UsuarioAutenticado {
     public void setTokenJwt(String tokenJwt) {
         this.tokenJwt = tokenJwt;
     }
+    
+    public boolean solicitarPermisoGerente(){
+        
+        return false;
+    }
+    
+    
+    
     
     
     

@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,23 @@ public class ParametroAplicacionService {
         }
     }
     
+    public Respuesta getByNombreAndValor(String nombre, String valor){
+        try{
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("nombre", nombre);
+            parametros.put("valor", valor);
+            ConexionService conexion = new ConexionService("parametros_aplicacion/nombreValor", "/{nombre}/{valor}", parametros);
+            conexion.get();
+            if(conexion.isError()){
+                return new Respuesta(false, conexion.getError(), "Error al solicitar permiso");
+            }
+            ParametroAplicacionDTO result = (ParametroAplicacionDTO) conexion.readEntity(ParametroAplicacionDTO.class);
+            return new Respuesta(true, "ParametroAplicacion",result);
+        }catch(Exception ex){
+            return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
+        }
+    }
+    
     public Respuesta getAll(){
         try{
             ConexionService conexion = new ConexionService("parametros_aplicacion/");
@@ -73,7 +91,7 @@ public class ParametroAplicacionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar todos los parametros de aplicacion");
             }
-            List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
+            List<ParametroAplicacionDTO> result = resultado((List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){}));
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -89,7 +107,7 @@ public class ParametroAplicacionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los parametros de aplicacion por el estado");
             }
-            List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
+            List<ParametroAplicacionDTO> result = resultado((List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){}));
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -105,7 +123,7 @@ public class ParametroAplicacionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los parametros de aplicacion por su nombre");
             }
-            List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
+            List<ParametroAplicacionDTO> result = resultado((List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){}));
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
@@ -121,10 +139,22 @@ public class ParametroAplicacionService {
             if(conexion.isError()){
                 return new Respuesta(false, conexion.getError(), "Error al buscar los parametros de aplicacion por la descripcion");
             }
-            List<ParametroAplicacionDTO> result = (List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){});
+            List<ParametroAplicacionDTO> result = resultado((List<ParametroAplicacionDTO>) conexion.readEntity(new GenericType<List<ParametroAplicacionDTO>>(){}));
             return new Respuesta(true, "ParametrosAplicacion",result);
         }catch(Exception ex){
             return new Respuesta(false, ex.toString(), "No pudo establecerse conexion con el servidor");
         }
+    }
+    
+    
+    private List<ParametroAplicacionDTO> resultado(List<ParametroAplicacionDTO> result){
+        List<ParametroAplicacionDTO> result1 = new ArrayList<ParametroAplicacionDTO>();
+        if(result.size()>2){
+            for(int i=2; i<result.size(); i++){
+                result1.add(result.get(i));
+            }
+        }
+        return result1;
+        
     }
 }

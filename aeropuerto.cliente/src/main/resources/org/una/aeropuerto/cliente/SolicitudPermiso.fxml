@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="215.0" prefWidth="382.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuerto.cliente.controller.SolicitudPermisoController">
+   <children>
+      <ImageView fitHeight="215.0" fitWidth="382.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/fondo.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="105.0" layoutY="26.0" text="SOLICITUD DE PERMISO">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="txtContrasena" layoutX="52.0" layoutY="97.0" prefHeight="38.0" prefWidth="278.0" />
+      <Label fx:id="lbTitulo" layoutX="52.0" layoutY="66.0" text="Digite la clave secreta" />
+      <Button fx:id="btnCancelar" layoutX="52.0" layoutY="159.0" mnemonicParsing="false" onAction="#actCancelar" style="-fx-background-color: #1d1d1d;;" text="Cancelar" textFill="WHITE" />
+      <Button fx:id="btnAceptar" layoutX="268.0" layoutY="159.0" mnemonicParsing="false" onAction="#actAceptar" prefWidth="62.0" style="-fx-background-color: #1d1d1d;;" text="Aceptar" textFill="WHITE" />
+   </children>
+</AnchorPane>
