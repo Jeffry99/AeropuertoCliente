@@ -8,16 +8,16 @@ package org.una.aeropuerto.cliente.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,18 +27,18 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.dto.ServicioTipoDTO;
-import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
-import org.una.aeropuerto.cliente.service.AerolineaService;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
-import org.una.aeropuerto.cliente.service.TipoAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -292,6 +292,27 @@ public class ServiciosInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
+        try{
+            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                CambiarEstado();
+            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                Stage stage = new Stage();
+                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,ServicioRegistrado");
+                AppContext.getInstance().set("ControllerPermiso", this);
+                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                stage.setScene(new Scene(root));
+                stage.setTitle("Servicio registrado "+servicio.getServicioTipo()+"-"+servicio.getId());
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+                stage.show();
+            }
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }; 
+    }
+    
+    public void CambiarEstado(){
         String mensaje="";
         if(estado){
             servicio.setEstado(false);

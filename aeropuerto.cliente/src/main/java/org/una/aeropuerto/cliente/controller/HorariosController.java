@@ -232,32 +232,28 @@ public class HorariosController implements Initializable {
             TableColumn <HorarioDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn<HorarioDTO, String> colNombre = new TableColumn("Nombre");
+            colNombre.setPrefWidth(230);
             colNombre.setCellValueFactory(hor -> {
                 String nombreUsuario;
                 nombreUsuario = hor.getValue().getEmpleado().getNombre();
                 return new ReadOnlyStringWrapper(nombreUsuario);
             });
-            TableColumn<HorarioDTO, String> colDiaInicio = new TableColumn("Día inicio");
+            TableColumn<HorarioDTO, String> colDiaInicio = new TableColumn("Inicio");
+            colDiaInicio.setPrefWidth(140);
             colDiaInicio.setCellValueFactory(hor -> {
-                String dia=getDia(hor.getValue().getDiaInicio());
-                return new ReadOnlyStringWrapper(dia);
-            });
-            TableColumn<HorarioDTO, String> colHoraInicio = new TableColumn("Hora inicio");
-            colHoraInicio.setCellValueFactory(hor -> {
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 String hora = formatter.format(hor.getValue().getHoraInicio());
-                return new ReadOnlyStringWrapper(hora);
-            });
-            TableColumn<HorarioDTO, String> colDiaFinal = new TableColumn("Día final");
-            colDiaFinal.setCellValueFactory(hor -> {
-                String dia=getDia(hor.getValue().getDiaFinal());
+                String dia=getDia(hor.getValue().getDiaInicio())+" / "+hora;
                 return new ReadOnlyStringWrapper(dia);
             });
-            TableColumn<HorarioDTO, String> colHoraFinal = new TableColumn("Hora final");
-            colHoraFinal.setCellValueFactory(hor -> {
+            
+            TableColumn<HorarioDTO, String> colDiaFinal = new TableColumn("Final");
+            colDiaFinal.setPrefWidth(140);
+            colDiaFinal.setCellValueFactory(hor -> {
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 String hora = formatter.format(hor.getValue().getHoraFinal());
-                return new ReadOnlyStringWrapper(hora);
+                String dia=getDia(hor.getValue().getDiaFinal())+" / "+hora;
+                return new ReadOnlyStringWrapper(dia);
             });
             TableColumn<HorarioDTO, String> colEstado = new TableColumn("Estado");
             colEstado.setCellValueFactory(hor -> {
@@ -268,13 +264,12 @@ public class HorariosController implements Initializable {
                     estadoString = "Inactivo";
                 return new ReadOnlyStringWrapper(estadoString);
             });
+            colEstado.setPrefWidth(110);
  
             tvHorarios.getColumns().addAll(colId);
             tvHorarios.getColumns().addAll(colNombre);
             tvHorarios.getColumns().addAll(colDiaInicio);
-            tvHorarios.getColumns().addAll(colHoraInicio);
             tvHorarios.getColumns().addAll(colDiaFinal);
-            tvHorarios.getColumns().addAll(colHoraFinal);
             tvHorarios.getColumns().addAll(colEstado);
             addButtonToTable();
             tvHorarios.setItems(items);
@@ -283,7 +278,7 @@ public class HorariosController implements Initializable {
     
     private void addButtonToTable() {
         TableColumn<HorarioDTO, Void> colBtn = new TableColumn("Acciones");
-
+        colBtn.setPrefWidth(175);
         Callback<TableColumn<HorarioDTO, Void>, TableCell<HorarioDTO, Void>> cellFactory = new Callback<TableColumn<HorarioDTO, Void>, TableCell<HorarioDTO, Void>>() {
             @Override
             public TableCell<HorarioDTO, Void> call(final TableColumn<HorarioDTO, Void> param) {

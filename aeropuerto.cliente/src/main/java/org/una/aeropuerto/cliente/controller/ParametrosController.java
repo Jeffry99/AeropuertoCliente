@@ -8,6 +8,7 @@ package org.una.aeropuerto.cliente.controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,8 +18,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,9 +32,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.ParametroAplicacionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.ParametroAplicacionService;
+import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -259,28 +269,25 @@ public class ParametrosController implements Initializable {
                 parametroEnCuestion.setDescripcion(txtDescripcion.getText());
             }
             
-            if(modalidad.equals("Modificar")){
-                Respuesta respuesta=parametroService.modificar(parametroEnCuestion.getId(), parametroEnCuestion);
-                if(respuesta.getEstado()){
-                    cargarTodos();
-                    GenerarTransacciones.crearTransaccion("Se modifica parámetro con id "+parametroEnCuestion.getId(), "Parámetros");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de parámetro", "Se ha modificado el parámetro correctamente");
-                    limpiar();
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de parámetro", respuesta.getMensaje());
+            try{
+                if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("administrador")){
+                    ejecutarAccion();
+                }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                    Stage stage = new Stage();
+                    AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaAdministrador,Parametro");
+                    AppContext.getInstance().set("ControllerPermiso", this);
+                    Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                    stage.setScene(new Scene(root));
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(
+                        ((Node)event.getSource()).getScene().getWindow() );
+                    stage.show();
                 }
-            }else{
-                Respuesta respuesta=parametroService.crear(parametroEnCuestion);
-                if(respuesta.getEstado()){
-                    cargarTodos();
-                    parametroEnCuestion=(ParametroAplicacionDTO) respuesta.getResultado("ParametroAplicacion");
-                    GenerarTransacciones.crearTransaccion("Se crea parámetro con id "+parametroEnCuestion.getId(), "Parámetros");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de parámetro", "Se ha registrado el parámetro correctamente");
-                    limpiar();
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de parámetro", respuesta.getMensaje());
-                }
-            }
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            };  
+            
+            
         }
     }
 
@@ -321,4 +328,39 @@ public class ParametrosController implements Initializable {
         
         return true;
     }
+    
+    private void Agregar(){
+        Respuesta respuesta=parametroService.crear(parametroEnCuestion);
+        if(respuesta.getEstado()){
+            cargarTodos();
+            parametroEnCuestion=(ParametroAplicacionDTO) respuesta.getResultado("ParametroAplicacion");
+            GenerarTransacciones.crearTransaccion("Se crea parámetro con id "+parametroEnCuestion.getId(), "Parámetros");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de parámetro", "Se ha registrado el parámetro correctamente");
+            limpiar();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de parámetro", respuesta.getMensaje());
+        }
+    }
+    
+    private void Modificar(){
+        Respuesta respuesta=parametroService.modificar(parametroEnCuestion.getId(), parametroEnCuestion);
+        if(respuesta.getEstado()){
+            cargarTodos();
+            GenerarTransacciones.crearTransaccion("Se modifica parámetro con id "+parametroEnCuestion.getId(), "Parámetros");
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de parámetro", "Se ha modificado el parámetro correctamente");
+            limpiar();
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de parámetro", respuesta.getMensaje());
+        }
+    }
+    
+    public void ejecutarAccion(){
+        if(modalidad.equals("Modificar")){
+            Modificar();
+        }else{
+            Agregar();
+        }
+    }
+    
+    
 }

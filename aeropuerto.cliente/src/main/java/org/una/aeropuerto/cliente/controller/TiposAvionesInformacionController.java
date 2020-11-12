@@ -12,15 +12,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
@@ -167,6 +172,27 @@ public class TiposAvionesInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
+        try{
+            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                CambiarEstado();
+            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                Stage stage = new Stage();
+                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,TipoAvion");
+                AppContext.getInstance().set("ControllerPermiso", this);
+                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                stage.setScene(new Scene(root));
+                stage.setTitle("Tipo de avion "+tipoAvionEnCuestion.getNombre());
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+                stage.show();
+            }
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }; 
+    }
+    
+    public void CambiarEstado(){
         String mensaje="";
         if(estado){
             tipoAvionEnCuestion.setEstado(false);

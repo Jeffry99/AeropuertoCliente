@@ -15,7 +15,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -25,9 +27,12 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.RolDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.dto.UsuarioDTO;
 import org.una.aeropuerto.cliente.service.AutenticacionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
@@ -315,64 +320,34 @@ public class EmpleadosInformacionController implements Initializable {
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
-            
             empleadoEnCuestion.setNombre(txtNombre.getText());
             empleadoEnCuestion.setCedula(txtCedula.getText());
             empleadoEnCuestion.setDireccion(txtDireccion.getText());
             empleadoEnCuestion.setTelefono(txtTelefono.getText());
-            
-
             if(!esJefe){
                 empleadoEnCuestion.setJefe(cbxJefeDirecto.getValue());
             }else{
                 empleadoEnCuestion.setJefe(null);
             }
+            try{
+                if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("administrador")){
+                    ejecutarAccion();
+                }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                    Stage stage = new Stage();
+                    AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaAdministrador,Usuario");
+                    AppContext.getInstance().set("ControllerPermiso", this);
+                    Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                    stage.setScene(new Scene(root));
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(
+                        ((Node)event.getSource()).getScene().getWindow() );
+                    stage.show();
+                }
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            }; 
             
-            if(modalidad.equals("Modificar")){
-                Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
-                if(respuesta.getEstado()){
-                    empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
-                    usuarioEnCuestion.setRol(cbRol.getValue());
-                    
-                    if(cambioContrasena==true){
-                        usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
-                    }
-                    Respuesta respuestaUsuario=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
-                    if(respuestaUsuario.getEstado()){
-                        usuarioEnCuestion=(UsuarioDTO) respuestaUsuario.getResultado("Usuario");
-                        GenerarTransacciones.crearTransaccion("Se modifica empleado y usuario con id "+usuarioEnCuestion.getId(), "EmpleadosInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de empleado", "Se ha modificado el empleado correctamente");
-                        volver();
-                    }
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
-                }
-                
-                
-            }else{
-                if(modalidad.equals("Agregar")){
-                    empleadoEnCuestion.setEstado(true);
-                    Respuesta respuesta=empleadoService.crear(empleadoEnCuestion);
-                    if(respuesta.getEstado()){
-                        empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
-                        
-                        usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
-                        usuarioEnCuestion.setEstado(true);
-                        usuarioEnCuestion.setRol(cbRol.getValue());
-                        usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
-                        
-                        Respuesta respuestaUsuario=usuarioService.crear(usuarioEnCuestion);
-                        if(respuestaUsuario.getEstado()){
-                            usuarioEnCuestion=(UsuarioDTO) respuestaUsuario.getResultado("Usuario");
-                            GenerarTransacciones.crearTransaccion("Se crea empleado y usuario con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
-                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de empleado", "Se ha registrado el empleado correctamente");
-                            volver();
-                        }
-                    }else{
-                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de empleado", respuesta.getMensaje());
-                    }
-                }
-            }
+            
         }
     }
 
@@ -420,6 +395,27 @@ public class EmpleadosInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
+        try{
+            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                CambiarEstado();
+            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                Stage stage = new Stage();
+                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,Empleado");
+                AppContext.getInstance().set("ControllerPermiso", this);
+                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                stage.setScene(new Scene(root));
+                stage.setTitle("Empleado "+empleadoEnCuestion.getNombre());
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+                stage.show();
+            }
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }; 
+    }
+    
+    public void CambiarEstado(){
         String mensaje="";
         if(estado){
             empleadoEnCuestion.setEstado(false);
@@ -431,16 +427,74 @@ public class EmpleadosInformacionController implements Initializable {
             mensaje="Se activa el empleado con id "+empleadoEnCuestion.getId();
         }
         Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
-        respuesta=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
         if(respuesta.getEstado()){
-            GenerarTransacciones.crearTransaccion(mensaje, "EmpleadosInformacion");
-            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del empleado", mensaje+" correctamente");
-            volver();
+            respuesta=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
+            if(respuesta.getEstado()){
+                GenerarTransacciones.crearTransaccion(mensaje, "EmpleadosInformacion");
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del empleado", mensaje+" correctamente");
+                volver();
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del empleado", respuesta.getMensaje());
+            }
         }else{
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del empleado", respuesta.getMensaje());
         }
     }
 
+    
+    private void Agregar(){
+        empleadoEnCuestion.setEstado(true);
+        Respuesta respuesta=empleadoService.crear(empleadoEnCuestion);
+        if(respuesta.getEstado()){
+            empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");
+
+            usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
+            usuarioEnCuestion.setEstado(true);
+            usuarioEnCuestion.setRol(cbRol.getValue());
+            usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+
+            Respuesta respuestaUsuario=usuarioService.crear(usuarioEnCuestion);
+            if(respuestaUsuario.getEstado()){
+                usuarioEnCuestion=(UsuarioDTO) respuestaUsuario.getResultado("Usuario");
+                GenerarTransacciones.crearTransaccion("Se crea empleado y usuario con id "+empleadoEnCuestion.getId(), "EmpleadosInformacion");
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de empleado", "Se ha registrado el empleado correctamente");
+                volver();
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de empleado", respuesta.getMensaje());
+        }
+    }
+    
+    private void Modificar(){
+        Respuesta respuesta=empleadoService.modificar(empleadoEnCuestion.getId(), empleadoEnCuestion);
+        if(respuesta.getEstado()){
+            empleadoEnCuestion = (EmpleadoDTO) respuesta.getResultado("Empleado");usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
+            usuarioEnCuestion.setRol(cbRol.getValue());
+
+            if(cambioContrasena==true){
+                usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+            }
+            Respuesta respuestaUsuario=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
+            if(respuestaUsuario.getEstado()){
+                usuarioEnCuestion=(UsuarioDTO) respuestaUsuario.getResultado("Usuario");
+                GenerarTransacciones.crearTransaccion("Se modifica empleado y usuario con id "+usuarioEnCuestion.getId(), "EmpleadosInformacion");
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de empleado", "Se ha modificado el empleado correctamente");
+                volver();
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
+        }
+    }
+    
+    public void ejecutarAccion(){
+        if(modalidad.equals("Modificar")){
+            Agregar();  
+        }else{
+            if(modalidad.equals("Agregar")){
+                Modificar();
+            }
+        }
+    }
 
     
     

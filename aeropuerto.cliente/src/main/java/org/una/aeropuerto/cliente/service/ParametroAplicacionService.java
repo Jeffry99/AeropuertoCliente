@@ -149,9 +149,11 @@ public class ParametroAplicacionService {
     
     private List<ParametroAplicacionDTO> resultado(List<ParametroAplicacionDTO> result){
         List<ParametroAplicacionDTO> result1 = new ArrayList<ParametroAplicacionDTO>();
-        if(result.size()>2){
-            for(int i=2; i<result.size(); i++){
-                result1.add(result.get(i));
+        if(result.size()>0){
+            for(int i=0; i<result.size(); i++){
+                if(!result.get(i).getNombre().equals("ContraseñaAdministrador")&&!result.get(i).getNombre().equals("ContraseñaGerente")){
+                    result1.add(result.get(i));
+                }
             }
         }
         return result1;

@@ -39,6 +39,7 @@ import javax.json.bind.annotation.JsonbDateFormat;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.HorarioDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.HorarioService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -393,6 +394,27 @@ public class HorariosInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
+        try{
+            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                CambiarEstado();
+            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                Stage stage = new Stage();
+                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,Horario");
+                AppContext.getInstance().set("ControllerPermiso", this);
+                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                stage.setScene(new Scene(root));
+                stage.setTitle("Horario de "+horarioEnCuestion.getEmpleado().getNombre());
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+                stage.show();
+            }
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }; 
+    }
+    
+    public void CambiarEstado(){
         String mensaje="";
         if(estado){
             horarioEnCuestion.setEstado(false);

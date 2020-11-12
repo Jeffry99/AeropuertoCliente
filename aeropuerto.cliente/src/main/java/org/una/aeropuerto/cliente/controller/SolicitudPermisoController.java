@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
+import org.una.aeropuerto.cliente.dto.ParametroAplicacionDTO;
 import org.una.aeropuerto.cliente.service.ParametroAplicacionService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -39,15 +40,15 @@ public class SolicitudPermisoController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    String permiso="";
+    String permiso[];
     private ParametroAplicacionService parametroService = new ParametroAplicacionService();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        permiso=(String) AppContext.getInstance().get("ModalidadSolicitudPermiso");
-        if(permiso.equals("ContraseñaAdministrador")){
+        permiso=((String) AppContext.getInstance().get("ModalidadSolicitudPermiso")).split(",");
+        if(permiso[0].equals("ContraseñaAdministrador")){
             lbTitulo.setText("Digite la contraseña secreta de administración");
-        }else if(permiso.equals("ContraseñaGerente")){
+        }else if(permiso[0].equals("ContraseñaGerente")){
             lbTitulo.setText("Digite la contraseña secreta de gerencia");
         }
         
@@ -64,11 +65,17 @@ public class SolicitudPermisoController implements Initializable {
         if(txtContrasena.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Solicitud de permiso", lbTitulo.getText()+" por favor.");
         }else{
-            Respuesta res = parametroService.getByNombreAndValor(permiso, txtContrasena.getText());
+            Respuesta res = parametroService.getByNombreAndValor(permiso[0], txtContrasena.getText());
             AppContext.getInstance().set("Permiso", res.getEstado());
             if(res.getEstado()){
-                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Solicitud de permiso", "Autorización concedida");
-                salir();
+                ParametroAplicacionDTO parametro = (ParametroAplicacionDTO) res.getResultado("ParametroAplicacion");
+                if(parametro!=null){
+                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Solicitud de permiso", "Autorización concedida");
+                    salir();
+                    hacerCambioDeEstado();
+                }else{
+                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Solicitud de permiso", "Autorización no concedida, contraseña incorrecta");
+                }
             }else{
                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Solicitud de permiso", "Autorización no concedida, contraseña incorrecta");
             }
@@ -79,5 +86,73 @@ public class SolicitudPermisoController implements Initializable {
     public void salir(){
         Stage stage = (Stage) lbTitulo.getScene().getWindow();
         stage.close();
+    }
+    
+    private void hacerCambioDeEstado(){
+        if(permiso[1].equals("Aerolinea")){
+            AerolineasInformacionController controller = (AerolineasInformacionController) AppContext.getInstance().get("ControllerPermiso");
+            controller.CambiarEstado();
+        }else{
+            if(permiso[1].equals("AreaTrabajo")){
+                AreasTrabajosInformacionController controller = (AreasTrabajosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                controller.CambiarEstado();
+            }else{
+                if(permiso[1].equals("Empleado")){
+                    EmpleadosInformacionController controller = (EmpleadosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                    controller.CambiarEstado();
+                }else{
+                    if(permiso[1].equals("Horario")){
+                        HorariosInformacionController controller = (HorariosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                        controller.CambiarEstado();
+                    }else{
+                        if(permiso[1].equals("Roles")){
+                            RolesInformacionController controller = (RolesInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                            controller.CambiarEstado();
+                        }else{
+                            if(permiso[1].equals("Ruta")){
+                                RutasInformacionController controller = (RutasInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                controller.CambiarEstado();
+                            }else{
+                                if(permiso[1].equals("ServicioRegistrado")){
+                                    ServiciosInformacionController controller = (ServiciosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                    controller.CambiarEstado();
+                                }else{
+                                    if(permiso[1].equals("ServicioTipo")){
+                                        ServiciosTiposInformacionController controller = (ServiciosTiposInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                        controller.CambiarEstado();
+                                    }else{
+                                        if(permiso[1].equals("TipoAvion")){
+                                            TiposAvionesInformacionController controller = (TiposAvionesInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                            controller.CambiarEstado();
+                                        }else{
+                                            if(permiso[1].equals("TrabajoEmpleado")){
+                                                TrabajosEmpleadosInformacionController controller = (TrabajosEmpleadosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                                controller.CambiarEstado();
+                                            }else{
+                                                if(permiso[1].equals("Vuelo")){
+                                                    VuelosInformacionController controller = (VuelosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                                    controller.CancelarVuelo();
+                                                }else{
+                                                    if(permiso[1].equals("Parametro")){
+                                                        ParametrosController controller = (ParametrosController) AppContext.getInstance().get("ControllerPermiso");
+                                                        controller.ejecutarAccion();
+                                                    }else{
+                                                        if(permiso[1].equals("Usuario")){
+                                                            EmpleadosInformacionController controller = (EmpleadosInformacionController) AppContext.getInstance().get("ControllerPermiso");
+                                                            controller.ejecutarAccion();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
     }
 }

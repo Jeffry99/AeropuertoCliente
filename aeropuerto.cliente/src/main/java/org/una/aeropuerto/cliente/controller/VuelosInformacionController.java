@@ -38,6 +38,7 @@ import javax.json.bind.annotation.JsonbDateFormat;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.RutaDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.RutaService;
@@ -332,6 +333,27 @@ public class VuelosInformacionController implements Initializable {
 
     @FXML
     private void actCancelar(ActionEvent event) {
+        try{
+            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                CancelarVuelo();
+            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                Stage stage = new Stage();
+                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,Vuelo");
+                AppContext.getInstance().set("ControllerPermiso", this);
+                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                stage.setScene(new Scene(root));
+                stage.setTitle("Vuelo "+vuelo.getId());
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+                stage.show();
+            }
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        };
+    }
+    
+    public void CancelarVuelo(){
         vuelo.setEstado(4);
         Respuesta respuesta=vueloService.modificar(vuelo.getId(), vuelo);
         if(respuesta.getEstado()){
