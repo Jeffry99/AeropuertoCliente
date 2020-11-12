@@ -10,10 +10,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,14 +21,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -39,7 +33,6 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
-import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -52,7 +45,7 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  * @author Jeffry
  */
 public class ServiciosController implements Initializable {
-    private ServicioRegistradoService servicioRegistradoService;
+    private ServicioRegistradoService servicioRegistradoService = new ServicioRegistradoService();
     @FXML
     private TableView<ServicioRegistradoDTO> tvServicios;
     @FXML

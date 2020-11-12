@@ -8,6 +8,8 @@ package org.una.aeropuerto.cliente.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,11 +33,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
+import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.dto.ServicioTipoDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AvionService;
+import org.una.aeropuerto.cliente.service.BitacoraAvionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
@@ -192,37 +196,45 @@ public class ServiciosInformacionController implements Initializable {
     private void actGuardar(ActionEvent event) {
         if(validar()){
             servicio.setCobro(txtCobro.getValue().floatValue());
-            
             servicio.setResponsable(cbResponsable.getValue());
             servicio.setAvion(cbAviones.getValue());
             servicio.setDuracion(txtDuracion.getValue().floatValue());
             servicio.setEstadoCobro(estadoCobro);
-            servicio.setServicioTipo(cbTipoServicio.getValue());
-            
-            if(modalidad.equals("Modificar")){
-                
-                Respuesta respuesta=servicioService.modificar(servicio.getId(), servicio);
-                if(respuesta.getEstado()){
-                    GenerarTransacciones.crearTransaccion("Se modifica servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de servicio registrado", "Se ha modificado el servicio registrado correctamente");
-                    volver();
+            servicio.setServicioTipo(cbTipoServicio.getValue());if(generarAlertaZonaDescarga()){
+                if(generarAlertaHora()){
+                    if(modalidad.equals("Modificar")){
+
+                        Respuesta respuesta=servicioService.modificar(servicio.getId(), servicio);
+                        if(respuesta.getEstado()){
+                            GenerarTransacciones.crearTransaccion("Se modifica servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
+                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de servicio registrado", "Se ha modificado el servicio registrado correctamente");
+                            volver();
+                        }else{
+                            Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de servicio registrado", respuesta.getMensaje());
+                        }
+                    }else{
+                        if(modalidad.equals("Agregar")){
+                            servicio.setEstado(true);
+                            Respuesta respuesta=servicioService.crear(servicio);
+                            if(respuesta.getEstado()){
+                                servicio = (ServicioRegistradoDTO) respuesta.getResultado("ServicioAeropuerto");
+                                
+                                GenerarTransacciones.crearTransaccion("Se crea servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
+                                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de servicio registrado", "Se ha registrado el servicio registrado correctamente");
+                                volver();
+                                crearBitacora();
+                            }else{
+                                Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de servicio registrado", respuesta.getMensaje());
+                            }
+                        }
+                    }
                 }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de servicio registrado", respuesta.getMensaje());
+                    Mensaje.showAndWait(Alert.AlertType.WARNING, "Registro de servicio", "El avion se encuentra actualmente en otro servicio");
                 }
             }else{
-                if(modalidad.equals("Agregar")){
-                    servicio.setEstado(true);
-                    Respuesta respuesta=servicioService.crear(servicio);
-                    if(respuesta.getEstado()){
-                        servicio = (ServicioRegistradoDTO) respuesta.getResultado("ServicioAeropuerto");
-                        GenerarTransacciones.crearTransaccion("Se crea servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de servicio registrado", "Se ha registrado el servicio registrado correctamente");
-                        volver();
-                    }else{
-                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de servicio registrado", respuesta.getMensaje());
-                    }
-                }
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Registro de servicio", "El avion debe ir a zona de descarga antes de ir a "+servicio.getServicioTipo().getAreaTrabajo().getNombre());
             }
+            
         }
     }
 
@@ -331,4 +343,117 @@ public class ServiciosInformacionController implements Initializable {
         }
     }
     
+    private boolean generarAlertaZonaDescarga(){
+        String area= servicio.getServicioTipo().getAreaTrabajo().getNombre();
+        if(area.equals("Mantenimiento")||area.equals("Carga de combustible")||area.equals("Hangar")){
+            ServicioRegistradoDTO servicioM = getMayor();
+            if(servicioM!=null){
+                if(!servicioM.getServicioTipo().getAreaTrabajo().getNombre().equals("Zona de descarga")){
+                    return false;
+                }
+            }
+        } 
+        return true;
+    }
+    
+    private boolean generarAlertaHora(){
+        
+        ServicioRegistradoDTO servicioM = getMayor();
+        if(servicioM!=null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(servicioM.getFechaRegistro());
+            calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)+(int)servicioM.getDuracion());
+            System.out.println(calendar.getTime());
+            Date fechaFinal = calendar.getTime();
+            Date fechaYa = new Date();
+            System.out.println("fecha final: "+fechaFinal);
+            System.out.println("fecha ya: "+fechaYa);
+            if(fechaYa.before(fechaFinal)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private ServicioRegistradoDTO getMayor(){
+        ServicioRegistradoService servicioRegistradoService = new ServicioRegistradoService();
+        ServicioRegistradoDTO servicioMayor= new ServicioRegistradoDTO();
+        ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
+        Respuesta respuesta = servicioRegistradoService.getByAvion(servicio.getAvion().getId());
+        if(respuesta.getEstado().equals(true)){
+            servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
+            
+            if(servicios.size()>0){
+                servicioMayor=servicios.get(0);
+            }
+            if(servicios.size()>1){
+                for(int i=1; i<servicios.size(); i++){
+                    if(servicios.get(i).getId()>servicioMayor.getId()){
+                        servicioMayor=servicios.get(i);
+                    }
+                }
+            }
+            return servicioMayor;
+        } 
+        return null;
+    }
+    
+    public void crearBitacora(){
+        BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
+        BitacoraAvionDTO bitacoraM = getBitacoraMayor();
+        bitacora.setAvion(servicio.getAvion());
+        if(bitacoraM != null){
+            bitacora.setDistanciaRecorrida(bitacoraM.getDistanciaRecorrida());
+            bitacora.setTiempoTierra(bitacoraM.getTiempoTierra()+(int)servicio.getDuracion());
+            if(servicio.getServicioTipo().getAreaTrabajo().getNombre().equals("Carga de combustible")){
+                bitacora.setCombustible(100);
+            }else{
+                bitacora.setCombustible(bitacoraM.getCombustible());
+            }
+            
+        }else{
+            bitacora.setDistanciaRecorrida(0);
+            bitacora.setTiempoTierra((int)servicio.getDuracion());
+            if(servicio.getServicioTipo().getAreaTrabajo().getNombre().equals("Carga de combustible")){
+                bitacora.setCombustible(100);
+            }else{
+                bitacora.setCombustible(0);
+            }
+        }
+        bitacora.setUbicacion(servicio.getServicioTipo().getAreaTrabajo().getNombre());
+        bitacora.setEstado(true);
+        BitacoraAvionService bitacoraService = new BitacoraAvionService();
+        bitacoraM.setEstado(false);
+        Respuesta res = bitacoraService.crear(bitacora);
+        if(res.getEstado()){
+            res = bitacoraService.modificar(bitacoraM.getId(), bitacoraM);
+        }
+        
+        
+        
+        
+    }
+    
+    public BitacoraAvionDTO getBitacoraMayor(){
+        BitacoraAvionService bitacoraService = new BitacoraAvionService();
+        BitacoraAvionDTO bitacoraMayor= new BitacoraAvionDTO();
+        ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+        Respuesta respuesta = bitacoraService.getByAvion(servicio.getAvion().getId());
+        if(respuesta.getEstado().equals(true)){
+            bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+            
+            if(bitacoras.size()>0){
+                bitacoraMayor=bitacoras.get(0);
+            }
+            if(bitacoras.size()>1){
+                for(int i=1; i<bitacoras.size(); i++){
+                    if(bitacoras.get(i).getId()>bitacoraMayor.getId()){
+                        bitacoraMayor=bitacoras.get(i);
+                    }
+                }
+            }
+            return bitacoraMayor;
+        } 
+        return null;
+    }
 }
