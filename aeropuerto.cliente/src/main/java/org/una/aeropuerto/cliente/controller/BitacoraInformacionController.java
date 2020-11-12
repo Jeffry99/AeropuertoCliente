@@ -8,9 +8,7 @@ package org.una.aeropuerto.cliente.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +20,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -151,6 +148,9 @@ public class BitacoraInformacionController implements Initializable {
                     Respuesta respuesta=bitacoraService.crear(bitacora);
                     if(respuesta.getEstado()){
                         bitacora = (BitacoraAvionDTO) respuesta.getResultado("BitacoraAvion");
+                        BitacoraAvionDTO bitacoraM = getBitacoraMayor(bitacora.getAvion());
+                        bitacoraM.setEstado(false);
+                        bitacoraService.modificar(bitacoraM.getId(), bitacoraM);
                         GenerarTransacciones.crearTransaccion("Se crea bitácora con id "+bitacora.getId(), "BitacoraInformacion");
                         Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de bitácora", "Se ha registrado la bitácora correctamente");
                         volver();
@@ -215,4 +215,26 @@ public class BitacoraInformacionController implements Initializable {
         }
     }
     
+    public BitacoraAvionDTO getBitacoraMayor(AvionDTO avion){
+        bitacoraService = new BitacoraAvionService();
+        BitacoraAvionDTO bitacoraMayor= new BitacoraAvionDTO();
+        ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+        Respuesta respuesta = bitacoraService.getByAvion(avion.getId());
+        if(respuesta.getEstado().equals(true)){
+            bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+            
+            if(bitacoras.size()>0){
+                bitacoraMayor=bitacoras.get(0);
+            }
+            if(bitacoras.size()>1){
+                for(int i=1; i<bitacoras.size(); i++){
+                    if(bitacoras.get(i).getId()>bitacoraMayor.getId()){
+                        bitacoraMayor=bitacoras.get(i);
+                    }
+                }
+            }
+            return bitacoraMayor;
+        } 
+        return null;
+    }
 }
