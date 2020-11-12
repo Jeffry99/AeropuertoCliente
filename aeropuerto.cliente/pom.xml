@@ -39,6 +39,17 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.22</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.4.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
                 <groupId>javax</groupId>
                 <artifactId>javaee-web-api</artifactId>
                 <version>8.0</version>
@@ -71,6 +82,7 @@
             <artifactId>jfoenix</artifactId>
             <version>9.0.1</version>
         </dependency>
+        
     </dependencies>
     <build>
         <plugins>

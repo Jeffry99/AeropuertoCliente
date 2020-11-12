@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.MenuPrincipalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.MenuPrincipalController">
    <center>
       <StackPane fx:id="Contenedor" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -73,6 +73,13 @@
                               <MenuItem fx:id="btnRutas" mnemonicParsing="false" onAction="#actRutas" text="Rutas" />
                               <MenuItem fx:id="btnVuelos" mnemonicParsing="false" onAction="#actVuelos" text="Vuelos" />
                               <MenuItem fx:id="btnAlertas" mnemonicParsing="false" onAction="#actAlertas" text="Alertas" />
+                           </items>
+                        </Menu>
+                        <Menu fx:id="TituloReportes" mnemonicParsing="false" text="Reportes">
+                           <items>
+                              <MenuItem fx:id="btnRecaudacion" mnemonicParsing="false" onAction="#actRecaudacion" text="Recaudación de Servicios" />
+                              <MenuItem fx:id="btnRecorridos" mnemonicParsing="false" onAction="#actRecorridos" text="Recorridos de Aviones" />
+                              <MenuItem fx:id="btnHorasExtra" mnemonicParsing="false" onAction="#actHorasExtra" text="Horas Extra" />
                            </items>
                         </Menu>
                      </menus>

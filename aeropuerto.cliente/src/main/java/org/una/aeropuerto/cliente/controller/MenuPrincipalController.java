@@ -89,6 +89,14 @@ public class MenuPrincipalController implements Initializable {
     private HBox hbMenuBar;
     @FXML
     private HBox hbMarcaje;
+    @FXML
+    private Menu TituloReportes;
+    @FXML
+    private MenuItem btnRecaudacion;
+    @FXML
+    private MenuItem btnHorasExtra;
+    @FXML
+    private MenuItem btnRecorridos;
 
     /**
      * Initializes the controller class.
@@ -366,6 +374,41 @@ public class MenuPrincipalController implements Initializable {
             Contenedor.getChildren().clear();
             Contenedor.getChildren().add(root);
             GenerarTransacciones.crearTransaccion("Se observan alertas", "MenuPrincipal");
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
+    }
+
+
+    @FXML
+    private void actRecaudacion(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("ReportesRecaudacion" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+            
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
+    }
+
+    @FXML
+    private void actHorasExtra(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("ReportesHorasExtra" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
+        }catch(IOException ex){
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        }
+    }
+
+    @FXML
+    private void actRecorridos(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(App.class.getResource("ReportesRecorridos" + ".fxml"));
+            Contenedor.getChildren().clear();
+            Contenedor.getChildren().add(root);
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         }
