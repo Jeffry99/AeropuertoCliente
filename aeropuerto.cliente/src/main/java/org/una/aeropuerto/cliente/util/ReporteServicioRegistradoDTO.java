@@ -18,9 +18,8 @@ public class ReporteServicioRegistradoDTO{
     private String estadoCobro;
     private String fechaRegistro;
     private String avion;
-    public ReporteServicioRegistradoDTO(){
-        
-    }
+    
+    public ReporteServicioRegistradoDTO(){}
     
     public void cast(ServicioRegistradoDTO servicio){
         cobro = String.valueOf(servicio.getCobro());
