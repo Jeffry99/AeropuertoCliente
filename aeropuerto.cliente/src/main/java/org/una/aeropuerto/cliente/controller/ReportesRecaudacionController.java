@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,18 +143,18 @@ public class ReportesRecaudacionController implements Initializable {
         
         
         Map parameters = new HashMap<String, Object>();
-        
         parameters.put("fechaInicio", java.sql.Date.valueOf(dpInicio.getValue()).toString());
         parameters.put("fechaFinal", java.sql.Date.valueOf(dpFinal.getValue()).toString());
         parameters.put("servicioTipo", cbServicio.getValue().getNombre());
         
+        ArrayList<ReporteServicioRegistradoDTO> listaCobros = obtenerListaCobros();
         
-        if(obtenerListaCobros().isEmpty()){
+        if(listaCobros.isEmpty()){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Reporte", "Este tipo de servicio no tiene cobros, o no se encuentran en el rango de fechas especificado");
             return;
         }
         
-        JasperPrint document = JasperFillManager.fillReport("src/main/resources/org/una/aeropuerto/recursos/jrxml/Recaudacion.jasper", parameters, new JRBeanCollectionDataSource(obtenerListaCobros()));
+        JasperPrint document = JasperFillManager.fillReport("src/main/resources/org/una/aeropuerto/recursos/jrxml/Recaudacion.jasper", parameters, new JRBeanCollectionDataSource(listaCobros));
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(document));
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(seleccionarRuta() + "/Reporte.pdf"));

@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
@@ -23,7 +24,8 @@ public class ReporteServicioRegistradoDTO{
     
     public void casteo(ServicioRegistradoDTO servicio){
         cobro = String.valueOf(servicio.getCobro());
-        fechaRegistro = servicio.getFechaRegistro().toString();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        fechaRegistro = formatter.format(servicio.getFechaRegistro());
         avion = servicio.getAvion().toString();
         if(servicio.getEstadoCobro()){
             estadoCobro = "Activo";
