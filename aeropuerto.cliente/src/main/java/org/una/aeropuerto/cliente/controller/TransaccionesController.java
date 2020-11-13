@@ -40,6 +40,7 @@ import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.RolService;
 import org.una.aeropuerto.cliente.service.TransaccionService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -85,6 +86,7 @@ public class TransaccionesController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        formato();
         ArrayList<RolDTO> roles = new ArrayList<RolDTO>();
         Respuesta respuesta = rolService.getAll();
         if(respuesta.getEstado()==true){
@@ -99,6 +101,9 @@ public class TransaccionesController implements Initializable {
         // TODO
     }    
 
+    private void formato(){
+        txtId.setTextFormatter(Formato.getInstance().integerFormat());
+    }
     @FXML
     private void actVolver(ActionEvent event) {
     }
@@ -130,11 +135,13 @@ public class TransaccionesController implements Initializable {
             Respuesta respuesta = transaccionService.getById(Long.valueOf(txtId.getText()));
             if(respuesta.getEstado().equals(true)){
                 TransaccionDTO tran = (TransaccionDTO) respuesta.getResultado("Transaccion");
-                transacciones.add(tran);
+                if(tran != null){
+                    transacciones.add(tran);
+                }
             }
             cargarTabla(transacciones);
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id de la que desea buscar");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id de la transacción que desea buscar");
         }
     }
 

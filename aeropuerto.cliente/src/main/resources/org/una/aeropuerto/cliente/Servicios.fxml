@@ -4,14 +4,13 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ServiciosController">
    <children>
        <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -36,8 +35,6 @@
       <Button fx:id="btnBuscarEstado" layoutX="824.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarEstadoCobro" layoutX="824.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarEstadoCobro" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarCobro" layoutX="288.0" layoutY="195.0" mnemonicParsing="false" onAction="#actBuscarCobro" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
-      <Spinner fx:id="txtMinimo" editable="true" layoutX="164.0" layoutY="173.0" prefHeight="37.0" prefWidth="94.0" />
-      <Spinner fx:id="txtMaximo" editable="true" layoutX="164.0" layoutY="216.0" prefHeight="37.0" prefWidth="94.0" />
       <Button fx:id="btnBuscarAvion" layoutX="824.0" layoutY="209.0" mnemonicParsing="false" onAction="#actBuscarAvion" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <JFXTextField fx:id="txtTipo" labelFloat="true" layoutX="85.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por tipo" />
       <JFXComboBox fx:id="cbEstado" labelFloat="true" layoutX="621.0" layoutY="145.0" onAction="#actEstados" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
@@ -45,5 +42,7 @@
       <JFXComboBox fx:id="cbEstadoCobro" labelFloat="true" layoutX="621.0" layoutY="81.0" onAction="#actEstadoCobro" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado de cobro" />
       <Label layoutX="85.0" layoutY="181.0" text="Mínimo:" />
       <Label layoutX="85.0" layoutY="224.0" text="Máximo:" />
+      <JFXTextField fx:id="txtMinimo" labelFloat="true" layoutX="154.0" layoutY="173.0" prefHeight="37.0" prefWidth="118.0" />
+      <JFXTextField fx:id="txtMaximo" labelFloat="true" layoutX="154.0" layoutY="216.0" prefHeight="37.0" prefWidth="118.0" />
    </children>
 </AnchorPane>

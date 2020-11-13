@@ -40,6 +40,7 @@ import org.una.aeropuerto.cliente.service.AreaTrabajoService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.TrabajoEmpleadoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -80,6 +81,7 @@ public class TrabajosEmpleadosController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        formato();
         cargarTodos();
         
         ArrayList estados = new ArrayList();
@@ -110,6 +112,10 @@ public class TrabajosEmpleadosController implements Initializable {
         }
     }    
  
+    private void formato(){
+        txtbuscarId.setTextFormatter(Formato.getInstance().integerFormat());
+    }
+    
     public void cargarTodos(){
         ArrayList<TrabajoEmpleadoDTO> trabajosEmpledos = new ArrayList<TrabajoEmpleadoDTO>();
         Respuesta respuesta = trabajoEmpleadoService.getAll();
@@ -242,7 +248,8 @@ public class TrabajosEmpleadosController implements Initializable {
             Respuesta respuesta = trabajoEmpleadoService.getById(Long.valueOf(txtbuscarId.getText()));
             if(respuesta.getEstado().equals(true)){
                 TrabajoEmpleadoDTO trabajo = (TrabajoEmpleadoDTO) respuesta.getResultado("TrabajoEmpleado");
-                trabajosEmpleados.add(trabajo);
+                if(trabajo != null)
+                    trabajosEmpleados.add(trabajo);
             }
             cargarTabla(trabajosEmpleados);
         }else{

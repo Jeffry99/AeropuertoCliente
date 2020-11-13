@@ -37,6 +37,7 @@ import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -62,9 +63,9 @@ public class ServiciosController implements Initializable {
     @FXML
     private Button btnBuscarCobro;
     @FXML
-    private Spinner<Double> txtMinimo;
+    private JFXTextField txtMinimo;
     @FXML
-    private Spinner<Double> txtMaximo;
+    private JFXTextField txtMaximo;
     @FXML
     private Button btnBuscarEstadoCobro;
     @FXML
@@ -100,10 +101,6 @@ public class ServiciosController implements Initializable {
         
         initAviones();
         
-        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        txtMinimo.setValueFactory(value);
-        txtMaximo.setValueFactory(value2);
         
         if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
             btnAgregar.setVisible(false);
@@ -111,6 +108,11 @@ public class ServiciosController implements Initializable {
         }
     }    
     
+    private void formato(){
+        txtMaximo.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        txtMinimo.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        txtTipo.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+    }
     public void cargarTodos(){
         ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
         Respuesta respuesta = servicioRegistradoService.getAll();
@@ -260,8 +262,6 @@ public class ServiciosController implements Initializable {
         txtTipo.setText("");
         cbEstado.setValue(null);
         cbEstadoCobro.setValue(null);
-        txtMinimo.getValueFactory().setValue(0.0);
-        txtMaximo.getValueFactory().setValue(0.0);
         cargarTodos();
     }
     @FXML
@@ -297,7 +297,7 @@ public class ServiciosController implements Initializable {
             }
         }
         if(tipo.equals("Monto")){
-            if(txtMinimo.getValue() == null || txtMaximo.getValue() == null){
+            if(txtMinimo.getText().isBlank()|| txtMaximo.getText().isBlank()){
                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Falta información", "Especifique el rango de cobro");
                 return false;
             }
@@ -332,7 +332,7 @@ public class ServiciosController implements Initializable {
     private void actBuscarCobro(ActionEvent event) {
         if(validarBusquedas("Monto")){
             ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
-            Respuesta respuesta = servicioRegistradoService.getByCobroRango(txtMaximo.getValue().floatValue(), txtMinimo.getValue().floatValue());
+            Respuesta respuesta = servicioRegistradoService.getByCobroRango(Float.valueOf(txtMaximo.getText()), Float.valueOf(txtMinimo.getText()));
             if(respuesta.getEstado().equals(true)){
                 servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
             }

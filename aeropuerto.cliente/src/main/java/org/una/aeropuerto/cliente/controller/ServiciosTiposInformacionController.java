@@ -37,6 +37,7 @@ import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AreaTrabajoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -84,6 +85,7 @@ public class ServiciosTiposInformacionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        formato();
         iniAreasTrabajos();
         btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         modalidad = (String) AppContext.getInstance().get("ModalidadServicioTipo");
@@ -130,6 +132,10 @@ public class ServiciosTiposInformacionController implements Initializable {
          
     }  
     
+    private void formato(){
+        txtNombre.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        txtDescripcion.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+    }
     public boolean validar(){
         if(cbxAreaTrabajo.getValue()==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el área de trabajo");

@@ -28,6 +28,7 @@ import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -61,6 +62,7 @@ public class TiposAvionesInformacionController implements Initializable {
     private Button btnCambiarEstado;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        formato();
         btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         modalidad = (String) AppContext.getInstance().get("ModalidadTipoAvion");
         btnGuardar.setVisible(false);
@@ -99,6 +101,12 @@ public class TiposAvionesInformacionController implements Initializable {
             btnCambiarEstado.setVisible(false);
         }
     } 
+    
+    public void formato(){
+        txtNombre.setTextFormatter(Formato.getInstance().maxLengthFormat(50));
+        txtDistanciaMaxima.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        txtDistancia.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+    }
     public boolean validar(){
         if(txtDistancia.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la distancia recomendada del tipo de avion");

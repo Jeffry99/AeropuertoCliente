@@ -37,6 +37,7 @@ import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -70,15 +71,16 @@ public class TiposAvionController implements Initializable {
     @FXML
     private JFXTextField txtbuscarId;
     @FXML
-    private Spinner<Double> spDistanciaMas;
+    private JFXTextField spDistanciaMas;
     @FXML
-    private Spinner<Double> spDistanciaMenos;
+    private JFXTextField spDistanciaMenos;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        formato();
         cargarTodos();
         
         ArrayList estados = new ArrayList();
@@ -91,6 +93,12 @@ public class TiposAvionController implements Initializable {
             btnAgregar.setDisable(true);
         }
     }   
+    
+    private void formato(){
+        txtbuscarId.setTextFormatter(Formato.getInstance().integerFormat());
+        spDistanciaMas.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        spDistanciaMenos.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+    }
     
     public void cargarTodos(){
         ArrayList<TipoAvionDTO> tiposAvion = new ArrayList<TipoAvionDTO>();
@@ -221,7 +229,9 @@ public class TiposAvionController implements Initializable {
             Respuesta respuesta = tipoAvionesService.getById(Long.valueOf(txtbuscarId.getText()));
             if(respuesta.getEstado().equals(true)){
                 TipoAvionDTO aero = (TipoAvionDTO) respuesta.getResultado("TipoAvion");
-                tipoAviones.add(aero);
+                if(aero != null){
+                    tipoAviones.add(aero);
+                }
             }
             cargarTabla(tipoAviones);
         }else{
@@ -255,9 +265,9 @@ public class TiposAvionController implements Initializable {
 
     @FXML
     private void actBuscarDist(ActionEvent event) {
-        if(spDistanciaMenos.getValue() == null || spDistanciaMas.getValue() == null){
+        if(spDistanciaMenos.getText().isBlank() || spDistanciaMas.getText().isBlank()){
             ArrayList<TipoAvionDTO> tipoAviones = new ArrayList<TipoAvionDTO>();
-            Respuesta respuesta = tipoAvionesService.getByDistanciaRango(spDistanciaMas.getValue().floatValue(), spDistanciaMenos.getValue().floatValue());
+            Respuesta respuesta = tipoAvionesService.getByDistanciaRango(Float.valueOf(spDistanciaMas.getText()), Float.valueOf(spDistanciaMenos.getText()));
             if(respuesta.getEstado().equals(true)){
                 tipoAviones = (ArrayList<TipoAvionDTO>) respuesta.getResultado("TiposAviones");
             }

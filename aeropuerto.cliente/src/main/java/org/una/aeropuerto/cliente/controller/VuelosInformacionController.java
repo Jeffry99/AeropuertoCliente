@@ -96,8 +96,7 @@ public class VuelosInformacionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initRutas();
         initAviones();
-        // TODO
-        
+        dpFecha.setEditable(false);
         lblEstado.setText("En revisión");
         
         modalidad = AppContext.getInstance().get("ModalidadVuelo").toString();

@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -44,6 +46,7 @@ import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Formato;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
@@ -62,7 +65,7 @@ public class ServiciosInformacionController implements Initializable {
     @FXML
     private ComboBox<ServicioTipoDTO> cbTipoServicio;
     @FXML
-    private Spinner<Double> txtCobro;
+    private JFXTextField txtCobro;
     @FXML
     private Label lblFechaRegistro;
     @FXML
@@ -73,9 +76,9 @@ public class ServiciosInformacionController implements Initializable {
     private String modalidad="";
     private ServicioRegistradoDTO servicio = new ServicioRegistradoDTO();
     @FXML
-    private Spinner<Double> txtDuracion;
+    private JFXTextField txtDuracion;
     @FXML
-    private TextField txtObservaciones;
+    private TextArea txtObservaciones;
     @FXML
     private RadioButton rbActivoCobro;
     @FXML
@@ -96,14 +99,11 @@ public class ServiciosInformacionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        formato();
         btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
         servicioService = new ServicioRegistradoService();
         servicio = new ServicioRegistradoDTO();
         modalidad = (String) AppContext.getInstance().get("ModalidadServicioRegistrado");
-        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        txtCobro.setValueFactory(value);
-        txtDuracion.setValueFactory(value2);
         initTiposServicio();
         initResponsables();
         initAviones();
@@ -133,14 +133,19 @@ public class ServiciosInformacionController implements Initializable {
         }
     }    
     
+    private void formato(){
+        txtCobro.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        txtDuracion.setTextFormatter(Formato.getInstance().twoDecimalFormat());
+        txtObservaciones.setTextFormatter(Formato.getInstance().maxLengthFormat(200));
+    }
     public void llenarDatos(){
         servicio = (ServicioRegistradoDTO)AppContext.getInstance().get("ServicioRegistradoEnCuestion");
-        txtCobro.getValueFactory().setValue(Double.valueOf(servicio.getCobro()));
+        txtCobro.setText(String.valueOf(servicio.getCobro()));
         cbTipoServicio.setValue(servicio.getServicioTipo());
         cbResponsable.setValue(servicio.getResponsable());
         cbAviones.setValue(servicio.getAvion());
         lblFechaRegistro.setText(servicio.getFechaRegistro().toString());
-        txtDuracion.getValueFactory().setValue(Double.valueOf(servicio.getDuracion()));
+        txtDuracion.setText(String.valueOf(servicio.getDuracion()));
         txtObservaciones.setText(servicio.getObservaciones());
         
         if(servicio.getFechaModificacion() != null){
@@ -170,11 +175,11 @@ public class ServiciosInformacionController implements Initializable {
     }
     
     public boolean validar(){
-        if(txtCobro.getValue() == null){
+        if(txtCobro.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite monto del cobro");
             return false;
         }
-        if(txtDuracion.getValue() == null){
+        if(txtDuracion.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la duracion del servicio");
             return false;
         }
@@ -195,10 +200,10 @@ public class ServiciosInformacionController implements Initializable {
     @FXML
     private void actGuardar(ActionEvent event) {
         if(validar()){
-            servicio.setCobro(txtCobro.getValue().floatValue());
+            servicio.setCobro(Float.valueOf(txtCobro.getText()));
             servicio.setResponsable(cbResponsable.getValue());
             servicio.setAvion(cbAviones.getValue());
-            servicio.setDuracion(txtDuracion.getValue().floatValue());
+            servicio.setDuracion(Float.valueOf(txtDuracion.getText()));
             servicio.setEstadoCobro(estadoCobro);
             servicio.setServicioTipo(cbTipoServicio.getValue());
             
