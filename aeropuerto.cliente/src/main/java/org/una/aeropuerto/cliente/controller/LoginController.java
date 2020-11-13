@@ -46,24 +46,29 @@ public class LoginController implements Initializable{
     @FXML
     private JFXCheckBox cbContrasena;
     
+    private String contrasena = null;
     /**
      * Initializes the controller class.
      */
+    boolean contrasenaVisible = false;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         txtUsuario.requestFocus();
         txtUsuario.setText("lujepa2");
         txtContrasena.setText("Una2020");
+        
         cbContrasena.selectedProperty().addListener( t -> {
             if(cbContrasena.isSelected()){
                 txtVerContrasena.setVisible(true);
                 txtContrasena.setVisible(false);
                 txtVerContrasena.setText(txtContrasena.getText());
+                contrasenaVisible = true;
             }else{
                 txtVerContrasena.setVisible(false);
                 txtContrasena.setText(txtVerContrasena.getText());
                 txtContrasena.setVisible(true);
                 txtVerContrasena.setText("");
+                contrasenaVisible = false;
             }
         });
     }   
@@ -73,11 +78,16 @@ public class LoginController implements Initializable{
     }
     
     public boolean validar(){
+        if(contrasenaVisible){
+                contrasena = txtVerContrasena.getText();
+            }else{
+                contrasena = txtContrasena.getText();
+            }
         if(txtUsuario.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su cedula");
             return false;
         }
-        if(txtContrasena.getText().isBlank()){
+        if(contrasena==null){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su contraseña");
             return false;
         }
@@ -101,7 +111,9 @@ public class LoginController implements Initializable{
     public void ingresar(){
         
         if(validar()){
-            Respuesta respuesta = autenticacionService.Login(txtUsuario.getText(), txtContrasena.getText());
+            
+            
+            Respuesta respuesta = autenticacionService.Login(txtUsuario.getText(), contrasena);
             if(respuesta.getEstado().equals(true)){
                 Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Inicio de sesion", respuesta.getMensaje());
                 try{

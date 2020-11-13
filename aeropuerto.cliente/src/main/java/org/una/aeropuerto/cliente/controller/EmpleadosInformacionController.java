@@ -133,9 +133,10 @@ public class EmpleadosInformacionController implements Initializable {
     @FXML
     private JFXCheckBox cbContrasenaActual;
     
-    
+    private String cedulaIni ="";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         initPasswords();
         initEmpleadosJefe();
         initRoles();
@@ -161,6 +162,7 @@ public class EmpleadosInformacionController implements Initializable {
             
             //////////////////////////////////////////////////////////////////////
             //sets empleado
+            cedulaIni = empleadoEnCuestion.getCedula();
             txtNombre.setText(empleadoEnCuestion.getNombre());
             txtCedula.setText(empleadoEnCuestion.getCedula());
             txtTelefono.setText(empleadoEnCuestion.getTelefono());
@@ -309,17 +311,17 @@ public class EmpleadosInformacionController implements Initializable {
                     Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña a confirmar no coincide con la contraseña nueva");  
                     return false;
                 }else{
-                    //evaluar contrasena actual si va editar el usuario, hacer login con la cedula del empleado y contrasena actual si me devulve false no funciono
                     if(modalidad.equals("Modificar")){
                         if(txtContrasenaActual.getText().isBlank()){
                             Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "Digite la contraseña actual");  
                             return false;
                         }else{
                             AutenticacionService auService = new AutenticacionService();
-                            Respuesta res = auService.Login(empleadoEnCuestion.getCedula(), txtContrasenaActual.getText());
+                            Respuesta res = auService.Login(cedulaIni, txtContrasenaActual.getText());
                             if(res.getEstado()){
                                 cambioContrasena=true;
                             }else{
+                                cambioContrasena=false;
                                 Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña actual no coincide");  
                                 return false;
                             }
@@ -330,10 +332,6 @@ public class EmpleadosInformacionController implements Initializable {
         }else{
             cambioContrasena=false;
         }
-        
-        
-        
-        
         return true;
     }
     
@@ -371,6 +369,8 @@ public class EmpleadosInformacionController implements Initializable {
             
         }
     }
+    
+   
 
     public void initPasswords(){
         cbContrasenaActual.selectedProperty().addListener( t -> {
