@@ -26,6 +26,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
@@ -34,6 +36,7 @@ import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.AerolineaService;
 import org.una.aeropuerto.cliente.service.AvionService;
@@ -94,43 +97,57 @@ public class AvionesInformacionController implements Initializable {
     private Label txtEstado;
     @FXML
     private Button btnCambiarEstado;
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private ImageView btnInformacion;
+    
+    private String rolUsuario="";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         //btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
-        tvTabla.setVisible(false);
-        btnOcultar.setVisible(false);
-        modalidad = (String) AppContext.getInstance().get("ModalidadAvion");
-        initAerolineas();
-        initTiposAvion();
-        if(modalidad.equals("Ver")){
-            llenarDatos();
-            btnGuardar.setVisible(false);
-            btnGuardar.setDisable(true);
-            
-            txtMatricula.setDisable(true);
-            cbAerolinea.setDisable(true);
-            cbTipoAvion.setDisable(true);
-            
-            btnCambiarEstado.setDisable(true);
-            btnCambiarEstado.setVisible(false);
+         rolUsuario=UsuarioAutenticado.getInstance().getRol();
+        if(rolUsuario.equals("administrador")){
+            txtMatricula.setEditable(false);
+            cbAerolinea.setEditable(false);
+            cbTipoAvion.setEditable(false);
+            btnInformacion.setDisable(false);
+            btnInformacion.setVisible(true);
+            btnCambiarEstado.setVisible(true);
+            btnCambiarEstado.setDisable(false);
+        }else{
+            tvTabla.setVisible(false);
+            btnOcultar.setVisible(false);
+            modalidad = (String) AppContext.getInstance().get("ModalidadAvion");
+            initAerolineas();
+            initTiposAvion();
+            if(modalidad.equals("Ver")){
+                llenarDatos();
+                btnGuardar.setVisible(false);
+                btnGuardar.setDisable(true);
+
+                txtMatricula.setDisable(true);
+                cbAerolinea.setDisable(true);
+                cbTipoAvion.setDisable(true);
+
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
+            }
+            if(modalidad.equals("Modificar")){
+                llenarDatos();
+            }
+            if(modalidad.equals("Agregar")){
+                btnServicios.setVisible(false);
+                btnVuelos.setVisible(false);
+                btnBitacora.setVisible(false);
+                pane.setVisible(false);
+                lblInformacion.setVisible(false);
+                txtEstado.setText("Activo");
+                btnCambiarEstado.setDisable(true);
+                btnCambiarEstado.setVisible(false);
+            }
         }
-        if(modalidad.equals("Modificar")){
-            llenarDatos();
-        }
-        if(modalidad.equals("Agregar")){
-            btnServicios.setVisible(false);
-            btnVuelos.setVisible(false);
-            btnBitacora.setVisible(false);
-            pane.setVisible(false);
-            lblInformacion.setVisible(false);
-            txtEstado.setText("Activo");
-            btnCambiarEstado.setDisable(true);
-            btnCambiarEstado.setVisible(false);
-        }
+        
     }    
     public void llenarDatos(){
         avion = (AvionDTO)AppContext.getInstance().get("AvionEnCuestion");
@@ -150,47 +167,50 @@ public class AvionesInformacionController implements Initializable {
     }
     @FXML
     private void actGuardar(ActionEvent event) {
-        if(validar()){
-            avion.setMatricula(txtMatricula.getText());
-            
-            avion.setAerolinea(cbAerolinea.getValue());
-            avion.setTipoAvion(cbTipoAvion.getValue());
-            
-            if(modalidad.equals("Modificar")){
-                Respuesta respuesta=avionService.modificar(avion.getId(), avion);
-                if(respuesta.getEstado()){
-                    GenerarTransacciones.crearTransaccion("Se modifica avion con id "+avion.getId(), "AvionesInformacion");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de avión", "Se ha modificado el avión correctamente");
-                    volver();
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de avión", respuesta.getMensaje());
-                }
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnGuardar \n"+
+                                                                                     "Acción: actGuardar");
+        }else{
+            if(validar()){
+                avion.setMatricula(txtMatricula.getText());
+                avion.setAerolinea(cbAerolinea.getValue());
+                avion.setTipoAvion(cbTipoAvion.getValue());
                 
-                
-            }else{
-                if(modalidad.equals("Agregar")){
-                    avion.setEstado(true);
-                    Respuesta respuesta=avionService.crear(avion);
+                if(modalidad.equals("Modificar")){
+                    Respuesta respuesta=avionService.modificar(avion.getId(), avion);
                     if(respuesta.getEstado()){
-                        avion = (AvionDTO) respuesta.getResultado("Avion");
-                        BitacoraAvionService bitacoraService = new BitacoraAvionService();
-                        BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
-                        bitacora.setAvion(avion);
-                        bitacora.setCombustible(100);
-                        bitacora.setDistanciaRecorrida(0);
-                        bitacora.setEstado(true);
-                        bitacora.setTiempoTierra(0);
-                        bitacora.setUbicacion("Hangar");
-                        respuesta = bitacoraService.crear(bitacora);
-                        GenerarTransacciones.crearTransaccion("Se crea empleado con id "+avion.getId(), "AvionesInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de avión", "Se ha registrado el avión correctamente");
+                        GenerarTransacciones.crearTransaccion("Se modifica avion con id "+avion.getId(), "AvionesInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de avión", "Se ha modificado el avión correctamente");
                         volver();
                     }else{
-                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de avión", respuesta.getMensaje());
+                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de avión", respuesta.getMensaje());
+                    }           
+                }else{
+                    if(modalidad.equals("Agregar")){
+                        avion.setEstado(true);
+                        Respuesta respuesta=avionService.crear(avion);
+                        if(respuesta.getEstado()){
+                            avion = (AvionDTO) respuesta.getResultado("Avion");
+                            BitacoraAvionService bitacoraService = new BitacoraAvionService();
+                            BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
+                            bitacora.setAvion(avion);
+                            bitacora.setCombustible(100);
+                            bitacora.setDistanciaRecorrida(0);
+                            bitacora.setEstado(true);
+                            bitacora.setTiempoTierra(0);
+                            bitacora.setUbicacion("Hangar");
+                            respuesta = bitacoraService.crear(bitacora);
+                            GenerarTransacciones.crearTransaccion("Se crea empleado con id "+avion.getId(), "AvionesInformacion");
+                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de avión", "Se ha registrado el avión correctamente");
+                            volver();
+                        }else{
+                            Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de avión", respuesta.getMensaje());
+                        }
                     }
                 }
             }
         }
+        
     }
 
     @FXML
@@ -252,30 +272,54 @@ public class AvionesInformacionController implements Initializable {
 
     @FXML
     private void actServicios(ActionEvent event) {
-        tvTabla.setVisible(true);
-        btnOcultar.setVisible(true);
-        cargarTablaServicios();
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnServicios \n"+
+                                                                                     "Acción: actServicios");
+        }else{
+            tvTabla.setVisible(true);
+            btnOcultar.setVisible(true);
+            cargarTablaServicios();
+        }
+        
     }
 
     @FXML
     private void actVuelos(ActionEvent event) {
-        tvTabla.setVisible(true);
-        btnOcultar.setVisible(true);
-        cargarTablaVuelos();
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnVuelos \n"+
+                                                                                     "Acción: actVuelos");
+        }else{
+            tvTabla.setVisible(true);
+            btnOcultar.setVisible(true);
+            cargarTablaVuelos();
+        }
+        
     }
 
     @FXML
     private void actBitacora(ActionEvent event) {
-        tvTabla.setVisible(true);
-        btnOcultar.setVisible(true);
-        cargarTablaBitacora();
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBitacora \n"+
+                                                                                     "Acción: actBitacora");
+        }else{
+            tvTabla.setVisible(true);
+            btnOcultar.setVisible(true);
+            cargarTablaBitacora();
+        }
+        
     }
 
     @FXML
     private void actOcultarTable(ActionEvent event) {
-        tvTabla.setVisible(false);
-        btnOcultar.setVisible(false);
-        lblInformacion.setText("Seleccione la información que quiere observar sobre este avión");
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnOcualtarTable \n"+
+                                                                                     "Acción: actOcualtarTablet");
+        }else{
+            tvTabla.setVisible(false);
+            btnOcultar.setVisible(false);
+            lblInformacion.setText("Seleccione la información que quiere observar sobre este avión");
+        }
+        
     }
     
     
@@ -456,21 +500,69 @@ public class AvionesInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
-        String mensaje="";
-        if(estado){
-            avion.setEstado(false);
-            mensaje="Se anula el avion con id "+avion.getId();
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnCambiarEstado \n"+
+                                                                                     "Acción: actCambiarEstado");
         }else{
-            avion.setEstado(true);
-            mensaje="Se activa el avion con id "+avion.getId();
+            String mensaje="";
+            if(estado){
+                avion.setEstado(false);
+                mensaje="Se anula el avion con id "+avion.getId();
+            }else{
+                avion.setEstado(true);
+                mensaje="Se activa el avion con id "+avion.getId();
+            }
+            Respuesta respuesta=avionService.modificar(avion.getId(), avion);
+            if(respuesta.getEstado()){
+                GenerarTransacciones.crearTransaccion(mensaje, "AvionesInformacion");
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del avion", mensaje+" correctamente");
+                volver();
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del avion", respuesta.getMensaje());
+            }
         }
-        Respuesta respuesta=avionService.modificar(avion.getId(), avion);
-        if(respuesta.getEstado()){
-            GenerarTransacciones.crearTransaccion(mensaje, "AvionesInformacion");
-            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Estado del avion", mensaje+" correctamente");
-            volver();
-        }else{
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del avion", respuesta.getMensaje());
+        
+    }
+
+    @FXML
+    private void acttxtMatricula(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarMatricula \n"+
+             "Acción: usado para almacenar el dato digitado por el usuario para guardar la matricula de avion");
         }
+    }
+
+    @FXML
+    private void cbxAerolinea(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxAerolinea \n"+
+                                                                                     "Acción: actSelAerolinea");
+        }
+        
+    }
+
+    @FXML
+    private void cbxTipoAvion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxTipoAvion \n"+
+                                                                                     "Acción: actSelTipoAvion");
+        }
+    }
+
+    @FXML
+    private void acttvInfoAvion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de table view", "fxID: tvTabla \n"+
+            "Acción: usada para mostrar los datos de la Bitacora, Vuelos o Servicios Registrados que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: AvionesInformacion \n"+
+                                                         "Controller: AvionesInformacionController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");   
     }
 }

@@ -28,6 +28,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
@@ -80,27 +82,33 @@ public class BitacoraController implements Initializable {
     private JFXTextField txtUbicacion;
     @FXML
     private JFXComboBox<AvionDTO> cbAvion;
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private ImageView btnInformacion;
+    private String rolUsuario="";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        initAviones();
-        ArrayList estados = new ArrayList();
-        estados.add("Activo");
-        estados.add("Inactivo");
-        ObservableList items = FXCollections.observableArrayList(estados);   
-        cbEstado.setItems(items);
-        
-        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        spDistanciaMenos.setValueFactory(value);
-        spDistanciaMas.setValueFactory(value2);
-        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
-            btnAgregar.setVisible(false);
-            btnAgregar.setDisable(true);
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
+        if(rolUsuario.equals("administrador")){
+            
+        }else{
+            initAviones();
+            ArrayList estados = new ArrayList();
+            estados.add("Activo");
+            estados.add("Inactivo");
+            ObservableList items = FXCollections.observableArrayList(estados);   
+            cbEstado.setItems(items);
+
+            SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+            SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+            spDistanciaMenos.setValueFactory(value);
+            spDistanciaMas.setValueFactory(value2);
+            if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                btnAgregar.setVisible(false);
+                btnAgregar.setDisable(true);
+            }
         }
+        
         cargarTodos();
     }    
 
@@ -214,6 +222,7 @@ public class BitacoraController implements Initializable {
         tvEstados.getColumns().add(colBtn);
 
     }
+    
     public void ver(BitacoraAvionDTO bitacora){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadBitacora", "Ver");
@@ -254,15 +263,20 @@ public class BitacoraController implements Initializable {
 
     @FXML
     private void actBorrar(ActionEvent event) {
-        txtUbicacion.setText("");
-        txtUbicacion.setPromptText("Buscar por Ubicación");
-        cbEstado.setValue(null);
-        cbAvion.setValue(null);
-        cbEstado.setPromptText("Buscar por Estado");
-        cbAvion.setPromptText("Buscar por Avión");
-        spDistanciaMas.getValueFactory().setValue(Double.valueOf(0));
-        spDistanciaMenos.getValueFactory().setValue(Double.valueOf(0));
-        cargarTodos();
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBorrar \n"+
+                                                                                     "Acción: actBorrar");
+        }else{
+            txtUbicacion.setText("");
+            txtUbicacion.setPromptText("Buscar por Ubicación");
+            cbEstado.setValue(null);
+            cbAvion.setValue(null);
+            cbEstado.setPromptText("Buscar por Estado");
+            cbAvion.setPromptText("Buscar por Avión");
+            spDistanciaMas.getValueFactory().setValue(Double.valueOf(0));
+            spDistanciaMenos.getValueFactory().setValue(Double.valueOf(0));
+            cargarTodos();
+        }
     }
 
 
@@ -288,57 +302,81 @@ public class BitacoraController implements Initializable {
             if(cbEstado.getValue().equals("Inactivo")){
                 estado = false;
             }
-        }
+        } 
     }
 
 
     @FXML
     private void actBuscaDistancia(ActionEvent event) {
-        if(validarBusquedas("Distancia")){
-            ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
-            Respuesta respuesta = bitacoraService.getByDistanciaRecorridaRango(spDistanciaMas.getValue().floatValue(), spDistanciaMenos.getValue().floatValue());
-            if(respuesta.getEstado().equals(true)){
-                bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
-            }
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarNom \n"+
+                                                                                     "Acción: actBuscarNom");
+        }else{
+            if(validarBusquedas("Distancia")){
+                ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+                Respuesta respuesta = bitacoraService.getByDistanciaRecorridaRango(spDistanciaMas.getValue().floatValue(), spDistanciaMenos.getValue().floatValue());
+                if(respuesta.getEstado().equals(true)){
+                    bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+                }
             cargarTabla(bitacoras);
+           }
         }
+       
     }
 
 
     @FXML
     private void actBuscarEstado(ActionEvent event) {
-        if(validarBusquedas("Estado")){
-            ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
-            Respuesta respuesta = bitacoraService.getByEstado(estado);
-            if(respuesta.getEstado().equals(true)){
-                bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarEstado \n"+
+                                                                                     "Acción: actBuscarEstado");
+        }else{
+            if(validarBusquedas("Estado")){
+                ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+                Respuesta respuesta = bitacoraService.getByEstado(estado);
+                if(respuesta.getEstado().equals(true)){
+                    bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+                }
+                cargarTabla(bitacoras);
             }
-            cargarTabla(bitacoras);
         }
+        
     }
 
     @FXML
     private void actBuscarUbicacion(ActionEvent event) {
-        if(validarBusquedas("Ubicacion")){
-            ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
-            Respuesta respuesta = bitacoraService.getByUbicacion(txtUbicacion.getText());
-            if(respuesta.getEstado().equals(true)){
-                bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarUbicacion \n"+
+                                                                                     "Acción: actBuscarUbicacion");
+        }else{
+            if(validarBusquedas("Ubicacion")){
+                ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+                Respuesta respuesta = bitacoraService.getByUbicacion(txtUbicacion.getText());
+                if(respuesta.getEstado().equals(true)){
+                    bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+                }
+                cargarTabla(bitacoras);
             }
-            cargarTabla(bitacoras);
         }
+        
     }
 
     @FXML
     private void actBuscarAvion(ActionEvent event) { // FALTA IMPLEMENTAR BUSQUEDA POR AVION
-        if(validarBusquedas("Avion")){
-            ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
-            Respuesta respuesta = bitacoraService.getByAvion(cbAvion.getValue().getId());
-            if(respuesta.getEstado().equals(true)){
-                bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarAvion \n"+
+                                                                                     "Acción: actBuscarAvion");
+        }else{
+            if(validarBusquedas("Avion")){
+                ArrayList<BitacoraAvionDTO> bitacoras = new ArrayList<BitacoraAvionDTO>();
+                Respuesta respuesta = bitacoraService.getByAvion(cbAvion.getValue().getId());
+                if(respuesta.getEstado().equals(true)){
+                    bitacoras = (ArrayList<BitacoraAvionDTO>) respuesta.getResultado("BitacorasAvion");
+                }
+                cargarTabla(bitacoras);
             }
-            cargarTabla(bitacoras);
         }
+        
     }
     
     public boolean validarBusquedas(String tipo){
@@ -378,5 +416,62 @@ public class BitacoraController implements Initializable {
             ObservableList items = FXCollections.observableArrayList(aviones);
             cbAvion.setItems(items);
         }
+    }
+
+    @FXML
+    private void acttvBitacora(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de table view", "fxID: tvBitacora \n"+
+            "Acción: usada para mostrar los datos de las bitacoras que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void actspiMaximo(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de Spinner", "fxID: spDistanciaMas \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario y buscar una distancia inferior a la ingresada");
+        }
+    }
+
+    @FXML
+    private void actspiMinimo(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de Spinner", "fxID: spDistanciaMenos \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario y buscar una distancia superior a la ingresada");
+        }
+    }
+
+    @FXML
+    private void actcbxBuscarEstado(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxBuscarEstado \n"+
+                                                                                     "Acción: actSelBuscarEstado");
+        }
+    }
+
+    @FXML
+    private void acttxtBuscarUbicacion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarUbicacion \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para buscar la bitacora segun la ubicacion");
+        }
+    }
+
+    @FXML
+    private void actcbxAvion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxBuscarAvion \n"+
+                                                                                     "Acción: actSelBuscarAvion");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+       Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: Bitacora \n"+
+                                                         "Controller: BitacoraController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion"); 
     }
 }

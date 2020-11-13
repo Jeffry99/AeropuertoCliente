@@ -29,6 +29,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,6 +38,7 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AlertaGeneradaDTO;
 import org.una.aeropuerto.cliente.dto.TipoAlertaDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AlertaGeneradaService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -58,21 +61,31 @@ public class AlertasController implements Initializable {
     private Button btnVolver;
     @FXML
     private JFXComboBox<String> cbxBuscarEstado;
-
-    /**
-     * Initializes the controller class.
-     */
+    
+    private String rolUsuario="";
     
     private AlertaGeneradaService alertaService = new AlertaGeneradaService();
     @FXML
     private Button btnBuscarEstado;
+    @FXML
+    private ImageView btnInformacion;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        AppContext.getInstance().set("ControllerAlertas", this);
-        initEstados();
-        cargarTodasAlertas();
-        // TODO
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
+         if(rolUsuario.equals("administrador")){
+            txtBuscarVuelo.setEditable(false);
+            cbxBuscarEstado.setDisable(false);
+            btnInformacion.setVisible(true);
+            btnInformacion.setDisable(false);
+            cargarTodasAlertas(); 
+        }else{
+            AppContext.getInstance().set("ControllerAlertas", this);
+            initEstados();
+            cargarTodasAlertas(); 
+         }
+            
+        
     }    
 
     public void initEstados(){
@@ -217,29 +230,40 @@ public class AlertasController implements Initializable {
     }
     @FXML
     private void actBuscarEstado(ActionEvent event) {
-        if(estado!=null){
-            ArrayList<AlertaGeneradaDTO> alertas = new ArrayList<AlertaGeneradaDTO>();
-            Respuesta respuesta = alertaService.getByEstado(estado);
-            if(respuesta.getEstado().equals(true)){
-                alertas = (ArrayList<AlertaGeneradaDTO>) respuesta.getResultado("AlertasGeneradas");
-            }
-            cargarTablaAlertas(alertas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarEstado \n"+
+                                                                                     "Acción: actBuscarEstado");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la alerta que desea buscar");
+            if(estado!=null){
+                ArrayList<AlertaGeneradaDTO> alertas = new ArrayList<AlertaGeneradaDTO>();
+                Respuesta respuesta = alertaService.getByEstado(estado);
+                if(respuesta.getEstado().equals(true)){
+                    alertas = (ArrayList<AlertaGeneradaDTO>) respuesta.getResultado("AlertasGeneradas");
+                }
+                cargarTablaAlertas(alertas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la alerta que desea buscar");
+            }
         }
     }
     @FXML
     private void actBuscarVuelo(ActionEvent event) {
-        if(!txtBuscarVuelo.getText().isBlank()){
-            ArrayList<AlertaGeneradaDTO> alertas = new ArrayList<AlertaGeneradaDTO>();
-            Respuesta respuesta = alertaService.getByVuelo(Long.valueOf(txtBuscarVuelo.getText()));
-            if(respuesta.getEstado().equals(true)){
-                alertas = (ArrayList<AlertaGeneradaDTO>) respuesta.getResultado("AlertasGeneradas");
-            }
-            cargarTablaAlertas(alertas);
+         if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarVuelo \n"+
+                                                                                     "Acción: actBuscarVuelo");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del vuelo, para las alertas que desea buscar");
+            if(!txtBuscarVuelo.getText().isBlank()){
+                ArrayList<AlertaGeneradaDTO> alertas = new ArrayList<AlertaGeneradaDTO>();
+                Respuesta respuesta = alertaService.getByVuelo(Long.valueOf(txtBuscarVuelo.getText()));
+                if(respuesta.getEstado().equals(true)){
+                    alertas = (ArrayList<AlertaGeneradaDTO>) respuesta.getResultado("AlertasGeneradas");
+                }
+                cargarTablaAlertas(alertas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del vuelo, para las alertas que desea buscar");
+            } 
         }
+        
     }
     
     private Integer estado = null;
@@ -254,6 +278,39 @@ public class AlertasController implements Initializable {
                 estado=1;
             }
         }
+    }
+
+    @FXML
+    private void ActtxtBuscarVuelo(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtBuscarVuelo \n"+
+                "Acción: usado para almacenar el dato digitado por el usuario para buscar la alerta segun el código de vuelo");
+        }
+    }
+
+    @FXML
+    private void actcbxBuscarEstado(MouseEvent event) {
+         if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información del combo box", "fxID: txtBuscarEstado \n"+
+                "Acción: usada para mostrar los datos de las alertas por estado que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void acttvAlertas(MouseEvent event) {
+         if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de table view", "fxID: txtBuscarVuelo \n"+
+                "Acción: usada para mostrar los datos de las alertas de los vuelos que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void actVerInformacionPantalla(MouseEvent event) {
+         Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: Alertas \n"+
+                                                         "Controller: AlertassController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");
     }
     
 }

@@ -23,10 +23,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.BitacoraAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -64,37 +67,47 @@ public class BitacoraInformacionController implements Initializable {
     BitacoraAvionDTO bitacora = new BitacoraAvionDTO();
     @FXML
     private Label txtEstado;
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private ImageView btnInformacion;
+    private String rolUsuario="";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        modalidad = (String) AppContext.getInstance().get("ModalidadBitacora");
-        SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
-        SpinnerValueFactory<Integer> value2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
-        SpinnerValueFactory<Integer> value3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999999999, 0);
-        spDistancia.setValueFactory(value);
-        spCombustible.setValueFactory(value2);
-        spTiempo.setValueFactory(value3);
-        initAviones();
-        if(modalidad.equals("Ver")){
-            llenarDatos();
-            btnGuardar.setVisible(false);          
-            spTiempo.setDisable(true);
-            spDistancia.setDisable(true);
-            cbAvion.setDisable(true);
-            spCombustible.setDisable(true);
-            txtUbicacion.setDisable(true);
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
+        if(rolUsuario.equals("administrador")){
+            btnInformacion.setDisable(false);
+            btnInformacion.setVisible(true);
+            cbAvion.setEditable(false);
+            spDistancia.setEditable(false);
+            spCombustible.setEditable(false);
+            spTiempo.setEditable(false);
+        }else{
+            modalidad = (String) AppContext.getInstance().get("ModalidadBitacora");
+            SpinnerValueFactory<Double> value = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
+            SpinnerValueFactory<Integer> value2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
+            SpinnerValueFactory<Integer> value3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999999999, 0);
+            spDistancia.setValueFactory(value);
+            spCombustible.setValueFactory(value2);
+            spTiempo.setValueFactory(value3);
+            initAviones();
+            if(modalidad.equals("Ver")){
+                llenarDatos();
+                btnGuardar.setVisible(false);          
+                spTiempo.setDisable(true);
+                spDistancia.setDisable(true);
+                cbAvion.setDisable(true);
+                spCombustible.setDisable(true);
+                txtUbicacion.setDisable(true);
+            }
+            if(modalidad.equals("Modificar")){
+                llenarDatos();
+            }
+            if(modalidad.equals("Agregar")){
+                lblFechaCreacion.setText("");
+                lblFechaModificacion.setText("");
+                txtEstado.setText("Activo");
+            }
         }
-        if(modalidad.equals("Modificar")){
-            llenarDatos();
-        }
-        if(modalidad.equals("Agregar")){
-            lblFechaCreacion.setText("");
-            lblFechaModificacion.setText("");
-            txtEstado.setText("Activo");
-        }
+        
     }
     
     public void llenarDatos(){
@@ -123,43 +136,46 @@ public class BitacoraInformacionController implements Initializable {
     
     @FXML
     private void actGuardar(ActionEvent event) {
-        if(validar()){
-            bitacora.setAvion(cbAvion.getValue());
-            bitacora.setCombustible(spCombustible.getValue());
-            bitacora.setDistanciaRecorrida(spDistancia.getValue().floatValue());
-            bitacora.setTiempoTierra(spTiempo.getValue());
-            bitacora.setUbicacion(txtUbicacion.getText());
-            
-            
-            
-            if(modalidad.equals("Modificar")){
-                
-                Respuesta respuesta=bitacoraService.modificar(bitacora.getId(), bitacora);
-                if(respuesta.getEstado()){
-                    GenerarTransacciones.crearTransaccion("Se modifica bitácora con id "+bitacora.getId(), "BitacoraInformacion");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de bitácora", "Se ha modificado la bitácora correctamente");
-                    volver();
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de bitácora", respuesta.getMensaje());
-                }
-            }else{
-                if(modalidad.equals("Agregar")){
-                    bitacora.setEstado(true);
-                    Respuesta respuesta=bitacoraService.crear(bitacora);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnGuardar \n"+
+                                                                                     "Acción: actGuardar");
+        }else{
+            if(validar()){
+                bitacora.setAvion(cbAvion.getValue());
+                bitacora.setCombustible(spCombustible.getValue());
+                bitacora.setDistanciaRecorrida(spDistancia.getValue().floatValue());
+                bitacora.setTiempoTierra(spTiempo.getValue());
+                bitacora.setUbicacion(txtUbicacion.getText());
+
+                if(modalidad.equals("Modificar")){
+                    Respuesta respuesta=bitacoraService.modificar(bitacora.getId(), bitacora);
                     if(respuesta.getEstado()){
-                        bitacora = (BitacoraAvionDTO) respuesta.getResultado("BitacoraAvion");
-                        BitacoraAvionDTO bitacoraM = getBitacoraMayor(bitacora.getAvion());
-                        bitacoraM.setEstado(false);
-                        bitacoraService.modificar(bitacoraM.getId(), bitacoraM);
-                        GenerarTransacciones.crearTransaccion("Se crea bitácora con id "+bitacora.getId(), "BitacoraInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de bitácora", "Se ha registrado la bitácora correctamente");
+                        GenerarTransacciones.crearTransaccion("Se modifica bitácora con id "+bitacora.getId(), "BitacoraInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de bitácora", "Se ha modificado la bitácora correctamente");
                         volver();
                     }else{
-                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de bitácora", respuesta.getMensaje());
+                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de bitácora", respuesta.getMensaje());
+                    }
+                }else{
+                    if(modalidad.equals("Agregar")){
+                        bitacora.setEstado(true);
+                        Respuesta respuesta=bitacoraService.crear(bitacora);
+                        if(respuesta.getEstado()){
+                            bitacora = (BitacoraAvionDTO) respuesta.getResultado("BitacoraAvion");
+                            BitacoraAvionDTO bitacoraM = getBitacoraMayor(bitacora.getAvion());
+                            bitacoraM.setEstado(false);
+                            bitacoraService.modificar(bitacoraM.getId(), bitacoraM);
+                            GenerarTransacciones.crearTransaccion("Se crea bitácora con id "+bitacora.getId(), "BitacoraInformacion");
+                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de bitácora", "Se ha registrado la bitácora correctamente");
+                            volver();
+                        }else{
+                            Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de bitácora", respuesta.getMensaje());
+                        }
                     }
                 }
             }
         }
+        
     }
 
     @FXML
@@ -236,5 +252,52 @@ public class BitacoraInformacionController implements Initializable {
             return bitacoraMayor;
         } 
         return null;
+    }
+
+    @FXML
+    private void actcbxAvion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxAvion \n"+
+                                                                                     "Acción: actSelAvion");
+    }
+
+    @FXML
+    private void actSpiRecorrido(MouseEvent event) {
+    if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de Spinner", "fxID: spDistancia \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario y agregarlo a la bitacora");
+        }
+    }
+
+    @FXML
+    private void actSpiCombustible(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de Spinner", "fxID: spCombustible \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario y agregarlo a la bitacora");
+        }
+    }
+
+    @FXML
+    private void actSpiTiempoTierra(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de Spinner", "fxID: spTiempoTierra \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario y agregarlo a la bitacora");
+        }
+    }
+
+    @FXML
+    private void acttxtUbicacion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarUbicacion \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para agregarlo a la biracora");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: BitacoraInformacion \n"+
+                                                 "Controller: BitacoraInformacionController \n\n"+
+                                                 "Información de este botón \n"+
+                                                 "fxID: btnInformacion \n"+
+                                                 "Acción: actVerInformacion");
     }
 }

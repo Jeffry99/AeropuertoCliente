@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -56,46 +58,60 @@ public class AreasTrabajosInformacionController implements Initializable {
     private Label txtEstado;
     @FXML
     private Button btnCambiarEstado;
+    private String rolUsuario="";
+    @FXML
+    private ImageView btnInformacion;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-    btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
-    modalidad = (String) AppContext.getInstance().get("ModalidadAreaTrabajo");
-    btnGuardar.setVisible(false);
-    btnGuardar.setDisable(true);  
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
         
-    if(!modalidad.equals("Ver")){
-        btnGuardar.setVisible(true);
-        btnGuardar.setDisable(false);
-    }   
-      
-     if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
-            areaTrabajoEnCuestion = (AreaTrabajoDTO) AppContext.getInstance().get("AreaTrabajoEnCuestion");
-            txtNombre.setText(areaTrabajoEnCuestion.getNombre());
-            txtDescripcion.setText(areaTrabajoEnCuestion.getDescripcion());
-            if(areaTrabajoEnCuestion.getEstado()){
-                estado=true;
-                txtEstado.setText("Activo");
-                btnCambiarEstado.setText("Anular");
+        btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
+        if(rolUsuario.equals("administrador")){//modo desarrollo
+            btnGuardar.setVisible(true);
+            btnCambiarEstado.setVisible(true);
+            txtDescripcion.setEditable(false);
+            txtNombre.setEditable(false);
+            btnInformacion.setVisible(true);
+            btnInformacion.setDisable(false);
+        }else{
+            modalidad = (String) AppContext.getInstance().get("ModalidadAreaTrabajo");
+            btnGuardar.setVisible(false);
+            btnGuardar.setDisable(true);  
+
+            if(!modalidad.equals("Ver")){
+                btnGuardar.setVisible(true);
+                btnGuardar.setDisable(false);
+            }   
+
+            if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
+                areaTrabajoEnCuestion = (AreaTrabajoDTO) AppContext.getInstance().get("AreaTrabajoEnCuestion");
+                txtNombre.setText(areaTrabajoEnCuestion.getNombre());
+                txtDescripcion.setText(areaTrabajoEnCuestion.getDescripcion());
+                if(areaTrabajoEnCuestion.getEstado()){
+                    estado=true;
+                    txtEstado.setText("Activo");
+                    btnCambiarEstado.setText("Anular");
+                }else{
+                    estado=false;
+                    txtEstado.setText("Inactivo");
+                    btnCambiarEstado.setText("Activar");
+                }
+
+                if(modalidad.equals("Ver")){
+                    btnCambiarEstado.setDisable(true);
+                    btnCambiarEstado.setVisible(false);
+                    GenerarTransacciones.crearTransaccion("Se observa area de trabajo con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
+                    txtDescripcion.setDisable(true);
+                    txtNombre.setDisable(true);
+                }
             }else{
-                estado=false;
-                txtEstado.setText("Inactivo");
-                btnCambiarEstado.setText("Activar");
-            }
-            
-            if(modalidad.equals("Ver")){
+                txtEstado.setText("Activo");
                 btnCambiarEstado.setDisable(true);
                 btnCambiarEstado.setVisible(false);
-                GenerarTransacciones.crearTransaccion("Se observa area de trabajo con id "+areaTrabajoEnCuestion.getId(), "AreasTrabajosInformacion");
-                txtDescripcion.setDisable(true);
-                txtNombre.setDisable(true);
-            }
-        }else{
-            txtEstado.setText("Activo");
-            btnCambiarEstado.setDisable(true);
-            btnCambiarEstado.setVisible(false);
+            } 
         }
+        
     }
     
      public boolean validar(){
@@ -117,11 +133,14 @@ public class AreasTrabajosInformacionController implements Initializable {
 
     @FXML
     private void actGuardar(ActionEvent event) {
-        if(validar()){
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnGuardar \n"+
+                                                                                     "Acción: actGuardar");
+        }else{
+            if(validar()){
             areaTrabajoEnCuestion.setNombre(txtNombre.getText());
             areaTrabajoEnCuestion.setDescripcion(txtDescripcion.getText());
-            
-            
+
             if(modalidad.equals("Modificar")){
                 Respuesta respuesta=areaTrabajoService.modificar(areaTrabajoEnCuestion.getId(), areaTrabajoEnCuestion);
                 if(respuesta.getEstado()){
@@ -131,8 +150,6 @@ public class AreasTrabajosInformacionController implements Initializable {
                 }else{
                     Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
                 }
-                
-                
             }else{
                 if(modalidad.equals("Agregar")){
                     areaTrabajoEnCuestion.setEstado(true);
@@ -147,9 +164,11 @@ public class AreasTrabajosInformacionController implements Initializable {
                     }
                 }
             }
+            }  
         }
+            
     }
-        public void volver() {
+    public void volver() {
         try{
             StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
             Parent root = FXMLLoader.load(App.class.getResource("AreasTrabajo" + ".fxml"));
@@ -162,25 +181,31 @@ public class AreasTrabajosInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
-        try{
-            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
-                CambiarEstado();
-            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
-                Stage stage = new Stage();
-                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,AreaTrabajo");
-                AppContext.getInstance().set("ControllerPermiso", this);
-                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
-                stage.setScene(new Scene(root));
-                stage.setTitle("Area de trabajo "+areaTrabajoEnCuestion.getNombre());
-                stage.setResizable(Boolean.FALSE);
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
-                stage.show();
-            }
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        }; 
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnCambiarEstado \n"+
+                                                                                     "Acción: actCambiarEstado");
+        }else{
+            try{
+                if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                    CambiarEstado();
+                }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                    Stage stage = new Stage();
+                    AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,AreaTrabajo");
+                    AppContext.getInstance().set("ControllerPermiso", this);
+                    Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Area de trabajo "+areaTrabajoEnCuestion.getNombre());
+                    stage.setResizable(Boolean.FALSE);
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(
+                        ((Node)event.getSource()).getScene().getWindow() );
+                    stage.show();
+                }
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            };  
+        }
+        
     } 
     
     public void CambiarEstado(){
@@ -200,6 +225,31 @@ public class AreasTrabajosInformacionController implements Initializable {
         }else{
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado del area de trabajo", respuesta.getMensaje());
         }
+    }
+
+    @FXML
+    private void acttxtNombre(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtNombre \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para agregarle el nombre a una nueva área de trabajo");
+        }
+    }
+
+    @FXML
+    private void acttxtDescripcion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtDescripcion \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para agregarle la descripción a una nueva área de trabajo");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+                Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: AreasTrabajosInformacion \n"+
+                                                         "Controller: AreasTrabajosInformacionController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");
     }
 
     

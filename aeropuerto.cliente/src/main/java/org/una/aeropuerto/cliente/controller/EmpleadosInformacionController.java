@@ -5,9 +5,11 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXCheckBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,11 +33,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
+import org.una.aeropuerto.cliente.dto.ParametroAplicacionDTO;
 import org.una.aeropuerto.cliente.dto.RolDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.dto.UsuarioDTO;
 import org.una.aeropuerto.cliente.service.AutenticacionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
+import org.una.aeropuerto.cliente.service.ParametroAplicacionService;
 import org.una.aeropuerto.cliente.service.RolService;
 import org.una.aeropuerto.cliente.service.UsuarioService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -119,24 +123,33 @@ public class EmpleadosInformacionController implements Initializable {
     private Button btnCambiarEstado;
     @FXML
     private Rectangle rectangulo;
+    @FXML
+    private TextField txtVerContrasenaNueva;
+    @FXML
+    private TextField txtVerContrasenaConfirmar;
+    @FXML
+    private TextField txtVerContrasenaActual;
+    @FXML
+    private JFXCheckBox cbContrasenaNueva;
+    @FXML
+    private JFXCheckBox cbContrasenaConfirmar;
+    @FXML
+    private JFXCheckBox cbContrasenaActual;
     
-    
+    private String cedulaIni ="";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initPasswords();
         initEmpleadosJefe();
         initRoles();
         btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
-        
         modalidad = (String) AppContext.getInstance().get("ModalidadEmpleadoUsuario");
         btnGuardar.setVisible(false);
         btnGuardar.setDisable(true);
-        
         lblFechaCreacion1.setVisible(false);
         lblFechaModificacion1.setVisible(false);
-        
         cbxJefeDirecto.setVisible(false);
         cbxJefeDirecto.setDisable(true);
-        
         if(!modalidad.equals("Ver")){
             btnGuardar.setVisible(true);
             btnGuardar.setDisable(false);
@@ -144,9 +157,7 @@ public class EmpleadosInformacionController implements Initializable {
         if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
             usuarioEnCuestion = (UsuarioDTO) AppContext.getInstance().get("UsuarioEnCuestion");
             empleadoEnCuestion = usuarioEnCuestion.getEmpleado();
-            
-            //////////////////////////////////////////////////////////////////////
-            //sets empleado
+            cedulaIni = empleadoEnCuestion.getCedula();
             txtNombre.setText(empleadoEnCuestion.getNombre());
             txtCedula.setText(empleadoEnCuestion.getCedula());
             txtTelefono.setText(empleadoEnCuestion.getTelefono());
@@ -162,7 +173,6 @@ public class EmpleadosInformacionController implements Initializable {
                 esJefe=true;
                 rbSi.setSelected(true);
                 rbNo.setSelected(false);
-                
             }
             if(empleadoEnCuestion.getEstado()){
                 estado=true;
@@ -177,13 +187,7 @@ public class EmpleadosInformacionController implements Initializable {
             lblFechaModificacion1.setText("Modificado el "+empleadoEnCuestion.getFechaModificacion());
             lblFechaCreacion1.setVisible(true);
             lblFechaModificacion1.setVisible(true);
-            //////////////////////////////////////////////////////////////////////
-            
-            //////////////////////////////////////////////////////////////////////
-            //sets usuario
             cbRol.setValue(usuarioEnCuestion.getRol());
-            //////////////////////////////////////////////////////////////////////
-            
             if(modalidad.equals("Ver")){
                 btnCambiarEstado.setDisable(true);
                 btnCambiarEstado.setVisible(false);
@@ -195,7 +199,6 @@ public class EmpleadosInformacionController implements Initializable {
                 rbSi.setDisable(true);
                 rbNo.setDisable(true);
                 cbxJefeDirecto.setDisable(true);
-
                 cbRol.setDisable(true);
                 txtContrasenaActual.setDisable(true);
                 txtContrasenaActual.setVisible(false);
@@ -203,6 +206,18 @@ public class EmpleadosInformacionController implements Initializable {
                 txtContrasenaConfirmar.setVisible(false);
                 txtContrasenaNueva.setDisable(true);
                 txtContrasenaNueva.setVisible(false);
+                txtVerContrasenaActual.setDisable(true);
+                txtVerContrasenaActual.setVisible(false);
+                txtVerContrasenaConfirmar.setDisable(true);
+                txtVerContrasenaConfirmar.setVisible(false);
+                txtVerContrasenaNueva.setDisable(true);
+                txtVerContrasenaNueva.setVisible(false);
+                cbContrasenaActual.setVisible(false);
+                cbContrasenaActual.setDisable(true);
+                cbContrasenaNueva.setVisible(false);
+                cbContrasenaNueva.setDisable(true);
+                cbContrasenaConfirmar.setVisible(false);
+                cbContrasenaConfirmar.setDisable(true);
                 lbContrasenaConfirmar.setVisible(false);
                 lbContrasenaNueva.setVisible(false);
                 lbContrasenaActual.setVisible(false);
@@ -212,6 +227,10 @@ public class EmpleadosInformacionController implements Initializable {
             lbContrasenaActual.setVisible(false);
             txtContrasenaActual.setVisible(false);
             txtContrasenaActual.setDisable(true);
+            cbContrasenaActual.setVisible(false);
+            cbContrasenaActual.setDisable(true);
+            txtVerContrasenaActual.setDisable(true);
+            txtVerContrasenaActual.setVisible(false);
             txtEstado.setText("Activo");
             btnCambiarEstado.setDisable(true);
             btnCambiarEstado.setVisible(false);
@@ -243,7 +262,30 @@ public class EmpleadosInformacionController implements Initializable {
     
     
     boolean cambioContrasena = true;
+    String contrasenaActual = null;
+    String contrasenaNueva = null;
+    String contrasenaConfirmar = null;
     public boolean validar(){
+        if(visibilidadContrasenaActual){
+            contrasenaActual = txtVerContrasenaActual.getText();
+        }else{
+            contrasenaActual = txtContrasenaActual.getText();
+        }
+        
+        if(visibilidadContrasenaNueva){
+            contrasenaNueva = txtVerContrasenaNueva.getText();
+        }else{
+            contrasenaNueva = txtContrasenaNueva.getText();
+        }
+        
+        if(visibilidadContrasenaConfirmar){
+            contrasenaConfirmar = txtVerContrasenaConfirmar.getText();
+        }else{
+            contrasenaConfirmar = txtContrasenaConfirmar.getText();
+        }
+        
+        
+        
         if(txtCedula.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la cedula del empleado");
             return false;
@@ -268,40 +310,43 @@ public class EmpleadosInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el rol que va tener el usuario");
             return false;
         }
-        if(!txtContrasenaNueva.getText().isBlank()){
-            if(txtContrasenaConfirmar.getText().isBlank()){
+        if(!contrasenaNueva.isBlank()){
+            if(contrasenaConfirmar.isBlank()){
                 Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor confirme la contraseña");
                 return false;
             }else{
-                if(!txtContrasenaNueva.getText().equals(txtContrasenaConfirmar.getText())){
+                if(!contrasenaNueva.equals(contrasenaConfirmar)){
                     Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña a confirmar no coincide con la contraseña nueva");  
                     return false;
                 }else{
-                    //evaluar contrasena actual si va editar el usuario, hacer login con la cedula del empleado y contrasena actual si me devulve false no funciono
                     if(modalidad.equals("Modificar")){
-                        if(txtContrasenaActual.getText().isBlank()){
+                        if(contrasenaActual.isBlank()){
                             Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "Digite la contraseña actual");  
                             return false;
                         }else{
                             AutenticacionService auService = new AutenticacionService();
-                            Respuesta res = auService.Login(empleadoEnCuestion.getCedula(), txtContrasenaActual.getText());
+                            Respuesta res = auService.Login(cedulaIni, contrasenaActual);
                             if(res.getEstado()){
-                                cambioContrasena=true;
+                                if(validarParametroContrasena()){
+                                    cambioContrasena=true;
+                                }else{
+                                    cambioContrasena=false;
+                                }
+                                
                             }else{
+                                cambioContrasena=false;
                                 Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña actual no coincide");  
                                 return false;
                             }
                         }
+                    }else{
+                        return validarParametroContrasena();
                     }
                 }
             } 
         }else{
             cambioContrasena=false;
         }
-        
-        
-        
-        
         return true;
     }
     
@@ -339,7 +384,58 @@ public class EmpleadosInformacionController implements Initializable {
             
         }
     }
+    
+    boolean visibilidadContrasenaActual = false;
+    boolean visibilidadContrasenaNueva = false;
+    boolean visibilidadContrasenaConfirmar = false;
 
+    public void initPasswords(){
+        cbContrasenaActual.selectedProperty().addListener( t -> {
+            if(cbContrasenaActual.isSelected()){
+                txtVerContrasenaActual.setVisible(true);
+                txtContrasenaActual.setVisible(false);
+                txtVerContrasenaActual.setText(txtContrasenaActual.getText());
+                visibilidadContrasenaActual = true;
+            }else{
+                txtVerContrasenaActual.setVisible(false);
+                txtContrasenaActual.setText(txtVerContrasenaActual.getText());
+                txtContrasenaActual.setVisible(true);
+                txtVerContrasenaActual.setText("");
+                visibilidadContrasenaActual = false;
+            }
+        });
+        
+        cbContrasenaNueva.selectedProperty().addListener( t -> {
+            if(cbContrasenaNueva.isSelected()){
+                txtVerContrasenaNueva.setVisible(true);
+                txtContrasenaNueva.setVisible(false);
+                txtVerContrasenaNueva.setText(txtContrasenaNueva.getText());
+                visibilidadContrasenaNueva = true;
+            }else{
+                txtVerContrasenaNueva.setVisible(false);
+                txtContrasenaNueva.setText(txtVerContrasenaNueva.getText());
+                txtContrasenaNueva.setVisible(true);
+                txtVerContrasenaNueva.setText("");
+                visibilidadContrasenaNueva = false;
+            }
+        });
+        
+        cbContrasenaConfirmar.selectedProperty().addListener( t -> {
+            if(cbContrasenaConfirmar.isSelected()){
+                txtVerContrasenaConfirmar.setVisible(true);
+                txtContrasenaConfirmar.setVisible(false);
+                txtVerContrasenaConfirmar.setText(txtContrasenaConfirmar.getText());
+                visibilidadContrasenaConfirmar = true;
+            }else{
+                txtVerContrasenaConfirmar.setVisible(false);
+                txtContrasenaConfirmar.setText(txtVerContrasenaConfirmar.getText());
+                txtContrasenaConfirmar.setVisible(true);
+                txtVerContrasenaConfirmar.setText("");
+                visibilidadContrasenaConfirmar = false;
+            }
+        });
+    }
+    
     @FXML
     private void actVolver(ActionEvent event) {
         volver();
@@ -441,7 +537,7 @@ public class EmpleadosInformacionController implements Initializable {
             usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
             usuarioEnCuestion.setEstado(true);
             usuarioEnCuestion.setRol(cbRol.getValue());
-            usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+            usuarioEnCuestion.setPasswordEncriptado(contrasenaNueva);
 
             Respuesta respuestaUsuario=usuarioService.crear(usuarioEnCuestion);
             if(respuestaUsuario.getEstado()){
@@ -462,7 +558,7 @@ public class EmpleadosInformacionController implements Initializable {
             usuarioEnCuestion.setRol(cbRol.getValue());
 
             if(cambioContrasena==true){
-                usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+                usuarioEnCuestion.setPasswordEncriptado(contrasenaNueva);
             }
             Respuesta respuestaUsuario=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
             if(respuestaUsuario.getEstado()){
@@ -478,12 +574,36 @@ public class EmpleadosInformacionController implements Initializable {
     
     public void ejecutarAccion(){
         if(modalidad.equals("Modificar")){
-            Agregar();  
+            Modificar();  
         }else{
             if(modalidad.equals("Agregar")){
-                Modificar();
+                Agregar();
             }
         }
+    }
+    
+    private boolean validarParametroContrasena(){
+        ParametroAplicacionService parametroService = new ParametroAplicacionService();
+        Respuesta res = parametroService.getByNombreAproximate("Tamaño Password");
+        try{
+            if(res.getEstado()){
+                List<ParametroAplicacionDTO> parametros  = (List<ParametroAplicacionDTO>) res.getResultado("ParametrosAplicacion");
+                if(parametros.size()>0){
+                    for(int i=0; i<parametros.size(); i++){
+                        if(parametros.get(i).getNombre().equals("Tamaño Password")){
+                            if(contrasenaNueva.length()<Integer.valueOf(parametros.get(i).getValor())){
+                                Mensaje.showAndWait(Alert.AlertType.ERROR, "Contraseña", "La contraseña debe tener una extensión mínima de "+parametros.get(i).getValor());
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }catch(Exception ex){
+            return true;
+        }
+        
+        return true;
     }
 
     

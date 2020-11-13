@@ -28,6 +28,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
@@ -80,17 +82,30 @@ public class AvionesController implements Initializable {
     private JFXComboBox<AerolineaDTO> cbAerolinea;
     @FXML
     private JFXComboBox<TipoAvionDTO> cbTipoAvion;
+    @FXML
+    private ImageView btnInformacion;
+    private String rolUsuario="";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
         cargarTodos();
-        initAerolineas();
-        initTipoAvion();
-        initEstados();
-       if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
-            btnAgregar.setVisible(false);
-            btnAgregar.setDisable(true);
-        }
+        if(rolUsuario.equals("administrador")){
+            txtMatricula.setEditable(false);
+            cbAerolinea.setEditable(false);
+            cbEstado.setEditable(false);
+            cbTipoAvion.setEditable(false);
+            btnInformacion.setVisible(true);
+            btnInformacion.setDisable(false);
+        }else{
+            initAerolineas();
+            initTipoAvion();
+            initEstados();
+            if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                btnAgregar.setVisible(false);
+                btnAgregar.setDisable(true);
+            }
+        } 
     }    
     public void cargarTodos(){
         ArrayList<AvionDTO> aviones = new ArrayList<AvionDTO>();
@@ -191,6 +206,7 @@ public class AvionesController implements Initializable {
         tvAviones.getColumns().add(colBtn);
 
     }
+   
     public void ver(AvionDTO avion){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadAvion", "Ver");
@@ -231,11 +247,16 @@ public class AvionesController implements Initializable {
 
     @FXML
     private void actBorrar(ActionEvent event) {
-        txtMatricula.setText("");
-        cbEstado.setValue(null);
-        cbTipoAvion.setValue(null);
-        cbAerolinea.setValue(null);
-        cargarTodos();
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBorrar \n"+
+                                                                                     "Acción: actBorrar");
+        }else{
+            txtMatricula.setText("");
+            cbEstado.setValue(null);
+            cbTipoAvion.setValue(null);
+            cbAerolinea.setValue(null);
+            cargarTodos();
+        }
     }
 
 
@@ -254,7 +275,11 @@ public class AvionesController implements Initializable {
 
     @FXML
     private void actBuscarMatricula(ActionEvent event) {
-        if(validarBusquedas("Matricula")){
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarMatricula \n"+
+                                                                                     "Acción: actBuscarMatricula");
+        }else{
+            if(validarBusquedas("Matricula")){
             ArrayList<AvionDTO> aviones = new ArrayList<AvionDTO>();
             Respuesta respuesta = avionService.getByMatriculaAproximate(txtMatricula.getText());
             if(respuesta.getEstado().equals(true)){
@@ -262,42 +287,62 @@ public class AvionesController implements Initializable {
             }
             cargarTabla(aviones);
         }
+        }
+        
     }
 
     @FXML
     private void actBuscarEstado(ActionEvent event) {
-        if(validarBusquedas("Estado")){
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarEstado \n"+
+                                                                                     "Acción: actBuscarEstado");
+        }else{
+            if(validarBusquedas("Estado")){
             ArrayList<AvionDTO> aviones = new ArrayList<AvionDTO>();
             Respuesta respuesta = avionService.getByEstado(estado);
-            if(respuesta.getEstado().equals(true)){
-                aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
-            }
+                if(respuesta.getEstado().equals(true)){
+                    aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
+                }
             cargarTabla(aviones);
+            }
         }
+        
     }
 
     @FXML
     private void actBuscarTipoAvion(ActionEvent event) {
-        if(validarBusquedas("TipoAvion")){
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarTipoAvion \n"+
+                                                                                     "Acción: actBuscarTipoAvion");
+        }else{
+            if(validarBusquedas("TipoAvion")){
             ArrayList<AvionDTO> aviones = new ArrayList<AvionDTO>();
             Respuesta respuesta = avionService.getByTipoAvion(cbTipoAvion.getValue().getId());
-            if(respuesta.getEstado().equals(true)){
-                aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
-            }
+                if(respuesta.getEstado().equals(true)){
+                    aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
+                }
             cargarTabla(aviones);
+            }
         }
+        
     }
 
     @FXML
     private void actBuscarAerolinea(ActionEvent event) {
-        if(validarBusquedas("Aerolinea")){
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarAerolineas \n"+
+                                                                                     "Acción: actBuscarAerolineas");
+        }else{
+            if(validarBusquedas("Aerolinea")){
             ArrayList<AvionDTO> aviones = new ArrayList<AvionDTO>();
             Respuesta respuesta = avionService.getByAerolinea(cbAerolinea.getValue().getId());
-            if(respuesta.getEstado().equals(true)){
-                aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
+                if(respuesta.getEstado().equals(true)){
+                    aviones = (ArrayList<AvionDTO>) respuesta.getResultado("Aviones");
+                }
+                cargarTabla(aviones);
             }
-            cargarTabla(aviones);
         }
+        
     }
     
     public void initAerolineas(){
@@ -367,5 +412,54 @@ public class AvionesController implements Initializable {
             }
         }
         return true;
+    }
+
+    @FXML
+    private void acttvAviones(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de table view", "fxID: tvAviones \n"+
+             "Acción: usada para mostrar los datos de los aviones que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void actcbxEstado(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxEstado \n"+
+            "Acción: selecciona el estado por el cual se van a filtrar los aviones ");
+        }
+    }
+
+    @FXML
+    private void acttxtMatricula(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarMatricula \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para buscar aviones segun el matricula");
+        }
+    }
+
+    @FXML
+    private void actcbxAerolinea(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxAerolinea \n"+
+            "Acción: selecciona la Aerolinea por el cual se van a filtrar los aviones ");
+        }
+    }
+
+    @FXML
+    private void actcbxTipoAvion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxTipoAvion \n"+
+            "Acción: selecciona el Tipo de Avion por el cual se van a filtrar los aviones ");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: Aviones \n"+
+                                                         "Controller: AvionesController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");
     }
 }

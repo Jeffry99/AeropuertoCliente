@@ -18,7 +18,7 @@
             <Image url="@../recursos/FONDO2.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tvEstados" layoutX="85.0" layoutY="274.0" prefHeight="295.0" prefWidth="830.0">
+      <TableView fx:id="tvEstados" layoutX="85.0" layoutY="274.0" onMouseClicked="#acttvBitacora" prefHeight="295.0" prefWidth="830.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
@@ -36,13 +36,18 @@
       <Button fx:id="btnBuscarEstado" layoutX="289.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarUbicacion" layoutX="824.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarUbicacion" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarAvion" layoutX="824.0" layoutY="148.0" mnemonicParsing="false" onAction="#actBuscarAvion" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
-      <Spinner fx:id="spDistanciaMas" editable="true" layoutX="154.0" layoutY="215.0" prefHeight="37.0" prefWidth="113.0" />
-      <Spinner fx:id="spDistanciaMenos" editable="true" layoutX="154.0" layoutY="172.0" prefHeight="37.0" prefWidth="113.0" />
+      <Spinner fx:id="spDistanciaMas" editable="true" layoutX="154.0" layoutY="215.0" onMouseClicked="#actspiMaximo" prefHeight="37.0" prefWidth="113.0" />
+      <Spinner fx:id="spDistanciaMenos" editable="true" layoutX="154.0" layoutY="172.0" onMouseClicked="#actspiMinimo" prefHeight="37.0" prefWidth="113.0" />
       <Label layoutX="85.0" layoutY="144.0" text="Buscar por Distancia Recorrida" />
-      <JFXComboBox fx:id="cbEstado" labelFloat="true" layoutX="85.0" layoutY="81.0" onAction="#actEstados" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
+      <JFXComboBox fx:id="cbEstado" labelFloat="true" layoutX="85.0" layoutY="81.0" onAction="#actEstados" onMouseClicked="#actcbxBuscarEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
       <Label layoutX="85.0" layoutY="180.0" text="Mínimo:" />
       <Label layoutX="85.0" layoutY="223.0" text="Máximo:" />
-      <JFXTextField fx:id="txtUbicacion" labelFloat="true" layoutX="621.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por ubicación" />
-      <JFXComboBox fx:id="cbAvion" labelFloat="true" layoutX="621.0" layoutY="145.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por avión" />
+      <JFXTextField fx:id="txtUbicacion" labelFloat="true" layoutX="621.0" layoutY="81.0" onMouseClicked="#acttxtBuscarUbicacion" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por ubicación" />
+      <JFXComboBox fx:id="cbAvion" labelFloat="true" layoutX="621.0" layoutY="145.0" onMouseClicked="#actcbxAvion" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por avión" />
+      <ImageView fx:id="btnInformacion" fitHeight="21.0" fitWidth="24.0" layoutX="220.0" layoutY="35.0" onMouseClicked="#actVerInformacion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
