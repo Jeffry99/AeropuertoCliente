@@ -51,7 +51,9 @@ public class UsuarioAutenticado {
         return false;
     }
     
-    
+    public String getRol(){
+        return usuarioLogeado.getRol().getNombre();
+    }
     
     
     

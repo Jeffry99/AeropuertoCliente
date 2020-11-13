@@ -31,6 +31,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AerolineaDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AerolineaService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -80,6 +81,10 @@ public class AerolineasController implements Initializable {
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxEstado.setItems(items);
+        if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     
     public void cargarTodos(){
@@ -115,7 +120,9 @@ public class AerolineasController implements Initializable {
             tvAerolineas.getColumns().addAll(colNombre);
             tvAerolineas.getColumns().addAll(colResponsable);
             tvAerolineas.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvAerolineas.setItems(items);
         }
     }
@@ -150,10 +157,13 @@ public class AerolineasController implements Initializable {
                         });
                     }
                     
-                    HBox pane = new HBox(btn, btn2);
-                    {
-                        pane.setAlignment(Pos.CENTER);
-                    }
+                   
+                        HBox pane = new HBox(btn, btn2);
+                        {
+                            pane.setAlignment(Pos.CENTER);
+                        }
+                    
+                            
                     
 
                     @Override

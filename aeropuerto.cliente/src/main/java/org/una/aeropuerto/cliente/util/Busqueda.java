@@ -5,13 +5,8 @@
  */
 package org.una.aeropuerto.cliente.util;
 
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 
@@ -19,6 +14,7 @@ import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
  *
  * @author Luis
  */
+
 public class Busqueda {
  
     private ServicioRegistradoService servicioRegistradoService = new ServicioRegistradoService();
