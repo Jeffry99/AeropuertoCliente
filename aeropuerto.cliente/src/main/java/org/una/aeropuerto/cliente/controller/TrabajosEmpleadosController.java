@@ -35,6 +35,7 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AreaTrabajoDTO;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.TrabajoEmpleadoDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AreaTrabajoService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.TrabajoEmpleadoService;
@@ -102,6 +103,11 @@ public class TrabajosEmpleadosController implements Initializable {
         }
         ObservableList items3 = FXCollections.observableArrayList(areasTrabajos);   
         cbxAreaID.setItems(items3);
+        
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
  
     public void cargarTodos(){
@@ -137,7 +143,9 @@ public class TrabajosEmpleadosController implements Initializable {
             tvAreaTrabajo.getColumns().addAll(colAreaTrabajo);
             tvAreaTrabajo.getColumns().addAll(colEmpleado);
             tvAreaTrabajo.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvAreaTrabajo.setItems(items);
         }
     }

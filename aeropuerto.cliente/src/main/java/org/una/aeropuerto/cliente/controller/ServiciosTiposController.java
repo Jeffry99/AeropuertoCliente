@@ -34,6 +34,7 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AreaTrabajoDTO;
 import org.una.aeropuerto.cliente.dto.ServicioTipoDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AreaTrabajoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -85,9 +86,10 @@ public class ServiciosTiposController implements Initializable {
         initAreaTrabajo();
         cargarTodos();
         
-        
-        
-        
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     
       public void cargarTodos(){
@@ -146,7 +148,9 @@ public class ServiciosTiposController implements Initializable {
             tvTipoServicios.getColumns().addAll(colNombre);
             tvTipoServicios.getColumns().addAll(colAreaTrabajo);
             tvTipoServicios.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvTipoServicios.setItems(items);
         }
     }

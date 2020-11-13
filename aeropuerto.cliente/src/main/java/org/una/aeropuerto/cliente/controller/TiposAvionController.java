@@ -34,6 +34,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -85,6 +86,10 @@ public class TiposAvionController implements Initializable {
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxEstado.setItems(items);
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }   
     
     public void cargarTodos(){
@@ -120,7 +125,9 @@ public class TiposAvionController implements Initializable {
             tvtTiposAviones.getColumns().addAll(colNombre);
             tvtTiposAviones.getColumns().addAll(colDistancia);
             tvtTiposAviones.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvtTiposAviones.setItems(items);
         }
     }

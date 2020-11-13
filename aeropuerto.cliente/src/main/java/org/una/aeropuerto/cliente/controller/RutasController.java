@@ -33,6 +33,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.RutaDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.RutaService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -85,6 +86,10 @@ public class RutasController implements Initializable {
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxEstado.setItems(items);
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     public void cargarTodos(){
         ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
@@ -118,7 +123,9 @@ public class RutasController implements Initializable {
             tvRutas.getColumns().addAll(colOrigen);
             tvRutas.getColumns().addAll(colDestino);
             tvRutas.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvRutas.setItems(items);
         }
     }

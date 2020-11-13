@@ -34,6 +34,7 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.BitacoraAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.BitacoraAvionService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -96,7 +97,10 @@ public class BitacoraController implements Initializable {
         SpinnerValueFactory<Double> value2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999999999, 0);
         spDistanciaMenos.setValueFactory(value);
         spDistanciaMas.setValueFactory(value2);
-        
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
         cargarTodos();
     }    
 
@@ -148,7 +152,9 @@ public class BitacoraController implements Initializable {
             tvEstados.getColumns().addAll(colTiempo);
             tvEstados.getColumns().addAll(colUbicacion);
             tvEstados.getColumns().addAll(colAvion);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvEstados.setItems(items);
         }
     }

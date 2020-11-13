@@ -33,6 +33,7 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
 import org.una.aeropuerto.cliente.dto.HorarioDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
 import org.una.aeropuerto.cliente.service.HorarioService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -77,8 +78,10 @@ public class HorariosController implements Initializable {
         initEmpleados();
         initEstado();
         cargarTodos();
-                
-        // TODO
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     
     public void initEstado(){
@@ -271,7 +274,9 @@ public class HorariosController implements Initializable {
             tvHorarios.getColumns().addAll(colDiaInicio);
             tvHorarios.getColumns().addAll(colDiaFinal);
             tvHorarios.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvHorarios.setItems(items);
         }
     }

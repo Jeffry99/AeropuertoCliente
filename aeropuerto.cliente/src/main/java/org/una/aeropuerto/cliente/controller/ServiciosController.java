@@ -33,6 +33,7 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -82,9 +83,6 @@ public class ServiciosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        
-        
         servicioRegistradoService = new ServicioRegistradoService();
         cargarTodos();
         
@@ -107,7 +105,10 @@ public class ServiciosController implements Initializable {
         txtMinimo.setValueFactory(value);
         txtMaximo.setValueFactory(value2);
         
-        
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     
     public void cargarTodos(){
@@ -142,7 +143,9 @@ public class ServiciosController implements Initializable {
             tvServicios.getColumns().addAll(colTipoServicio);
             tvServicios.getColumns().addAll(colCobro);
             tvServicios.getColumns().addAll(colAvion);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvServicios.setItems(items);
         }
     }

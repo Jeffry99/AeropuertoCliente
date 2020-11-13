@@ -34,6 +34,7 @@ import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.RutaDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.RutaService;
@@ -82,6 +83,10 @@ public class VuelosController implements Initializable {
         initAviones();
         initRutas();
         cargarTodos();
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     public void cargarTodos(){
         ArrayList<VueloDTO> vuelos = new ArrayList<VueloDTO>();
@@ -102,16 +107,12 @@ public class VuelosController implements Initializable {
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             colId.setPrefWidth(50);
             
-            
-            
             TableColumn <VueloDTO, String>colRuta = new TableColumn("Ruta");
             colRuta.setCellValueFactory(av -> {
                 String origen = av.getValue().getRuta().getOrigen()+" - "+av.getValue().getRuta().getDestino();
                 return new ReadOnlyStringWrapper(origen);
             });
             colRuta.setPrefWidth(300);
-            
-            
             
             TableColumn<VueloDTO, String> colFecha = new TableColumn("Fecha");
             colFecha.setCellValueFactory(av -> {
@@ -159,7 +160,9 @@ public class VuelosController implements Initializable {
             tvVuelos.getColumns().addAll(colFecha);
             tvVuelos.getColumns().addAll(colHora);
             tvVuelos.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvVuelos.setItems(items);
         }
     }

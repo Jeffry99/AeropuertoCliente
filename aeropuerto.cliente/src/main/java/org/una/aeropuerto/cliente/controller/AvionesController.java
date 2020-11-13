@@ -87,7 +87,7 @@ public class AvionesController implements Initializable {
         initAerolineas();
         initTipoAvion();
         initEstados();
-        if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+       if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
             btnAgregar.setVisible(false);
             btnAgregar.setDisable(true);
         }
