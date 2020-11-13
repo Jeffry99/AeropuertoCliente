@@ -106,7 +106,7 @@ public class ReportesRecaudacionController implements Initializable {
             return false;
         }
         
-        generadorReportes = new GeneradorReportes("Recaudacion", cbServicio.getValue().toString(), Date.valueOf(dpInicio.getValue()), Date.valueOf(dpFinal.getValue()));
+        generadorReportes = new GeneradorReportes("Recaudacion", "", cbServicio.getValue().toString(), Date.valueOf(dpInicio.getValue()), Date.valueOf(dpFinal.getValue()));
         return true;
     }
     
