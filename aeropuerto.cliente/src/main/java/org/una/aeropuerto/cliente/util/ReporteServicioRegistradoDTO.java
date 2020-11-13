@@ -22,7 +22,7 @@ public class ReporteServicioRegistradoDTO{
         
     }
     
-    public void casteo(ServicioRegistradoDTO servicio){
+    public void cast(ServicioRegistradoDTO servicio){
         cobro = String.valueOf(servicio.getCobro());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         fechaRegistro = formatter.format(servicio.getFechaRegistro());

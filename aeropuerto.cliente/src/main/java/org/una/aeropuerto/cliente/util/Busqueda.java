@@ -8,6 +8,7 @@ package org.una.aeropuerto.cliente.util;
 import java.util.ArrayList;
 import java.util.Date;
 import org.una.aeropuerto.cliente.dto.ServicioRegistradoDTO;
+import org.una.aeropuerto.cliente.dto.VueloDTO;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 
 /**
@@ -17,17 +18,17 @@ import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 
 public class Busqueda {
  
-    private ServicioRegistradoService servicioRegistradoService = new ServicioRegistradoService();
+    private final ServicioRegistradoService servicioRegistradoService = new ServicioRegistradoService();
     ArrayList<ServicioRegistradoDTO> servicios;
     ArrayList<ServicioRegistradoDTO> serviciosFechas = new ArrayList();
+    ArrayList<VueloDTO> vuelosFechas = new ArrayList();
      
-
-    public ArrayList<ServicioRegistradoDTO> busquedaRangoFechas(Date menor, Date mayor, ArrayList<ServicioRegistradoDTO> listaFechas){
-        if(!listaFechas.isEmpty()){
-            for(int i=0; i<listaFechas.size(); i++){
-                if(menor.before(listaFechas.get(i).getFechaRegistro())){
-                    if(mayor.after(listaFechas.get(i).getFechaRegistro())){
-                        serviciosFechas.add(listaFechas.get(i));
+    public ArrayList<ServicioRegistradoDTO> busquedaRangoRecaudacion(Date menor, Date mayor, ArrayList<ServicioRegistradoDTO> lista){
+        if(!lista.isEmpty()){
+            for(int i=0; i<lista.size(); i++){
+                if(menor.before(lista.get(i).getFechaRegistro())){
+                    if(mayor.after(lista.get(i).getFechaRegistro())){
+                        serviciosFechas.add(lista.get(i));
                     }
                 }
             }  
@@ -36,4 +37,19 @@ public class Busqueda {
         }
         return serviciosFechas;
     }
+    public ArrayList<VueloDTO> busquedaRangoRecorridos(Date menor, Date mayor, ArrayList<VueloDTO> lista){
+        if(!lista.isEmpty()){
+            for(int i=0; i<lista.size(); i++){
+                if(menor.before(lista.get(i).getFecha())){
+                    if(mayor.after(lista.get(i).getFecha())){
+                        vuelosFechas.add(lista.get(i));
+                    }
+                }
+            }  
+        }else{
+            System.out.println("No hay vuelos registrados");
+        }
+        return vuelosFechas;
+    }
 }
+

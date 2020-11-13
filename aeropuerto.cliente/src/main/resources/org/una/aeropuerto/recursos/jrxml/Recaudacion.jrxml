@@ -22,7 +22,7 @@
 	</subDataset>
 	<parameter name="fechaInicio" class="java.lang.String"/>
 	<parameter name="fechaFinal" class="java.lang.String"/>
-	<parameter name="servicioTipo" class="java.lang.String"/>
+	<parameter name="Parametro" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -113,7 +113,7 @@
 				<textElement>
 					<font size="15"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{servicioTipo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Parametro}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
