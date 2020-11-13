@@ -352,14 +352,21 @@ public class ServiciosInformacionController implements Initializable {
     
     private boolean generarAlertaZonaDescarga(){
         BitacoraAvionDTO bitacora = getBitacoraMayor();
-        if(bitacora!=null){
-            String area= servicio.getServicioTipo().getAreaTrabajo().getNombre();
-            if(area.equals("Mantenimiento")||area.equals("Carga de combustible")||area.equals("Hangar")){
-                if(bitacora.getTiempoTierra()==0 && bitacora.getUbicacion().equals("Pista")){
-                    return false;
-                }
+        try{
+           if(bitacora!=null){
+                String area= servicio.getServicioTipo().getAreaTrabajo().getNombre();
+                if(area.equals("Mantenimiento")||area.equals("Carga de combustible")||area.equals("Hangar")){
+                    if(Integer.valueOf(bitacora.getTiempoTierra())!=null && !bitacora.getUbicacion().isBlank()){
+                        if(bitacora.getTiempoTierra()==0 && bitacora.getUbicacion().equals("Pista")){
+                            return false;
+                        }
+                    }
+                } 
             } 
+        }catch(Exception ex){
+            return true;
         }
+        
         
         return true;
     }
@@ -367,19 +374,24 @@ public class ServiciosInformacionController implements Initializable {
     private boolean generarAlertaHora(){
         
         ServicioRegistradoDTO servicioM = getMayor();
-        if(servicioM!=null){
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(servicioM.getFechaRegistro());
-            calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)+(int)servicioM.getDuracion());
-            System.out.println(calendar.getTime());
-            Date fechaFinal = calendar.getTime();
-            Date fechaYa = new Date();
-            System.out.println("fecha final: "+fechaFinal);
-            System.out.println("fecha ya: "+fechaYa);
-            if(fechaYa.before(fechaFinal)){
-                return false;
+        try{
+            if(servicioM!=null){
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(servicioM.getFechaRegistro());
+                calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)+(int)servicioM.getDuracion());
+                System.out.println(calendar.getTime());
+                Date fechaFinal = calendar.getTime();
+                Date fechaYa = new Date();
+                System.out.println("fecha final: "+fechaFinal);
+                System.out.println("fecha ya: "+fechaYa);
+                if(fechaYa.before(fechaFinal)){
+                    return false;
+                }
             }
+        }catch(Exception ex){
+            return true;
         }
+        
         return true;
     }
     
