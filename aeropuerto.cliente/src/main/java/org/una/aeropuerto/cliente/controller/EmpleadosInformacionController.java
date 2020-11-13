@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXCheckBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -119,10 +120,23 @@ public class EmpleadosInformacionController implements Initializable {
     private Button btnCambiarEstado;
     @FXML
     private Rectangle rectangulo;
+    @FXML
+    private TextField txtVerContrasenaNueva;
+    @FXML
+    private TextField txtVerContrasenaConfirmar;
+    @FXML
+    private TextField txtVerContrasenaActual;
+    @FXML
+    private JFXCheckBox cbContrasenaNueva;
+    @FXML
+    private JFXCheckBox cbContrasenaConfirmar;
+    @FXML
+    private JFXCheckBox cbContrasenaActual;
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initPasswords();
         initEmpleadosJefe();
         initRoles();
         btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
@@ -203,6 +217,20 @@ public class EmpleadosInformacionController implements Initializable {
                 txtContrasenaConfirmar.setVisible(false);
                 txtContrasenaNueva.setDisable(true);
                 txtContrasenaNueva.setVisible(false);
+                
+                txtVerContrasenaActual.setDisable(true);
+                txtVerContrasenaActual.setVisible(false);
+                txtVerContrasenaConfirmar.setDisable(true);
+                txtVerContrasenaConfirmar.setVisible(false);
+                txtVerContrasenaNueva.setDisable(true);
+                txtVerContrasenaNueva.setVisible(false);
+                
+                cbContrasenaActual.setVisible(false);
+                cbContrasenaActual.setDisable(true);
+                cbContrasenaNueva.setVisible(false);
+                cbContrasenaNueva.setDisable(true);
+                cbContrasenaConfirmar.setVisible(false);
+                cbContrasenaConfirmar.setDisable(true);
                 lbContrasenaConfirmar.setVisible(false);
                 lbContrasenaNueva.setVisible(false);
                 lbContrasenaActual.setVisible(false);
@@ -212,6 +240,10 @@ public class EmpleadosInformacionController implements Initializable {
             lbContrasenaActual.setVisible(false);
             txtContrasenaActual.setVisible(false);
             txtContrasenaActual.setDisable(true);
+            cbContrasenaActual.setVisible(false);
+            cbContrasenaActual.setDisable(true);
+            txtVerContrasenaActual.setDisable(true);
+            txtVerContrasenaActual.setVisible(false);
             txtEstado.setText("Activo");
             btnCambiarEstado.setDisable(true);
             btnCambiarEstado.setVisible(false);
@@ -340,6 +372,47 @@ public class EmpleadosInformacionController implements Initializable {
         }
     }
 
+    public void initPasswords(){
+        cbContrasenaActual.selectedProperty().addListener( t -> {
+            if(cbContrasenaActual.isSelected()){
+                txtVerContrasenaActual.setVisible(true);
+                txtContrasenaActual.setVisible(false);
+                txtVerContrasenaActual.setText(txtContrasenaActual.getText());
+            }else{
+                txtVerContrasenaActual.setVisible(false);
+                txtContrasenaActual.setText(txtVerContrasenaActual.getText());
+                txtContrasenaActual.setVisible(true);
+                txtVerContrasenaActual.setText("");
+            }
+        });
+        
+        cbContrasenaNueva.selectedProperty().addListener( t -> {
+            if(cbContrasenaNueva.isSelected()){
+                txtVerContrasenaNueva.setVisible(true);
+                txtContrasenaNueva.setVisible(false);
+                txtVerContrasenaNueva.setText(txtContrasenaNueva.getText());
+            }else{
+                txtVerContrasenaNueva.setVisible(false);
+                txtContrasenaNueva.setText(txtVerContrasenaNueva.getText());
+                txtContrasenaNueva.setVisible(true);
+                txtVerContrasenaNueva.setText("");
+            }
+        });
+        
+        cbContrasenaConfirmar.selectedProperty().addListener( t -> {
+            if(cbContrasenaConfirmar.isSelected()){
+                txtVerContrasenaConfirmar.setVisible(true);
+                txtContrasenaConfirmar.setVisible(false);
+                txtVerContrasenaConfirmar.setText(txtContrasenaConfirmar.getText());
+            }else{
+                txtVerContrasenaConfirmar.setVisible(false);
+                txtContrasenaConfirmar.setText(txtVerContrasenaConfirmar.getText());
+                txtContrasenaConfirmar.setVisible(true);
+                txtVerContrasenaConfirmar.setText("");
+            }
+        });
+    }
+    
     @FXML
     private void actVolver(ActionEvent event) {
         volver();

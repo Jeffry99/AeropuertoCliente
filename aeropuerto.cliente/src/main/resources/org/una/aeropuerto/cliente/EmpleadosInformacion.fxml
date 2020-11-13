@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -43,22 +45,52 @@
       <Label fx:id="lblEstado1" layoutX="84.0" layoutY="358.0" text="Rol:" />
       <ComboBox fx:id="cbRol" layoutX="246.0" layoutY="355.0" prefHeight="28.0" prefWidth="166.0" promptText="seleccionar rol" />
       <Label fx:id="lbContrasenaNueva" layoutX="84.0" layoutY="409.0" prefHeight="21.0" prefWidth="122.0" text="Contraseña nueva:" />
-      <TextField fx:id="txtContrasenaNueva" layoutX="246.0" layoutY="401.0" prefHeight="37.0" prefWidth="166.0" />
+      <TextField fx:id="txtVerContrasenaNueva" layoutX="246.0" layoutY="401.0" prefHeight="37.0" prefWidth="166.0" />
       <Label fx:id="lbContrasenaConfirmar" layoutX="84.0" layoutY="463.0" prefHeight="21.0" prefWidth="149.0" text="Confirmar contraseña:" />
-      <TextField fx:id="txtContrasenaConfirmar" layoutX="246.0" layoutY="455.0" prefHeight="37.0" prefWidth="166.0" />
+      <TextField fx:id="txtVerContrasenaConfirmar" layoutX="246.0" layoutY="455.0" prefHeight="37.0" prefWidth="166.0" />
       <Label fx:id="lbContrasenaActual" layoutX="86.0" layoutY="516.0" prefHeight="21.0" prefWidth="149.0" text="Contraseña actual:" />
-      <TextField fx:id="txtContrasenaActual" layoutX="246.0" layoutY="509.0" prefHeight="37.0" prefWidth="166.0" />
-      <Rectangle fx:id="rectangulo" arcHeight="5.0" arcWidth="5.0" fill="LIGHTYELLOW" height="90.0" layoutX="441.0" layoutY="458.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="486.0" />
-      <Label layoutX="491.0" layoutY="492.0" text="Estado:">
+      <TextField fx:id="txtVerContrasenaActual" layoutX="246.0" layoutY="509.0" prefHeight="37.0" prefWidth="166.0" />
+      <Rectangle fx:id="rectangulo" arcHeight="5.0" arcWidth="5.0" fill="LIGHTYELLOW" height="90.0" layoutX="539.0" layoutY="458.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="388.0" />
+      <Label layoutX="559.0" layoutY="493.0" text="Estado:">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label fx:id="txtEstado" layoutX="555.0" layoutY="493.0" prefHeight="17.0" prefWidth="149.0" />
-      <Button fx:id="btnCambiarEstado" layoutX="759.0" layoutY="484.0" mnemonicParsing="false" onAction="#actCambiarEstado" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #aaf2db;" text="Anular">
+      <Label fx:id="txtEstado" layoutX="623.0" layoutY="494.0" prefHeight="17.0" prefWidth="149.0" />
+      <Button fx:id="btnCambiarEstado" layoutX="793.0" layoutY="485.0" mnemonicParsing="false" onAction="#actCambiarEstado" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #aaf2db;" text="Anular">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Button>
+      <PasswordField fx:id="txtContrasenaNueva" layoutX="246.0" layoutY="401.0" prefHeight="37.0" prefWidth="166.0" />
+      <PasswordField fx:id="txtContrasenaConfirmar" layoutX="246.0" layoutY="455.0" prefHeight="37.0" prefWidth="166.0" />
+      <PasswordField fx:id="txtContrasenaActual" layoutX="246.0" layoutY="509.0" prefHeight="37.0" prefWidth="166.0" />
+      <JFXCheckBox fx:id="cbContrasenaNueva" layoutX="427.0" layoutY="408.0" text=" ">
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/ojo.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXCheckBox>
+      <JFXCheckBox fx:id="cbContrasenaConfirmar" layoutX="427.0" layoutY="463.0" text=" ">
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/ojo.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXCheckBox>
+      <JFXCheckBox fx:id="cbContrasenaActual" layoutX="427.0" layoutY="517.0" text=" ">
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/ojo.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXCheckBox>
    </children>
 </AnchorPane>

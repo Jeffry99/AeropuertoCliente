@@ -61,6 +61,7 @@ public class LoginController implements Initializable{
                 txtVerContrasena.setText(txtContrasena.getText());
             }else{
                 txtVerContrasena.setVisible(false);
+                txtContrasena.setText(txtVerContrasena.getText());
                 txtContrasena.setVisible(true);
                 txtVerContrasena.setText("");
             }
