@@ -17,7 +17,7 @@
             <Image url="@../recursos/FONDO2.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tvAerolineas" layoutX="85.0" layoutY="207.0" prefHeight="362.0" prefWidth="830.0">
+      <TableView fx:id="tvAerolineas" layoutX="85.0" layoutY="207.0" onMouseClicked="#ActtvAerolineas" prefHeight="362.0" prefWidth="830.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
@@ -33,9 +33,14 @@
       <Button fx:id="btnBuscarNom" layoutX="289.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarNom" text="Buscar" />
       <Button fx:id="btnBuscarRes" layoutX="824.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarRes" text="Buscar" />
       <Button fx:id="btnBuscarEst" layoutX="824.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
-      <JFXTextField fx:id="txtbuscarId" labelFloat="true" layoutX="85.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
-      <JFXTextField fx:id="txtbuscarNom" labelFloat="true" layoutX="85.0" layoutY="145.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
-      <JFXComboBox fx:id="cbxEstado" labelFloat="true" layoutX="621.0" layoutY="145.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
-      <JFXTextField fx:id="txtbuscarRes" labelFloat="true" layoutX="621.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por responsable" />
+      <JFXTextField fx:id="txtbuscarId" labelFloat="true" layoutX="85.0" layoutY="81.0" onMouseClicked="#ActtxtbuscarId" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
+      <JFXTextField fx:id="txtbuscarNom" labelFloat="true" layoutX="85.0" layoutY="145.0" onMouseClicked="#ActtxtbuscarNom" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
+      <JFXComboBox fx:id="cbxEstado" labelFloat="true" layoutX="621.0" layoutY="145.0" onAction="#actSelEstado" onMouseClicked="#ActcbxEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
+      <JFXTextField fx:id="txtbuscarRes" labelFloat="true" layoutX="621.0" layoutY="81.0" onMouseClicked="#ActtxtbuscarRes" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por responsable" />
+      <ImageView fx:id="btnInformacion" disable="true" fitHeight="21.0" fitWidth="24.0" layoutX="53.0" layoutY="35.0" onMouseClicked="#actVerInformacion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

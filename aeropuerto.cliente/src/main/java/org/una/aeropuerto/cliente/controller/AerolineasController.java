@@ -26,6 +26,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
@@ -43,8 +45,6 @@ import org.una.aeropuerto.cliente.util.Respuesta;
  * @author Jeffry
  */
 public class AerolineasController implements Initializable {
-    
-    private AerolineaService aerolineaService = new AerolineaService();
     @FXML
     private TableView<AerolineaDTO> tvAerolineas;
     @FXML
@@ -69,19 +69,34 @@ public class AerolineasController implements Initializable {
     private JFXTextField txtbuscarRes;
     
 
+    private AerolineaService aerolineaService = new AerolineaService();
+    private String rolUsuario="";
+    @FXML
+    private ImageView btnInformacion;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarTodos();
+        
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
+        if(rolUsuario.equals("administrador")){
+            cargarTabla(new ArrayList<AerolineaDTO>());
+            txtbuscarId.setEditable(false);
+            txtbuscarNom.setEditable(false);
+            txtbuscarRes.setEditable(false);
+            btnInformacion.setVisible(true);
+            btnInformacion.setDisable(false);
+        }else{
+            cargarTodos();
+        }
         
         ArrayList estados = new ArrayList();
         estados.add("Activo");
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxEstado.setItems(items);
-        if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
             btnAgregar.setVisible(false);
             btnAgregar.setDisable(true);
         }
@@ -100,7 +115,6 @@ public class AerolineasController implements Initializable {
         tvAerolineas.getColumns().clear();
         if(!aerolineas.isEmpty()){
             ObservableList items = FXCollections.observableArrayList(aerolineas);   
-            
             TableColumn <AerolineaDTO, Long>colId = new TableColumn("ID");
             colId.setCellValueFactory(new PropertyValueFactory("id"));
             TableColumn <AerolineaDTO, String>colNombre = new TableColumn("Nombre");
@@ -134,9 +148,7 @@ public class AerolineasController implements Initializable {
             @Override
             public TableCell<AerolineaDTO, Void> call(final TableColumn<AerolineaDTO, Void> param) {
                 final TableCell<AerolineaDTO, Void> cell = new TableCell<AerolineaDTO, Void>() {
-
                     private final Button btn = new Button("Editar");
-
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             try{
@@ -145,7 +157,6 @@ public class AerolineasController implements Initializable {
                             }catch(Exception ex){}
                         });
                     }
-                    
                     private final Button btn2 = new Button("Ver");
 
                     {
@@ -156,16 +167,10 @@ public class AerolineasController implements Initializable {
                             }catch(Exception ex){}
                         });
                     }
-                    
-                   
-                        HBox pane = new HBox(btn, btn2);
-                        {
-                            pane.setAlignment(Pos.CENTER);
-                        }
-                    
-                            
-                    
-
+                    HBox pane = new HBox(btn, btn2);
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                    }
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -225,64 +230,88 @@ public class AerolineasController implements Initializable {
 
     @FXML
     private void actBuscarEst(ActionEvent event) {
-        if(estadoBuscar!=null){
-            ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
-            Respuesta respuesta = aerolineaService.getByEstado(estadoBuscar);
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarEst \n"+
+                                                                                     "Acción: actBuscarEst");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la aerolinea que desea buscar");
+            if(estadoBuscar!=null){
+                ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
+                Respuesta respuesta = aerolineaService.getByEstado(estadoBuscar);
+                if(respuesta.getEstado().equals(true)){
+                    aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado de la aerolinea que desea buscar");
+            }
         }
     }
     
 
     @FXML
     private void actBuscarNom(ActionEvent event) {
-        if(!txtbuscarNom.getText().isBlank()){
-            ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
-            Respuesta respuesta = aerolineaService.getByNombreAproximate(txtbuscarNom.getText());
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarNom \n"+
+                                                                                     "Acción: actBuscarNom");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre de la aerolinea que desea buscar");
+            if(!txtbuscarNom.getText().isBlank()){
+                ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
+                Respuesta respuesta = aerolineaService.getByNombreAproximate(txtbuscarNom.getText());
+                if(respuesta.getEstado().equals(true)){
+                    aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre de la aerolinea que desea buscar");
+            }
         }
     }
     
     @FXML
     private void actBuscarId(ActionEvent event) {
-     if(!txtbuscarId.getText().isBlank()){
-            ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
-            Respuesta respuesta = aerolineaService.getById(Long.valueOf(txtbuscarId.getText()));
-            if(respuesta.getEstado().equals(true)){
-                AerolineaDTO aero = (AerolineaDTO) respuesta.getResultado("Aerolineas");
-                aerolineas.add(aero);
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarId \n"+
+                                                                                     "Acción: actBuscarId");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del empleado que desea buscar");
+            if(!txtbuscarId.getText().isBlank()){
+                ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
+                Respuesta respuesta = aerolineaService.getById(Long.valueOf(txtbuscarId.getText()));
+                if(respuesta.getEstado().equals(true)){
+                    AerolineaDTO aero = (AerolineaDTO) respuesta.getResultado("Aerolineas");
+                    aerolineas.add(aero);
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del empleado que desea buscar");
+            }
         }
     }
     
     @FXML
     private void actBuscarRes(ActionEvent event) {
-        if(!txtbuscarRes.getText().isBlank()){
-            ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
-            Respuesta respuesta = aerolineaService.getByResponsableAproximate(txtbuscarRes.getText());
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarRes \n"+
+                                                                                     "Acción: actBuscarRes");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del responsable que desea buscar");
+            if(!txtbuscarRes.getText().isBlank()){
+                ArrayList<AerolineaDTO> aerolineas = new ArrayList<AerolineaDTO>();
+                Respuesta respuesta = aerolineaService.getByResponsableAproximate(txtbuscarRes.getText());
+                if(respuesta.getEstado().equals(true)){
+                    aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del responsable que desea buscar");
+            }
         }
     }
 
     @FXML
     private void actAgregar(ActionEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnAgregar \n"+
+                                                                                               "Acción: actAgregar");
+        }
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadAerolinea", "Agregar");
         try{
@@ -292,10 +321,60 @@ public class AerolineasController implements Initializable {
         }catch(IOException ex){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
         };
+        
     }
 
     @FXML
     private void actVolver(ActionEvent event) {
+    }
+
+    @FXML
+    private void ActtvAerolineas(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de table view", "fxID: tvAerolineas \n"+
+                                                                                     "Acción: usada para mostrar los datos de las aerolineas que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void ActtxtbuscarId(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarId \n"+
+                                                                                     "Acción: usado para almacenar el dato digitado por el usuario para buscar la aerolinea segun el id");
+        }
+    }
+
+    @FXML
+    private void ActtxtbuscarNom(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarNom \n"+
+                                                                                     "Acción: usado para almacenar el dato digitado por el usuario para buscar la aerolinea segun el nombre");
+        }
+    }
+
+    @FXML
+    private void ActcbxEstado(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxEstado \n"+
+                                                                                     "Acción: actSelEstado");
+        }
+    }
+
+    @FXML
+    private void ActtxtbuscarRes(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarRes \n"+
+                                                                                     "Acción: usado para almacenar el dato digitado por el usuario para buscar la aerolinea segun el responsable");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: Aerolineas \n"+
+                                                         "Controller: AerolineasController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");
     }
 
 

@@ -28,8 +28,8 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <TextField fx:id="txtNombre" layoutX="412.0" layoutY="191.0" prefHeight="37.0" prefWidth="303.0" />
-      <TextField fx:id="txtResponsable" layoutX="412.0" layoutY="252.0" prefHeight="37.0" prefWidth="303.0" />
+      <TextField fx:id="txtNombre" layoutX="412.0" layoutY="191.0" onMouseClicked="#actDesarrolloTxtNombre" prefHeight="37.0" prefWidth="303.0" />
+      <TextField fx:id="txtResponsable" layoutX="412.0" layoutY="252.0" onMouseClicked="#actDesarrolloTxtResponsable" prefHeight="37.0" prefWidth="303.0" />
       <Button fx:id="btnCancelar" layoutX="31.0" layoutY="586.0" mnemonicParsing="false" onAction="#actCancelar" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #1d1d1d;;" text="Volver" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -51,5 +51,20 @@
          </font>
       </Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="2.0" layoutX="285.0" layoutY="408.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="427.0" />
+      <Label fx:id="lbAdministador2" layoutX="155.0" layoutY="586.0" text="fxID:  btnCancelar" visible="false">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbAdministador3" layoutX="155.0" layoutY="605.0" text="Acción: actCancelar" visible="false">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="btnInformacion" disable="true" fitHeight="21.0" fitWidth="24.0" layoutX="340.0" layoutY="68.0" onMouseClicked="#actVerInformacion" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
