@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ReportesRecorridosController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuerto.cliente.controller.ReportesRecorridosController">
    <children>
       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -20,8 +20,8 @@
       <Label layoutX="391.0" layoutY="70.0" text="Reporte de Recorrido de Aviones" />
       <Label layoutX="106.0" layoutY="433.0" text="Desde:" />
       <Label layoutX="615.0" layoutY="433.0" text="Hasta:" />
-      <ComboBox fx:id="cbox" layoutX="532.0" layoutY="197.0" prefHeight="37.0" prefWidth="215.0" />
-      <Label fx:id="labelTipoBusqueda" layoutX="106.0" layoutY="214.0" />
+      <ComboBox fx:id="cbox" layoutX="257.0" layoutY="217.0" prefHeight="37.0" prefWidth="186.0" />
+      <Label fx:id="labelTipoBusqueda" layoutX="105.0" layoutY="225.0" prefHeight="21.0" prefWidth="133.0" />
       <Button fx:id="btnGenerar" layoutX="739.0" layoutY="567.0" mnemonicParsing="false" onAction="#actGenerar" text="Generar Reporte" />
       <Button fx:id="btnVolver" layoutX="105.0" layoutY="567.0" mnemonicParsing="false" onAction="#actVolver" prefHeight="35.0" prefWidth="155.0" text="Volver" />
       <Label fx:id="txtEstado" layoutX="530.0" layoutY="471.0" prefHeight="17.0" prefWidth="149.0" />
@@ -29,8 +29,8 @@
       <Label layoutX="107.0" layoutY="362.0" text="Se realizará un reporte en el rango de fechas especificado" />
       <DatePicker fx:id="dpInicio" layoutX="160.0" layoutY="425.0" />
       <DatePicker fx:id="dpFinal" layoutX="669.0" layoutY="425.0" />
-      <RadioButton fx:id="btnAerolineas" layoutX="321.0" layoutY="236.0" mnemonicParsing="false" onAction="#actBtnAerolineas" text="Aerolineas" />
-      <RadioButton fx:id="btnZonas" layoutX="321.0" layoutY="179.0" mnemonicParsing="false" onAction="#actBtnZonas" text="Zonas" />
-      <Label layoutX="212.0" layoutY="205.0" text="Buscar por:" />
+      <Label layoutX="105.0" layoutY="176.0" text="Generar reporte por:" />
+      <CheckBox fx:id="cbxAerolinea" layoutX="257.0" layoutY="178.0" mnemonicParsing="false" onAction="#actAerolinea" text="Aerolínea" />
+      <CheckBox fx:id="cbxZona" layoutX="385.0" layoutY="178.0" mnemonicParsing="false" onAction="#actZona" prefHeight="17.0" prefWidth="56.0" text="Zona" />
    </children>
 </AnchorPane>

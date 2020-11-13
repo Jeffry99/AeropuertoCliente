@@ -23,6 +23,7 @@
 	<parameter name="fechaInicio" class="java.lang.String"/>
 	<parameter name="fechaFinal" class="java.lang.String"/>
 	<parameter name="Parametro" class="java.lang.String"/>
+	<parameter name="totalCobros" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -150,16 +151,16 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54">
+		<band height="26">
 			<staticText>
-				<reportElement x="344" y="30" width="126" height="20" forecolor="#006699" uuid="27115ad8-4139-4e7d-9390-276088c009a1"/>
+				<reportElement x="334" y="6" width="126" height="20" forecolor="#006699" uuid="27115ad8-4139-4e7d-9390-276088c009a1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Reporte generado el]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="480" y="30" width="86" height="20" forecolor="#006699" uuid="2a761635-989f-4ba8-8a09-de69ddede6d0"/>
+				<reportElement x="470" y="6" width="86" height="20" forecolor="#006699" uuid="2a761635-989f-4ba8-8a09-de69ddede6d0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -168,8 +169,22 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="149" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
+			<textField>
+				<reportElement x="98" y="10" width="100" height="20" forecolor="#006699" uuid="4b0b68d0-a13b-452f-8781-68a112a4498e"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalCobros}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-2" y="10" width="100" height="30" uuid="7817d24e-c3c2-4a55-898a-3403f2cb8c32"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Total de Cobros:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

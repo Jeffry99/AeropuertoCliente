@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recaudacion" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d4a1d5eb-82dd-412f-a620-202e4bdf9dba">
 	<property name="template.engine" value="tabular_template"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
@@ -23,14 +22,13 @@
 	</subDataset>
 	<parameter name="fechaInicio" class="java.lang.String"/>
 	<parameter name="fechaFinal" class="java.lang.String"/>
-	<parameter name="servicioTipo" class="java.lang.String"/>
 	<parameter name="Parametro" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="cobro" class="java.lang.String"/>
-	<field name="estadoCobro" class="java.lang.String"/>
-	<field name="fechaRegistro" class="java.lang.String"/>
+	<field name="ruta" class="java.lang.String"/>
+	<field name="estadoVuelo" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
 	<field name="avion" class="java.lang.String"/>
 	<title>
 		<band height="72">
@@ -41,29 +39,22 @@
 					<textElement>
 						<font size="25" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Recorrido de Aviones]]></text>
+					<text><![CDATA[Recorridos de Aviones]]></text>
 				</staticText>
-				<textField isBlankWhenNull="false">
-					<reportElement x="18" y="94" width="100" height="30" forecolor="#006699" uuid="4e6b4497-eb5b-4911-ae1e-ede29a85cc92"/>
-					<textElement markup="styled">
-						<font size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{Parametro}]]></textFieldExpression>
-				</textField>
 			</frame>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="70">
+		<band height="65">
 			<staticText>
-				<reportElement mode="Transparent" x="-2" y="35" width="142" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="a95c196e-71bf-4f3e-b3c0-4ee02849efab"/>
+				<reportElement mode="Transparent" x="-2" y="35" width="170" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="a95c196e-71bf-4f3e-b3c0-4ee02849efab"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Ruta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="140" y="35" width="128" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="a7edc160-a1f1-4158-accc-ed434b5218df"/>
+				<reportElement mode="Transparent" x="168" y="35" width="124" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="a7edc160-a1f1-4158-accc-ed434b5218df"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -77,41 +68,48 @@
 				<text><![CDATA[Avión]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="268" y="35" width="160" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="137cec32-0d1e-4f76-8dcf-4485660fce55"/>
+				<reportElement mode="Transparent" x="292" y="35" width="136" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="137cec32-0d1e-4f76-8dcf-4485660fce55"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha de Registro]]></text>
+				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="30" width="553" height="4" uuid="18e19955-0699-45b2-9e16-765a6a462a9a"/>
+				<reportElement x="0" y="30" width="553" height="1" uuid="18e19955-0699-45b2-9e16-765a6a462a9a"/>
 			</line>
 			<line>
-				<reportElement x="0" y="54" width="553" height="4" uuid="5981b68c-e304-4850-b64f-4655e2a0b428"/>
+				<reportElement x="0" y="54" width="553" height="1" uuid="5981b68c-e304-4850-b64f-4655e2a0b428"/>
 			</line>
+			<textField>
+				<reportElement x="0" y="5" width="193" height="30" forecolor="#006698" uuid="eb199047-fa7f-4ac6-a64b-04c51531ccf4"/>
+				<textElement>
+					<font size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Parametro}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="248" y="3" width="52" height="17" forecolor="#006698" uuid="65510460-5d7b-4ba2-8500-c79caa09d170"/>
+				<reportElement x="250" y="1" width="52" height="18" forecolor="#006698" uuid="65510460-5d7b-4ba2-8500-c79caa09d170"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="398" y="3" width="38" height="17" forecolor="#006698" uuid="8b345581-3097-487e-916c-cd12515346be"/>
+				<reportElement x="400" y="1" width="38" height="18" forecolor="#006698" uuid="8b345581-3097-487e-916c-cd12515346be"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="290" y="3" width="100" height="29" forecolor="#006698" uuid="beeee56c-6aeb-4f95-952c-94fa26bfd4d4"/>
+				<reportElement x="292" y="1" width="100" height="30" forecolor="#006698" uuid="beeee56c-6aeb-4f95-952c-94fa26bfd4d4"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaInicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="438" y="3" width="100" height="29" forecolor="#006698" uuid="5004f64c-c79c-4441-8efb-92c55c482ac4"/>
+				<reportElement x="440" y="1" width="100" height="30" forecolor="#006698" uuid="5004f64c-c79c-4441-8efb-92c55c482ac4"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
@@ -122,21 +120,21 @@
 	<detail>
 		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement x="-2" y="1" width="142" height="30" uuid="77f43b20-c851-4a65-84ad-9214e97399eb"/>
+				<reportElement x="0" y="1" width="168" height="30" uuid="77f43b20-c851-4a65-84ad-9214e97399eb"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ruta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="140" y="1" width="128" height="30" uuid="83538804-347c-4e6f-a70d-d17effbfb929"/>
+				<reportElement x="168" y="1" width="124" height="30" uuid="83538804-347c-4e6f-a70d-d17effbfb929"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{estadoVuelo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="268" y="1" width="160" height="30" uuid="fcabce89-672d-48fb-b13c-08997ab5d2d0"/>
+				<reportElement x="292" y="1" width="136" height="30" uuid="fcabce89-672d-48fb-b13c-08997ab5d2d0"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
@@ -152,7 +150,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54">
+		<band height="57">
 			<staticText>
 				<reportElement x="344" y="30" width="126" height="20" forecolor="#006699" uuid="27115ad8-4139-4e7d-9390-276088c009a1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

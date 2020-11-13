@@ -5,7 +5,9 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -15,13 +17,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
+import net.sf.jasperreports.engine.JRException;
 import org.una.aeropuerto.cliente.dto.AerolineaDTO;
+import org.una.aeropuerto.cliente.dto.RutaDTO;
 import org.una.aeropuerto.cliente.service.AerolineaService;
+import org.una.aeropuerto.cliente.service.RutaService;
+import org.una.aeropuerto.cliente.util.GeneradorReportes;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.Respuesta;
 
@@ -35,7 +42,7 @@ public class ReportesRecorridosController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     @FXML
-    private ComboBox<ObservableList> cbox;
+    private ComboBox<Object> cbox;
     @FXML
     private Label labelTipoBusqueda;
     @FXML
@@ -48,16 +55,22 @@ public class ReportesRecorridosController implements Initializable {
     private DatePicker dpInicio;
     @FXML
     private DatePicker dpFinal;
-    @FXML
     private RadioButton btnAerolineas;
-    @FXML
     private RadioButton btnZonas;
+    @FXML
+    private CheckBox cbxAerolinea;
+    @FXML
+    private CheckBox cbxZona;
+    
+    private GeneradorReportes generadorReportes;
+    private String tipoFiltro;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO 
+        cbox.setVisible(false);
     }    
     
     private void cargarAerolineasCbx(){
@@ -68,26 +81,31 @@ public class ReportesRecorridosController implements Initializable {
             aerolineas = (ArrayList<AerolineaDTO>) respuesta.getResultado("Aerolineas");
             ObservableList items = FXCollections.observableArrayList(aerolineas);
             cbox.setItems(items);
-            System.out.println("Combo cargado con aerolineas");
         }
     }
     
     private void cargarZonasCbx(){
-        
+        RutaService rutaService = new RutaService();
+        ArrayList<RutaDTO> rutas = new ArrayList<RutaDTO>();
+        Respuesta respuesta = rutaService.getByEstado(true);
+        if(respuesta.getEstado()){
+            rutas = (ArrayList<RutaDTO>) respuesta.getResultado("Rutas");
+            ObservableList items = FXCollections.observableArrayList(rutas);
+            cbox.setItems(items);
+        }
     }
 
     @FXML
-    private void actGenerar(ActionEvent event) {
-        verificarCampos();
-        
-        
+    private void actGenerar(ActionEvent event) throws JRException, IOException {
+        if(verificarCampos()){
+            generadorReportes.generarReporte();
+        }
     }
 
     @FXML
     private void actVolver(ActionEvent event) {
     }
 
-    @FXML
     private void actBtnAerolineas(ActionEvent event) {
        if(btnZonas.isSelected()){
            btnZonas.setSelected(false);
@@ -95,7 +113,6 @@ public class ReportesRecorridosController implements Initializable {
        cargarAerolineasCbx();
     }
 
-    @FXML
     private void actBtnZonas(ActionEvent event) {
         if(btnAerolineas.isSelected()){
             btnAerolineas.setSelected(false);
@@ -105,12 +122,40 @@ public class ReportesRecorridosController implements Initializable {
     
     private boolean verificarCampos(){
         if(cbox.getValue() == null){
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione "
-                    + "el tipo de busqueda que desea realizar");
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione la aerolínea o zona");
             return false;
         }
-        
+        if(dpInicio.getValue() == null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione la fecha de inicio");
+            return false;
+        }
+        if(dpFinal.getValue() == null){
+            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione la fecha de finalización");
+            return false;
+        }
+        generadorReportes = new GeneradorReportes("Recorrido", tipoFiltro, cbox.getValue(), Date.valueOf(dpInicio.getValue()), Date.valueOf(dpFinal.getValue()));
         return true;
+    }
+    @FXML
+    private void actAerolinea(ActionEvent event) {
+        cbxZona.setSelected(false);
+        cbox.getItems().clear();
+        cbox.setVisible(true);
+        labelTipoBusqueda.setText("Aerolínea:");
+        cbox.setPromptText("Seleccionar Aerolínea");
+        tipoFiltro = "Aerolinea";
+        cargarAerolineasCbx();
+    }
+
+    @FXML
+    private void actZona(ActionEvent event) {
+        cbxAerolinea.setSelected(false);
+        cbox.getItems().clear();
+        cbox.setVisible(true);
+        labelTipoBusqueda.setText("Zona:");
+        cbox.setPromptText("Seleccionar Zona");
+        tipoFiltro = "Zona";
+        cargarZonasCbx();
     }
     
 }
