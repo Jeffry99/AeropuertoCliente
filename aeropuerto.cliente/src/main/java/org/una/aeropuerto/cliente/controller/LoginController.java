@@ -79,10 +79,10 @@ public class LoginController implements Initializable{
     
     public boolean validar(){
         if(contrasenaVisible){
-                contrasena = txtVerContrasena.getText();
-            }else{
-                contrasena = txtContrasena.getText();
-            }
+            contrasena = txtVerContrasena.getText();
+        }else{
+            contrasena = txtContrasena.getText();
+        }
         if(txtUsuario.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite su cedula");
             return false;

@@ -136,22 +136,17 @@ public class EmpleadosInformacionController implements Initializable {
     private String cedulaIni ="";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         initPasswords();
         initEmpleadosJefe();
         initRoles();
         btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
-        
         modalidad = (String) AppContext.getInstance().get("ModalidadEmpleadoUsuario");
         btnGuardar.setVisible(false);
         btnGuardar.setDisable(true);
-        
         lblFechaCreacion1.setVisible(false);
         lblFechaModificacion1.setVisible(false);
-        
         cbxJefeDirecto.setVisible(false);
         cbxJefeDirecto.setDisable(true);
-        
         if(!modalidad.equals("Ver")){
             btnGuardar.setVisible(true);
             btnGuardar.setDisable(false);
@@ -159,9 +154,6 @@ public class EmpleadosInformacionController implements Initializable {
         if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
             usuarioEnCuestion = (UsuarioDTO) AppContext.getInstance().get("UsuarioEnCuestion");
             empleadoEnCuestion = usuarioEnCuestion.getEmpleado();
-            
-            //////////////////////////////////////////////////////////////////////
-            //sets empleado
             cedulaIni = empleadoEnCuestion.getCedula();
             txtNombre.setText(empleadoEnCuestion.getNombre());
             txtCedula.setText(empleadoEnCuestion.getCedula());
@@ -178,7 +170,6 @@ public class EmpleadosInformacionController implements Initializable {
                 esJefe=true;
                 rbSi.setSelected(true);
                 rbNo.setSelected(false);
-                
             }
             if(empleadoEnCuestion.getEstado()){
                 estado=true;
@@ -193,13 +184,7 @@ public class EmpleadosInformacionController implements Initializable {
             lblFechaModificacion1.setText("Modificado el "+empleadoEnCuestion.getFechaModificacion());
             lblFechaCreacion1.setVisible(true);
             lblFechaModificacion1.setVisible(true);
-            //////////////////////////////////////////////////////////////////////
-            
-            //////////////////////////////////////////////////////////////////////
-            //sets usuario
             cbRol.setValue(usuarioEnCuestion.getRol());
-            //////////////////////////////////////////////////////////////////////
-            
             if(modalidad.equals("Ver")){
                 btnCambiarEstado.setDisable(true);
                 btnCambiarEstado.setVisible(false);
@@ -211,7 +196,6 @@ public class EmpleadosInformacionController implements Initializable {
                 rbSi.setDisable(true);
                 rbNo.setDisable(true);
                 cbxJefeDirecto.setDisable(true);
-
                 cbRol.setDisable(true);
                 txtContrasenaActual.setDisable(true);
                 txtContrasenaActual.setVisible(false);
@@ -219,14 +203,12 @@ public class EmpleadosInformacionController implements Initializable {
                 txtContrasenaConfirmar.setVisible(false);
                 txtContrasenaNueva.setDisable(true);
                 txtContrasenaNueva.setVisible(false);
-                
                 txtVerContrasenaActual.setDisable(true);
                 txtVerContrasenaActual.setVisible(false);
                 txtVerContrasenaConfirmar.setDisable(true);
                 txtVerContrasenaConfirmar.setVisible(false);
                 txtVerContrasenaNueva.setDisable(true);
                 txtVerContrasenaNueva.setVisible(false);
-                
                 cbContrasenaActual.setVisible(false);
                 cbContrasenaActual.setDisable(true);
                 cbContrasenaNueva.setVisible(false);
@@ -277,7 +259,30 @@ public class EmpleadosInformacionController implements Initializable {
     
     
     boolean cambioContrasena = true;
+    String contrasenaActual = null;
+    String contrasenaNueva = null;
+    String contrasenaConfirmar = null;
     public boolean validar(){
+        if(visibilidadContrasenaActual){
+            contrasenaActual = txtVerContrasenaActual.getText();
+        }else{
+            contrasenaActual = txtContrasenaActual.getText();
+        }
+        
+        if(visibilidadContrasenaNueva){
+            contrasenaNueva = txtVerContrasenaNueva.getText();
+        }else{
+            contrasenaNueva = txtContrasenaNueva.getText();
+        }
+        
+        if(visibilidadContrasenaConfirmar){
+            contrasenaConfirmar = txtVerContrasenaConfirmar.getText();
+        }else{
+            contrasenaConfirmar = txtContrasenaConfirmar.getText();
+        }
+        
+        
+        
         if(txtCedula.getText().isBlank()){
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la cedula del empleado");
             return false;
@@ -302,22 +307,22 @@ public class EmpleadosInformacionController implements Initializable {
             Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el rol que va tener el usuario");
             return false;
         }
-        if(!txtContrasenaNueva.getText().isBlank()){
-            if(txtContrasenaConfirmar.getText().isBlank()){
+        if(!contrasenaNueva.isBlank()){
+            if(contrasenaConfirmar.isBlank()){
                 Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor confirme la contraseña");
                 return false;
             }else{
-                if(!txtContrasenaNueva.getText().equals(txtContrasenaConfirmar.getText())){
+                if(!contrasenaNueva.equals(contrasenaConfirmar)){
                     Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña a confirmar no coincide con la contraseña nueva");  
                     return false;
                 }else{
                     if(modalidad.equals("Modificar")){
-                        if(txtContrasenaActual.getText().isBlank()){
+                        if(contrasenaActual.isBlank()){
                             Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "Digite la contraseña actual");  
                             return false;
                         }else{
                             AutenticacionService auService = new AutenticacionService();
-                            Respuesta res = auService.Login(cedulaIni, txtContrasenaActual.getText());
+                            Respuesta res = auService.Login(cedulaIni, contrasenaActual);
                             if(res.getEstado()){
                                 cambioContrasena=true;
                             }else{
@@ -370,7 +375,9 @@ public class EmpleadosInformacionController implements Initializable {
         }
     }
     
-   
+    boolean visibilidadContrasenaActual = false;
+    boolean visibilidadContrasenaNueva = false;
+    boolean visibilidadContrasenaConfirmar = false;
 
     public void initPasswords(){
         cbContrasenaActual.selectedProperty().addListener( t -> {
@@ -378,11 +385,13 @@ public class EmpleadosInformacionController implements Initializable {
                 txtVerContrasenaActual.setVisible(true);
                 txtContrasenaActual.setVisible(false);
                 txtVerContrasenaActual.setText(txtContrasenaActual.getText());
+                visibilidadContrasenaActual = true;
             }else{
                 txtVerContrasenaActual.setVisible(false);
                 txtContrasenaActual.setText(txtVerContrasenaActual.getText());
                 txtContrasenaActual.setVisible(true);
                 txtVerContrasenaActual.setText("");
+                visibilidadContrasenaActual = false;
             }
         });
         
@@ -391,11 +400,13 @@ public class EmpleadosInformacionController implements Initializable {
                 txtVerContrasenaNueva.setVisible(true);
                 txtContrasenaNueva.setVisible(false);
                 txtVerContrasenaNueva.setText(txtContrasenaNueva.getText());
+                visibilidadContrasenaNueva = true;
             }else{
                 txtVerContrasenaNueva.setVisible(false);
                 txtContrasenaNueva.setText(txtVerContrasenaNueva.getText());
                 txtContrasenaNueva.setVisible(true);
                 txtVerContrasenaNueva.setText("");
+                visibilidadContrasenaNueva = false;
             }
         });
         
@@ -404,11 +415,13 @@ public class EmpleadosInformacionController implements Initializable {
                 txtVerContrasenaConfirmar.setVisible(true);
                 txtContrasenaConfirmar.setVisible(false);
                 txtVerContrasenaConfirmar.setText(txtContrasenaConfirmar.getText());
+                visibilidadContrasenaConfirmar = true;
             }else{
                 txtVerContrasenaConfirmar.setVisible(false);
                 txtContrasenaConfirmar.setText(txtVerContrasenaConfirmar.getText());
                 txtContrasenaConfirmar.setVisible(true);
                 txtVerContrasenaConfirmar.setText("");
+                visibilidadContrasenaConfirmar = false;
             }
         });
     }
@@ -514,7 +527,7 @@ public class EmpleadosInformacionController implements Initializable {
             usuarioEnCuestion.setEmpleado(empleadoEnCuestion);
             usuarioEnCuestion.setEstado(true);
             usuarioEnCuestion.setRol(cbRol.getValue());
-            usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+            usuarioEnCuestion.setPasswordEncriptado(contrasenaNueva);
 
             Respuesta respuestaUsuario=usuarioService.crear(usuarioEnCuestion);
             if(respuestaUsuario.getEstado()){
@@ -535,7 +548,7 @@ public class EmpleadosInformacionController implements Initializable {
             usuarioEnCuestion.setRol(cbRol.getValue());
 
             if(cambioContrasena==true){
-                usuarioEnCuestion.setPasswordEncriptado(txtContrasenaNueva.getText());
+                usuarioEnCuestion.setPasswordEncriptado(contrasenaNueva);
             }
             Respuesta respuestaUsuario=usuarioService.modificar(usuarioEnCuestion.getId(), usuarioEnCuestion);
             if(respuestaUsuario.getEstado()){
@@ -551,10 +564,10 @@ public class EmpleadosInformacionController implements Initializable {
     
     public void ejecutarAccion(){
         if(modalidad.equals("Modificar")){
-            Agregar();  
+            Modificar();  
         }else{
             if(modalidad.equals("Agregar")){
-                Modificar();
+                Agregar();
             }
         }
     }
