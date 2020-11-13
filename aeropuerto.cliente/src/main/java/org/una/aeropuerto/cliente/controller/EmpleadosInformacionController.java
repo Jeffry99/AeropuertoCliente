@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,11 +33,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.EmpleadoDTO;
+import org.una.aeropuerto.cliente.dto.ParametroAplicacionDTO;
 import org.una.aeropuerto.cliente.dto.RolDTO;
 import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.dto.UsuarioDTO;
 import org.una.aeropuerto.cliente.service.AutenticacionService;
 import org.una.aeropuerto.cliente.service.EmpleadoService;
+import org.una.aeropuerto.cliente.service.ParametroAplicacionService;
 import org.una.aeropuerto.cliente.service.RolService;
 import org.una.aeropuerto.cliente.service.UsuarioService;
 import org.una.aeropuerto.cliente.util.AppContext;
@@ -324,13 +327,20 @@ public class EmpleadosInformacionController implements Initializable {
                             AutenticacionService auService = new AutenticacionService();
                             Respuesta res = auService.Login(cedulaIni, contrasenaActual);
                             if(res.getEstado()){
-                                cambioContrasena=true;
+                                if(validarParametroContrasena()){
+                                    cambioContrasena=true;
+                                }else{
+                                    cambioContrasena=false;
+                                }
+                                
                             }else{
                                 cambioContrasena=false;
                                 Mensaje.showAndWait(Alert.AlertType.WARNING, "Contraseña", "La contraseña actual no coincide");  
                                 return false;
                             }
                         }
+                    }else{
+                        return validarParametroContrasena();
                     }
                 }
             } 
@@ -570,6 +580,30 @@ public class EmpleadosInformacionController implements Initializable {
                 Agregar();
             }
         }
+    }
+    
+    private boolean validarParametroContrasena(){
+        ParametroAplicacionService parametroService = new ParametroAplicacionService();
+        Respuesta res = parametroService.getByNombreAproximate("Tamaño Password");
+        try{
+            if(res.getEstado()){
+                List<ParametroAplicacionDTO> parametros  = (List<ParametroAplicacionDTO>) res.getResultado("ParametrosAplicacion");
+                if(parametros.size()>0){
+                    for(int i=0; i<parametros.size(); i++){
+                        if(parametros.get(i).getNombre().equals("Tamaño Password")){
+                            if(contrasenaNueva.length()<Integer.valueOf(parametros.get(i).getValor())){
+                                Mensaje.showAndWait(Alert.AlertType.ERROR, "Contraseña", "La contraseña debe tener una extensión mínima de "+parametros.get(i).getValor());
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }catch(Exception ex){
+            return true;
+        }
+        
+        return true;
     }
 
     
