@@ -98,6 +98,21 @@ public class ParametrosController implements Initializable {
         lbFechaRegistro.setText("");
         lbFechaModificacion.setText("");
         lbTituloDetalle.setText("Agregar parámetro");
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnGuardar.setVisible(false);
+            btnGuardar.setDisable(true);
+            btnLimpiar.setVisible(false);
+            btnLimpiar.setDisable(true);
+            txtBuscarNombre.setVisible(false);
+            txtBuscarNombre.setDisable(true);
+            txtValor.setVisible(false);
+            txtValor.setDisable(true);
+            txtDescripcion.setVisible(false);
+            txtDescripcion.setDisable(true);
+            cbxEstado.setVisible(false);
+            cbxEstado.setDisable(true);
+                    
+        }
     }    
 
     @FXML
@@ -188,7 +203,9 @@ public class ParametrosController implements Initializable {
             tvParametros.getColumns().addAll(colNombre);
             tvParametros.getColumns().addAll(colValor);
             tvParametros.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvParametros.setItems(items);
         }
     }

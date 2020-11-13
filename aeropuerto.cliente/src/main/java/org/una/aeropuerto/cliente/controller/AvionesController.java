@@ -35,6 +35,7 @@ import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AerolineaDTO;
 import org.una.aeropuerto.cliente.dto.AvionDTO;
 import org.una.aeropuerto.cliente.dto.TipoAvionDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AerolineaService;
 import org.una.aeropuerto.cliente.service.AvionService;
 import org.una.aeropuerto.cliente.service.TipoAvionService;
@@ -86,6 +87,10 @@ public class AvionesController implements Initializable {
         initAerolineas();
         initTipoAvion();
         initEstados();
+       if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     public void cargarTodos(){
         ArrayList<AvionDTO> aviones = new ArrayList<AvionDTO>();
@@ -124,7 +129,9 @@ public class AvionesController implements Initializable {
             tvAviones.getColumns().addAll(colMatricula);
             tvAviones.getColumns().addAll(colAerolinea);
             tvAviones.getColumns().addAll(colEstado);
-            addButtonToTable();
+            if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvAviones.setItems(items);
         }
     }

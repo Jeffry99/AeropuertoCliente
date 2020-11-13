@@ -184,9 +184,6 @@ public class EmpleadosInformacionController implements Initializable {
             cbRol.setValue(usuarioEnCuestion.getRol());
             //////////////////////////////////////////////////////////////////////
             
-            
-            
-            
             if(modalidad.equals("Ver")){
                 btnCambiarEstado.setDisable(true);
                 btnCambiarEstado.setVisible(false);
@@ -198,8 +195,7 @@ public class EmpleadosInformacionController implements Initializable {
                 rbSi.setDisable(true);
                 rbNo.setDisable(true);
                 cbxJefeDirecto.setDisable(true);
-                
-                
+
                 cbRol.setDisable(true);
                 txtContrasenaActual.setDisable(true);
                 txtContrasenaActual.setVisible(false);
@@ -210,10 +206,7 @@ public class EmpleadosInformacionController implements Initializable {
                 lbContrasenaConfirmar.setVisible(false);
                 lbContrasenaNueva.setVisible(false);
                 lbContrasenaActual.setVisible(false);
-                rectangulo.setVisible(false);
-                
-                
-                
+                rectangulo.setVisible(false); 
             }
         }else{
             lbContrasenaActual.setVisible(false);
@@ -224,11 +217,6 @@ public class EmpleadosInformacionController implements Initializable {
             btnCambiarEstado.setVisible(false);
             rectangulo.setVisible(false);
         }
-        
-        
-        
-        
-
     }
     
     public void initEmpleadosJefe(){

@@ -31,6 +31,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.una.aeropuerto.cliente.App;
 import org.una.aeropuerto.cliente.dto.AreaTrabajoDTO;
+import org.una.aeropuerto.cliente.dto.UsuarioAutenticado;
 import org.una.aeropuerto.cliente.service.AreaTrabajoService;
 import org.una.aeropuerto.cliente.util.AppContext;
 import org.una.aeropuerto.cliente.util.Mensaje;
@@ -79,6 +80,10 @@ public class AreasTrabajoController implements Initializable {
         estados.add("Inactivo");
         ObservableList items = FXCollections.observableArrayList(estados);   
         cbxEstado.setItems(items);
+        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+            btnAgregar.setVisible(false);
+            btnAgregar.setDisable(true);
+        }
     }    
     public void cargarTodos(){
         ArrayList<AreaTrabajoDTO> AreasTrabajo = new ArrayList<AreaTrabajoDTO>();
@@ -113,7 +118,9 @@ public class AreasTrabajoController implements Initializable {
             tvAreasTrabajo.getColumns().addAll(colNombre);
             tvAreasTrabajo.getColumns().addAll(colDescripcion);
             tvAreasTrabajo.getColumns().addAll(colEstado);
-            addButtonToTable();
+             if(UsuarioAutenticado.getInstance().getRol().equals("gestor") || UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                addButtonToTable();
+            }
             tvAreasTrabajo.setItems(items);
         }
     }

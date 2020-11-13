@@ -18,8 +18,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,63 +42,80 @@ public class AerolineasInformacionController implements Initializable {
     
     @FXML
     private TextField txtNombre;
-    
     @FXML
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
     @FXML
     private TextField txtResponsable;
-        
-    private AerolineaService aerolineaService = new AerolineaService();
-    private AerolineaDTO aerolineaEnCuestion = new AerolineaDTO();
-    private String modalidad="";
-    private Boolean estado;
     @FXML
     private Label txtEstado;
     @FXML
     private Button btnCambiarEstado;
+    @FXML
+    private Label lbAdministador2;
+    @FXML
+    private Label lbAdministador3;
+    
+    
+    private AerolineaService aerolineaService = new AerolineaService();
+    private AerolineaDTO aerolineaEnCuestion = new AerolineaDTO();
+    private String modalidad="";
+    private Boolean estado;
+    private String rolUsuario="";
+    @FXML
+    private ImageView btnInformacion;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     btnCambiarEstado.setStyle("-fx-text-fill: #000000; -fx-background-color:  #aaf2db;");
-    modalidad = (String) AppContext.getInstance().get("ModalidadAerolinea");
-    btnGuardar.setVisible(false);
-    btnGuardar.setDisable(true);  
+    
+    rolUsuario=UsuarioAutenticado.getInstance().getRol();
+    if(rolUsuario.equals("administrador")){
+        txtResponsable.setEditable(false);
+        txtNombre.setEditable(false);
+        btnInformacion.setVisible(true);
+        btnInformacion.setDisable(false);
+        lbAdministador2.setVisible(true);
+        lbAdministador3.setVisible(true);
         
-    if(!modalidad.equals("Ver")){
-        btnGuardar.setVisible(true);
-        btnGuardar.setDisable(false);
-        
-    }   
-      
-     if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
-            aerolineaEnCuestion = (AerolineaDTO) AppContext.getInstance().get("AerolineaEnCuestion");
-            txtNombre.setText(aerolineaEnCuestion.getNombre());
-            txtResponsable.setText(aerolineaEnCuestion.getResponsable());
-            if(aerolineaEnCuestion.getEstado()){
-                estado=true;
-                txtEstado.setText("Activo");
-                btnCambiarEstado.setText("Anular");
+    }else{
+        modalidad = (String) AppContext.getInstance().get("ModalidadAerolinea");
+        btnGuardar.setVisible(false);
+        btnGuardar.setDisable(true);  
+        if(!modalidad.equals("Ver")){
+            btnGuardar.setVisible(true);
+            btnGuardar.setDisable(false);
+        }   
+        if(modalidad.equals("Ver")||modalidad.equals("Modificar")){
+                aerolineaEnCuestion = (AerolineaDTO) AppContext.getInstance().get("AerolineaEnCuestion");
+                txtNombre.setText(aerolineaEnCuestion.getNombre());
+                txtResponsable.setText(aerolineaEnCuestion.getResponsable());
+                if(aerolineaEnCuestion.getEstado()){
+                    estado=true;
+                    txtEstado.setText("Activo");
+                    btnCambiarEstado.setText("Anular");
+                }else{
+                    estado=false;
+                    txtEstado.setText("Inactivo");
+                    btnCambiarEstado.setText("Activar");
+                }
+                if(modalidad.equals("Ver")){
+                    btnCambiarEstado.setDisable(true);
+                    btnCambiarEstado.setVisible(false);
+                    GenerarTransacciones.crearTransaccion("Se observa aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
+                    txtResponsable.setDisable(true);
+                    txtNombre.setDisable(true);
+                }
             }else{
-                estado=false;
-                txtEstado.setText("Inactivo");
-                btnCambiarEstado.setText("Activar");
-            }
-            
-            if(modalidad.equals("Ver")){
+                txtEstado.setText("Activo");
                 btnCambiarEstado.setDisable(true);
                 btnCambiarEstado.setVisible(false);
-                GenerarTransacciones.crearTransaccion("Se observa aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
-                txtResponsable.setDisable(true);
-                txtNombre.setDisable(true);
             }
-        }else{
-            txtEstado.setText("Activo");
-            btnCambiarEstado.setDisable(true);
-            btnCambiarEstado.setVisible(false);
-        }
+    }
+    
+        
     }
     
     public boolean validar(){
@@ -122,37 +140,38 @@ public class AerolineasInformacionController implements Initializable {
 
     @FXML
     private void actGuardar(ActionEvent event) {
-    if(validar()){
-            
-            aerolineaEnCuestion.setNombre(txtNombre.getText());
-            aerolineaEnCuestion.setResponsable(txtResponsable.getText());
-            
-            if(modalidad.equals("Modificar")){
-                Respuesta respuesta=aerolineaService.modificar(aerolineaEnCuestion.getId(), aerolineaEnCuestion);
-                if(respuesta.getEstado()){
-                    GenerarTransacciones.crearTransaccion("Se modifica la aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
-                    Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de la aerolinea", "Se ha modificado la aerolinea correctamente");
-                    volver();
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
-                }
-                
-                
-            }else{
-                if(modalidad.equals("Agregar")){
-                    aerolineaEnCuestion.setEstado(true);
-                    Respuesta respuesta=aerolineaService.crear(aerolineaEnCuestion);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnGuardar \n"+
+                                                                                     "Acción: actGuardar");
+        }else{
+            if(validar()){
+                aerolineaEnCuestion.setNombre(txtNombre.getText());
+                aerolineaEnCuestion.setResponsable(txtResponsable.getText());
+                if(modalidad.equals("Modificar")){
+                    Respuesta respuesta=aerolineaService.modificar(aerolineaEnCuestion.getId(), aerolineaEnCuestion);
                     if(respuesta.getEstado()){
-                        aerolineaEnCuestion = (AerolineaDTO) respuesta.getResultado("Aerolinea");
-                        GenerarTransacciones.crearTransaccion("Se crea la aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
-                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de la aerolinea", "Se ha registrado el una aerolina correctamente");
+                        GenerarTransacciones.crearTransaccion("Se modifica la aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de la aerolinea", "Se ha modificado la aerolinea correctamente");
                         volver();
                     }else{
-                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de una aerolinea", respuesta.getMensaje());
+                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de empleado", respuesta.getMensaje());
+                    }   
+                }else{
+                    if(modalidad.equals("Agregar")){
+                        aerolineaEnCuestion.setEstado(true);
+                        Respuesta respuesta=aerolineaService.crear(aerolineaEnCuestion);
+                        if(respuesta.getEstado()){
+                            aerolineaEnCuestion = (AerolineaDTO) respuesta.getResultado("Aerolinea");
+                            GenerarTransacciones.crearTransaccion("Se crea la aerolinea con id "+aerolineaEnCuestion.getId(), "AerolineasInformacion");
+                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de la aerolinea", "Se ha registrado el una aerolina correctamente");
+                            volver();
+                        }else{
+                            Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de una aerolinea", respuesta.getMensaje());
+                        }
                     }
                 }
             }
-        }
+        } 
     }
     
     
@@ -169,24 +188,29 @@ public class AerolineasInformacionController implements Initializable {
 
     @FXML
     private void actCambiarEstado(ActionEvent event) {
-        try{
-            if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
-                CambiarEstado();
-            }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
-                Stage stage = new Stage();
-                AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,Aerolinea");
-                AppContext.getInstance().set("ControllerPermiso", this);
-                Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
-                stage.setScene(new Scene(root));
-                stage.setTitle("Aerolinea "+aerolineaEnCuestion.getNombre());
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
-                stage.show();
-            }
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
-        };    
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnCambiarEstado \n"+
+                                                                                    "Acción: actCambiarEstado");
+        }else{
+            try{
+                if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gerente")){
+                    CambiarEstado();
+                }else if(UsuarioAutenticado.getInstance().getUsuarioLogeado().getRol().getNombre().equals("gestor")){
+                    Stage stage = new Stage();
+                    AppContext.getInstance().set("ModalidadSolicitudPermiso", "ContraseñaGerente,Aerolinea");
+                    AppContext.getInstance().set("ControllerPermiso", this);
+                    Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Aerolinea "+aerolineaEnCuestion.getNombre());
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(
+                        ((Node)event.getSource()).getScene().getWindow() );
+                    stage.show();
+                }
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            };  
+        }     
     }
 
     public void CambiarEstado(){
@@ -206,6 +230,33 @@ public class AerolineasInformacionController implements Initializable {
         }else{
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Estado de la aerolinea", respuesta.getMensaje());
         }
+    }
+    
+    
+
+    @FXML
+    private void actDesarrolloTxtNombre(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtNombre \n"+
+                                                                                    "Acción: usado para obtener los datos que se ingresen en él");
+        }
+    }
+
+    @FXML
+    private void actDesarrolloTxtResponsable(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtResponsable \n"+
+                                                                                    "Acción: usado para obtener los datos que se ingresen en él");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: AerolineasInformacion \n"+
+                                                         "Controller: AerolineasInformacionController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");
     }
     
 }
