@@ -369,48 +369,65 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actAlertas(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("Alertas" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan alertas", "MenuPrincipal");
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        if(UsuarioAutenticado.getInstance().getRol().equals("gerente")){
+            try{
+                Parent root = FXMLLoader.load(App.class.getResource("Alertas" + ".fxml"));
+                Contenedor.getChildren().clear();
+                Contenedor.getChildren().add(root);
+                GenerarTransacciones.crearTransaccion("Se observan alertas", "MenuPrincipal");
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Alertas registradas", "Debe ser gerente para poder ingresar a este segmento");
         }
+        
     }
 
 
     @FXML
     private void actRecaudacion(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("ReportesRecaudacion" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-            
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        if(UsuarioAutenticado.getInstance().getRol().equals("auditor")){
+            try{
+                Parent root = FXMLLoader.load(App.class.getResource("ReportesRecaudacion" + ".fxml"));
+                Contenedor.getChildren().clear();
+                Contenedor.getChildren().add(root);
+
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Reportes", "Debe ser auditor para poder ingresar a este segmento");
         }
     }
 
     @FXML
     private void actHorasExtra(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("ReportesHorasExtra" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        if(UsuarioAutenticado.getInstance().getRol().equals("auditor")){
+            try{
+                Parent root = FXMLLoader.load(App.class.getResource("ReportesHorasExtra" + ".fxml"));
+                Contenedor.getChildren().clear();
+                Contenedor.getChildren().add(root);
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Reportes", "Debe ser auditor para poder ingresar a este segmento");
         }
     }
 
     @FXML
     private void actRecorridos(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("ReportesRecorridos" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        if(UsuarioAutenticado.getInstance().getRol().equals("auditor")){
+            try{
+                Parent root = FXMLLoader.load(App.class.getResource("ReportesRecorridos" + ".fxml"));
+                Contenedor.getChildren().clear();
+                Contenedor.getChildren().add(root);
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Reportes", "Debe ser auditor para poder ingresar a este segmento");
         }
     }
 }
