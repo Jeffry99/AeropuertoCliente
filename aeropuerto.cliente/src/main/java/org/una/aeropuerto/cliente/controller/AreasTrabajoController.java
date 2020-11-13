@@ -26,6 +26,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
@@ -70,20 +72,33 @@ public class AreasTrabajoController implements Initializable {
     private JFXComboBox<String> cbxEstado;
     @FXML
     private JFXTextField txtbuscarNombre;
-   
+    @FXML
+    private ImageView btnInformacion;
+    private String rolUsuario="";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTodos();
-        
-        ArrayList estados = new ArrayList();
-        estados.add("Activo");
-        estados.add("Inactivo");
-        ObservableList items = FXCollections.observableArrayList(estados);   
-        cbxEstado.setItems(items);
-        if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
-            btnAgregar.setVisible(false);
-            btnAgregar.setDisable(true);
+        rolUsuario=UsuarioAutenticado.getInstance().getRol();
+        if(rolUsuario.equals("administrador")){
+            txtbuscarDescripcion.setEditable(false);
+            txtbuscarId.setEditable(false);
+            txtbuscarNombre.setEditable(false);
+            cbxEstado.setEditable(false);
+            btnInformacion.setVisible(true);
+            btnInformacion.setDisable(false);
+        }else{
+            ArrayList estados = new ArrayList();
+            estados.add("Activo");
+            estados.add("Inactivo");
+            ObservableList items = FXCollections.observableArrayList(estados);   
+            cbxEstado.setItems(items);
+            if(!UsuarioAutenticado.getInstance().getRol().equals("gestor") && !UsuarioAutenticado.getInstance().getRol().equals("administrador")){
+                btnAgregar.setVisible(false);
+                btnAgregar.setDisable(true);
+            }  
         }
+       
     }    
     public void cargarTodos(){
         ArrayList<AreaTrabajoDTO> AreasTrabajo = new ArrayList<AreaTrabajoDTO>();
@@ -180,7 +195,7 @@ public class AreasTrabajoController implements Initializable {
         tvAreasTrabajo.getColumns().add(colBtn);
     }
     
-         public void modificar(AreaTrabajoDTO areaTrabajo){
+    public void modificar(AreaTrabajoDTO areaTrabajo){
         StackPane Contenedor = (StackPane) AppContext.getInstance().get("Contenedor");
         AppContext.getInstance().set("ModalidadAreaTrabajo", "Modificar");
         AppContext.getInstance().set("AreaTrabajoEnCuestion", areaTrabajo);
@@ -225,16 +240,21 @@ public class AreasTrabajoController implements Initializable {
 
     @FXML
     private void actBuscarId(ActionEvent event) {
-     if(!txtbuscarId.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getById(Long.valueOf(txtbuscarId.getText()));
-            if(respuesta.getEstado().equals(true)){
-                AreaTrabajoDTO area = (AreaTrabajoDTO) respuesta.getResultado("AreaTrabajo");
-                aerolineas.add(area);
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarId \n"+
+                                                                                     "Acción: actBuscarId");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del area de trabajo que desea buscar");
+            if(!txtbuscarId.getText().isBlank()){
+                ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
+                Respuesta respuesta = AreaTrabajoService.getById(Long.valueOf(txtbuscarId.getText()));
+                    if(respuesta.getEstado().equals(true)){
+                        AreaTrabajoDTO area = (AreaTrabajoDTO) respuesta.getResultado("AreaTrabajo");
+                        aerolineas.add(area);
+                    }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el id del area de trabajo que desea buscar");
+            }   
         }
     }
 
@@ -250,44 +270,110 @@ public class AreasTrabajoController implements Initializable {
 
     @FXML
     private void actBuscarDescripcion(ActionEvent event) {
-        if(!txtbuscarDescripcion.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByDescripcionAproximate(txtbuscarDescripcion.getText());
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarDescripcion \n"+
+                                                                                     "Acción: actBuscarDescripcion");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion de area de trabajo que desea buscar");
+            if(!txtbuscarDescripcion.getText().isBlank()){
+                ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
+                Respuesta respuesta = AreaTrabajoService.getByDescripcionAproximate(txtbuscarDescripcion.getText());
+                if(respuesta.getEstado().equals(true)){
+                    aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite la descripcion de area de trabajo que desea buscar");
+            }    
         }
+        
     }
 
     @FXML
     private void actBuscarEst(ActionEvent event) {
-        if(estadoBuscar!=null){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByEstado(estadoBuscar);
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
-            }
-            cargarTabla(aerolineas);
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarEstado \n"+
+                                                                                     "Acción: actBuscarEstado");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del area de trabajo que desea buscar");
+            if(estadoBuscar!=null){
+                ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
+                Respuesta respuesta = AreaTrabajoService.getByEstado(estadoBuscar);
+                if(respuesta.getEstado().equals(true)){
+                    aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor seleccione el estado del area de trabajo que desea buscar");
+            }    
         }
     }
 
     @FXML
     private void actBuscarNombre(ActionEvent event) {
-        if(!txtbuscarNombre.getText().isBlank()){
-            ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
-            Respuesta respuesta = AreaTrabajoService.getByNombreAproximate(txtbuscarNombre.getText());
-            if(respuesta.getEstado().equals(true)){
-                aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
-            }
-            cargarTabla(aerolineas);
+         if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de botón", "fxID: btnBuscarNombre \n"+
+                                                                                     "Acción: actBuscarNombre");
         }else{
-            Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo que desea buscar");
+            if(!txtbuscarNombre.getText().isBlank()){
+              ArrayList<AreaTrabajoDTO> aerolineas = new ArrayList<AreaTrabajoDTO>();
+              Respuesta respuesta = AreaTrabajoService.getByNombreAproximate(txtbuscarNombre.getText());
+                if(respuesta.getEstado().equals(true)){
+                    aerolineas = (ArrayList<AreaTrabajoDTO>) respuesta.getResultado("AreasTrabajos");
+                }
+                cargarTabla(aerolineas);
+            }else{
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Faltan datos por ingresar", "Por favor digite el nombre del area de trabajo que desea buscar");
+            }   
         }
+        
+    }
+
+    @FXML
+    private void acttvAreasTrabajos(MouseEvent event) {
+          if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de table view", "fxID: tvAreasTrabajo \n"+
+                                      "Acción: usada para mostrar los datos de las áreas de trabajo que hay en el sistema");
+        }
+    }
+
+    @FXML
+    private void acttxtBuscarId(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarId \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para buscar una área de trabajo segun el id");
+        }
+    }
+
+    @FXML
+    private void acttxtBuscarDescripcion(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarDescripción \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para buscar una área de trabajo segun su descripción");
+        }
+    }
+
+    @FXML
+    private void actcbxBuscarEsado(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarEstado \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para buscar una área de trabajo segun el estado");
+        }
+    }
+
+    @FXML
+    private void acttxtBuscarNombre(MouseEvent event) {
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de text field", "fxID: txtbuscarNombre \n"+
+            "Acción: usado para almacenar el dato digitado por el usuario para buscar una área de trabajo segun el nombre");
+        }
+    }
+
+    @FXML
+    private void actVerInformacion(MouseEvent event) {
+        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de la vista", "FXML: AreasTrabajo \n"+
+                                                         "Controller: AreasTrabajoController \n\n"+
+                                                         "Información de este botón \n"+
+                                                         "fxID: btnInformacion \n"+
+                                                         "Acción: actVerInformacion");
     }
     
 }

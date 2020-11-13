@@ -17,7 +17,7 @@
             <Image url="@../recursos/FONDO2.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tvAviones" layoutX="85.0" layoutY="207.0" prefHeight="362.0" prefWidth="830.0">
+      <TableView fx:id="tvAviones" layoutX="85.0" layoutY="207.0" onMouseClicked="#acttvAviones" prefHeight="362.0" prefWidth="830.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
@@ -34,9 +34,14 @@
       <Button fx:id="btnBuscarEstado" layoutX="289.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarEstado" prefHeight="35.0" prefWidth="91.0" text="Buscar" />
       <Button fx:id="btnBuscarTipoAvion" layoutX="816.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarTipoAvion" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
       <Button fx:id="btnBuscarAerolinea" layoutX="816.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarAerolinea" prefHeight="35.0" prefWidth="97.0" text="Buscar" />
-      <JFXComboBox fx:id="cbEstado" labelFloat="true" layoutX="85.0" layoutY="145.0" onAction="#actEstados" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
-      <JFXTextField fx:id="txtMatricula" labelFloat="true" layoutX="85.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por matrícula" />
-      <JFXComboBox fx:id="cbAerolinea" labelFloat="true" layoutX="609.0" layoutY="145.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por aerolínea" />
-      <JFXComboBox fx:id="cbTipoAvion" labelFloat="true" layoutX="609.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por tipo de avión" />
+      <JFXComboBox fx:id="cbEstado" labelFloat="true" layoutX="85.0" layoutY="145.0" onAction="#actEstados" onMouseClicked="#actcbxEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
+      <JFXTextField fx:id="txtMatricula" labelFloat="true" layoutX="85.0" layoutY="81.0" onMouseClicked="#acttxtMatricula" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por matrícula" />
+      <JFXComboBox fx:id="cbAerolinea" labelFloat="true" layoutX="609.0" layoutY="145.0" onMouseClicked="#actcbxAerolinea" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por aerolínea" />
+      <JFXComboBox fx:id="cbTipoAvion" labelFloat="true" layoutX="609.0" layoutY="81.0" onMouseClicked="#actcbxTipoAvion" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por tipo de avión" />
+      <ImageView fx:id="btnInformacion" fitHeight="21.0" fitWidth="24.0" layoutX="229.0" layoutY="37.0" onMouseClicked="#actVerInformacion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

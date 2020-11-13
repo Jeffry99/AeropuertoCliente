@@ -19,15 +19,20 @@
         </ImageView>
       <Label layoutX="85.0" layoutY="35.0" text="Alertas de vuelos" />
       <Button fx:id="btnBuscarVuelo" layoutX="299.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarVuelo" text="Buscar" />
-      <JFXTextField fx:id="txtBuscarVuelo" labelFloat="true" layoutX="85.0" layoutY="81.0" prefHeight="37.0" prefWidth="200.0" promptText="Buscar por código de vuelo" />
+      <JFXTextField fx:id="txtBuscarVuelo" labelFloat="true" layoutX="85.0" layoutY="81.0" onMouseClicked="#ActtxtBuscarVuelo" prefHeight="37.0" prefWidth="200.0" promptText="Buscar por código de vuelo" />
       <Button fx:id="btnBuscarEstado" layoutX="299.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarEstado" text="Buscar" />
-      <JFXComboBox fx:id="cbxBuscarEstado" labelFloat="true" layoutX="85.0" layoutY="145.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="200.0" promptText="Buscar por estado de la alerta" />
-      <TableView fx:id="tvAlertas" layoutX="85.0" layoutY="225.0" prefHeight="300.0" prefWidth="830.0">
+      <JFXComboBox fx:id="cbxBuscarEstado" labelFloat="true" layoutX="85.0" layoutY="145.0" onAction="#actSelEstado" onMouseClicked="#actcbxBuscarEstado" prefHeight="37.0" prefWidth="200.0" promptText="Buscar por estado de la alerta" />
+      <TableView fx:id="tvAlertas" layoutX="85.0" layoutY="225.0" onMouseClicked="#acttvAlertas" prefHeight="300.0" prefWidth="830.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
       <Button fx:id="btnVolver" layoutX="85.0" layoutY="594.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
+      <ImageView fx:id="btnInformacion" fitHeight="21.0" fitWidth="24.0" layoutX="202.0" layoutY="36.0" onMouseClicked="#actVerInformacionPantalla" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

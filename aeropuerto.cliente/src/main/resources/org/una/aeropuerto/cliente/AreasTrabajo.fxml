@@ -17,7 +17,7 @@
             <Image url="@../recursos/FONDO2.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tvAreasTrabajo" layoutX="85.0" layoutY="207.0" prefHeight="362.0" prefWidth="830.0">
+      <TableView fx:id="tvAreasTrabajo" layoutX="85.0" layoutY="207.0" onMouseClicked="#acttvAreasTrabajos" prefHeight="362.0" prefWidth="830.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
@@ -33,9 +33,14 @@
       <Button fx:id="btnBuscarDescripcion" layoutX="289.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarDescripcion" text="Buscar" />
       <Button fx:id="btnBuscarNombre" layoutX="819.0" layoutY="82.0" mnemonicParsing="false" onAction="#actBuscarNombre" text="Buscar" />
       <Button fx:id="btnBuscarEst" layoutX="819.0" layoutY="146.0" mnemonicParsing="false" onAction="#actBuscarEst" text="Buscar" />
-      <JFXTextField fx:id="txtbuscarId" labelFloat="true" layoutX="85.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
-      <JFXTextField fx:id="txtbuscarDescripcion" labelFloat="true" layoutX="85.0" layoutY="145.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por descripción" />
-      <JFXComboBox fx:id="cbxEstado" labelFloat="true" layoutX="615.0" layoutY="145.0" onAction="#actSelEstado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
-      <JFXTextField fx:id="txtbuscarNombre" labelFloat="true" layoutX="615.0" layoutY="81.0" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
+      <JFXTextField fx:id="txtbuscarId" labelFloat="true" layoutX="85.0" layoutY="81.0" onMouseClicked="#acttxtBuscarId" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por id" />
+      <JFXTextField fx:id="txtbuscarDescripcion" labelFloat="true" layoutX="85.0" layoutY="145.0" onMouseClicked="#acttxtBuscarDescripcion" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por descripción" />
+      <JFXComboBox fx:id="cbxEstado" labelFloat="true" layoutX="615.0" layoutY="145.0" onAction="#actSelEstado" onMouseClicked="#actcbxBuscarEsado" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por estado" />
+      <JFXTextField fx:id="txtbuscarNombre" labelFloat="true" layoutX="615.0" layoutY="81.0" onMouseClicked="#acttxtBuscarNombre" prefHeight="37.0" prefWidth="189.0" promptText="Buscar por nombre" />
+      <ImageView fx:id="btnInformacion" fitHeight="21.0" fitWidth="24.0" layoutX="205.0" layoutY="35.0" onMouseClicked="#actVerInformacion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

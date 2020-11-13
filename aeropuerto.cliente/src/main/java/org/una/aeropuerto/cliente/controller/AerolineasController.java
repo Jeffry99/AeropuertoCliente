@@ -67,7 +67,6 @@ public class AerolineasController implements Initializable {
     private JFXComboBox<String> cbxEstado;
     @FXML
     private JFXTextField txtbuscarRes;
-    
 
     private AerolineaService aerolineaService = new AerolineaService();
     private String rolUsuario="";
