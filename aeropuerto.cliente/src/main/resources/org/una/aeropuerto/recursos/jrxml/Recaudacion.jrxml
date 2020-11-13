@@ -45,121 +45,131 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="13"/>
-	</pageHeader>
-	<pageFooter>
-		<band height="17">
-			<textField>
-				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="fed27553-a6c4-4a8a-9056-2f6f2589a3e5"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="9f5ad531-d413-49c9-874b-8b99e8150fa6"/>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
-	<summary>
-		<band height="200" splitType="Stretch">
-			<property name="local_mesure_unitheight" value="pixel"/>
+		<band height="65">
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="30" width="138" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="c3da4ba1-0737-46f9-a355-0e5f3a923d6b"/>
+				<reportElement mode="Transparent" x="-2" y="35" width="100" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="a95c196e-71bf-4f3e-b3c0-4ee02849efab"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cobro]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="138" y="30" width="132" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="93e2f4fc-a998-4bab-9be5-2eb861a71fbf"/>
+				<reportElement mode="Transparent" x="98" y="35" width="170" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="a7edc160-a1f1-4158-accc-ed434b5218df"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Estado del Cobro]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="270" y="30" width="160" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="d01b2ae0-e3ce-47ac-91a1-da1da2509fc5"/>
-				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha de Registro]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="430" y="30" width="125" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="e64d1ba3-9b3b-479e-96a7-2f4e8ee7bc01"/>
+				<reportElement mode="Transparent" x="428" y="35" width="125" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="53c296bf-ea53-4f2f-b4d0-bce3efead4c9"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Avión]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="0" y="60" width="138" height="30" uuid="7a5f214e-089b-4d0a-ad6c-f38bf54e2f64"/>
-				<textElement>
-					<font size="13"/>
+			<staticText>
+				<reportElement mode="Transparent" x="268" y="35" width="160" height="30" forecolor="#006699" backcolor="#E6E6E6" uuid="137cec32-0d1e-4f76-8dcf-4485660fce55"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["₡" + $F{cobro}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="138" y="60" width="132" height="30" uuid="1e388dec-45cb-49ed-ac39-3990a7b8e95a"/>
-				<textElement>
-					<font size="13"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{estadoCobro}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="270" y="60" width="160" height="30" uuid="179a3b70-0f97-49df-a779-2e72894cc6ce"/>
-				<textElement>
-					<font size="13"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="430" y="60" width="125" height="30" uuid="5999ee46-ef92-429c-8a45-ba8d59a97042"/>
-				<textElement>
-					<font size="13"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{avion}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[Fecha de Registro]]></text>
+			</staticText>
 			<line>
-				<reportElement x="2" y="26" width="553" height="4" uuid="18e19955-0699-45b2-9e16-765a6a462a9a"/>
+				<reportElement x="0" y="30" width="553" height="4" uuid="18e19955-0699-45b2-9e16-765a6a462a9a"/>
 			</line>
 			<line>
-				<reportElement x="2" y="50" width="553" height="4" uuid="5981b68c-e304-4850-b64f-4655e2a0b428"/>
+				<reportElement x="0" y="54" width="553" height="4" uuid="5981b68c-e304-4850-b64f-4655e2a0b428"/>
 			</line>
 			<staticText>
-				<reportElement x="265" y="10" width="52" height="18" forecolor="#006698" uuid="65510460-5d7b-4ba2-8500-c79caa09d170"/>
+				<reportElement x="248" y="3" width="52" height="17" forecolor="#006698" uuid="65510460-5d7b-4ba2-8500-c79caa09d170"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="415" y="10" width="38" height="18" forecolor="#006698" uuid="8b345581-3097-487e-916c-cd12515346be"/>
+				<reportElement x="398" y="3" width="38" height="17" forecolor="#006698" uuid="8b345581-3097-487e-916c-cd12515346be"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="307" y="10" width="100" height="30" forecolor="#006698" uuid="beeee56c-6aeb-4f95-952c-94fa26bfd4d4"/>
+				<reportElement x="290" y="3" width="100" height="29" forecolor="#006698" uuid="beeee56c-6aeb-4f95-952c-94fa26bfd4d4"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaInicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="10" width="100" height="30" forecolor="#006698" uuid="5004f64c-c79c-4441-8efb-92c55c482ac4"/>
+				<reportElement x="438" y="3" width="100" height="29" forecolor="#006698" uuid="5004f64c-c79c-4441-8efb-92c55c482ac4"/>
 				<textElement>
 					<font size="13"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaFinal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="2" y="0" width="160" height="30" forecolor="#006698" uuid="21b404ec-86e3-4b1f-b271-f944452e7066"/>
+				<reportElement x="0" y="3" width="160" height="20" forecolor="#006698" uuid="21b404ec-86e3-4b1f-b271-f944452e7066"/>
 				<textElement>
 					<font size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{servicioTipo}]]></textFieldExpression>
 			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="-2" y="1" width="100" height="30" uuid="77f43b20-c851-4a65-84ad-9214e97399eb"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["₡" + $F{cobro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="1" width="170" height="30" uuid="83538804-347c-4e6f-a70d-d17effbfb929"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estadoCobro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="268" y="1" width="160" height="30" uuid="fcabce89-672d-48fb-b13c-08997ab5d2d0"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="1" width="125" height="30" uuid="2afbe6e2-7c24-4b20-a64b-c2f83955033e"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{avion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54">
+			<staticText>
+				<reportElement x="344" y="30" width="126" height="20" forecolor="#006699" uuid="27115ad8-4139-4e7d-9390-276088c009a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Reporte generado el]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="480" y="30" width="86" height="20" forecolor="#006699" uuid="2a761635-989f-4ba8-8a09-de69ddede6d0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="149" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
 		</band>
 	</summary>
 </jasperReport>

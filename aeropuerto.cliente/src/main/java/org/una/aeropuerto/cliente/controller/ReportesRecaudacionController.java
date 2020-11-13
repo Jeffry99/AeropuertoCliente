@@ -147,6 +147,7 @@ public class ReportesRecaudacionController implements Initializable {
         parameters.put("fechaFinal", java.sql.Date.valueOf(dpFinal.getValue()).toString());
         parameters.put("servicioTipo", cbServicio.getValue().getNombre());
         
+        
         if(obtenerListaCobros().isEmpty()){
             Mensaje.showAndWait(Alert.AlertType.ERROR, "Reporte", "Este tipo de servicio no tiene cobros, o no se encuentran en el rango de fechas especificado");
             return;
@@ -183,12 +184,18 @@ public class ReportesRecaudacionController implements Initializable {
         
         ServicioRegistradoService servicioService = new ServicioRegistradoService();
         ArrayList<ServicioRegistradoDTO> servicios = new ArrayList<ServicioRegistradoDTO>();
-        
         Respuesta respuesta = servicioService.getByTipoAproximate(cbServicio.getValue().getNombre());
         if(respuesta.getEstado()){
             servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
             servicios = busquedas.busquedaRangoFechas(Date.valueOf(dpInicio.getValue()), Date.valueOf(dpFinal.getValue()), servicios);
         }
+        
+//        ArrayList<ServicioRegistradoDTO> servicioos = new ArrayList<ServicioRegistradoDTO>();
+//        Respuesta respuestaa = servicioRegistradoService.getByTipoAproximate(txtTipo.getText());
+//        if(respuesta.getEstado()){
+//            servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
+//        }
+        
         servicios.forEach(x -> {
             ReporteServicioRegistradoDTO s = new ReporteServicioRegistradoDTO();
             s.casteo(x);
