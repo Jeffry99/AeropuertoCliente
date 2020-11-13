@@ -343,6 +343,7 @@ public class VuelosInformacionController implements Initializable {
                 Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                 stage.setScene(new Scene(root));
                 stage.setTitle("Vuelo "+vuelo.getId());
+                stage.setResizable(Boolean.FALSE);
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(
                     ((Node)event.getSource()).getScene().getWindow() );

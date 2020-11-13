@@ -178,6 +178,7 @@ public class RolesInformacionController implements Initializable {
                 Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                 stage.setScene(new Scene(root));
                 stage.setTitle("Rol de "+rol.getNombre());
+                stage.setResizable(Boolean.FALSE);
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(
                     ((Node)event.getSource()).getScene().getWindow() );

@@ -261,6 +261,7 @@ public class TrabajosEmpleadosInformacionController implements Initializable {
                 Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                 stage.setScene(new Scene(root));
                 stage.setTitle("Trabajo de empleado "+trabajoEmpleadoEnCuestion.getEmpleado().getNombre());
+                stage.setResizable(Boolean.FALSE);
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(
                     ((Node)event.getSource()).getScene().getWindow() );

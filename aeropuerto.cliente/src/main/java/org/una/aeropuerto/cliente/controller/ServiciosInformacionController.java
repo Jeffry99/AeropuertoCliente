@@ -315,6 +315,7 @@ public class ServiciosInformacionController implements Initializable {
                 Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                 stage.setScene(new Scene(root));
                 stage.setTitle("Servicio registrado "+servicio.getServicioTipo()+"-"+servicio.getId());
+                stage.setResizable(Boolean.FALSE);
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(
                     ((Node)event.getSource()).getScene().getWindow() );

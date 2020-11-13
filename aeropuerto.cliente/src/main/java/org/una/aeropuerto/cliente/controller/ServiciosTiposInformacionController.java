@@ -230,6 +230,7 @@ public class ServiciosTiposInformacionController implements Initializable {
                 Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                 stage.setScene(new Scene(root));
                 stage.setTitle("Tipo de servicio "+ServicioTipoEnCuestion.getNombre());
+                stage.setResizable(Boolean.FALSE);
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(
                     ((Node)event.getSource()).getScene().getWindow() );

@@ -202,6 +202,7 @@ public class AerolineasInformacionController implements Initializable {
                     Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                     stage.setScene(new Scene(root));
                     stage.setTitle("Aerolinea "+aerolineaEnCuestion.getNombre());
+                    stage.setResizable(Boolean.FALSE);
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(
                         ((Node)event.getSource()).getScene().getWindow() );

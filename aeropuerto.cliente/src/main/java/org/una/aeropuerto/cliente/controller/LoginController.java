@@ -5,6 +5,7 @@
  */
 package org.una.aeropuerto.cliente.controller;
 
+import com.jfoenix.controls.JFXCheckBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,6 +41,10 @@ public class LoginController implements Initializable{
     private PasswordField txtContrasena;
     
     private AutenticacionService autenticacionService = new AutenticacionService();
+    @FXML
+    private TextField txtVerContrasena;
+    @FXML
+    private JFXCheckBox cbContrasena;
     
     /**
      * Initializes the controller class.
@@ -49,6 +54,17 @@ public class LoginController implements Initializable{
         txtUsuario.requestFocus();
         txtUsuario.setText("lujepa2");
         txtContrasena.setText("Una2020");
+        cbContrasena.selectedProperty().addListener( t -> {
+            if(cbContrasena.isSelected()){
+                txtVerContrasena.setVisible(true);
+                txtContrasena.setVisible(false);
+                txtVerContrasena.setText(txtContrasena.getText());
+            }else{
+                txtVerContrasena.setVisible(false);
+                txtContrasena.setVisible(true);
+                txtVerContrasena.setText("");
+            }
+        });
     }   
     @FXML
     private void actIngresar(ActionEvent event) {
@@ -92,6 +108,7 @@ public class LoginController implements Initializable{
                     Scene scene = new Scene(root);
                     Stage stage = new Stage();
                     stage.setScene(scene);
+                    stage.setResizable(Boolean.FALSE);
                     stage.show();
                     Stage stage2 = (Stage) btnIngresar.getScene().getWindow();
                     stage2.close(); 

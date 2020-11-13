@@ -295,6 +295,7 @@ public class ParametrosController implements Initializable {
                     AppContext.getInstance().set("ControllerPermiso", this);
                     Parent root = FXMLLoader.load(App.class.getResource("SolicitudPermiso" + ".fxml"));
                     stage.setScene(new Scene(root));
+                    stage.setResizable(Boolean.FALSE);
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(
                         ((Node)event.getSource()).getScene().getWindow() );

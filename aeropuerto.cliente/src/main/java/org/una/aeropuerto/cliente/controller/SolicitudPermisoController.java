@@ -45,6 +45,7 @@ public class SolicitudPermisoController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         permiso=((String) AppContext.getInstance().get("ModalidadSolicitudPermiso")).split(",");
         if(permiso[0].equals("ContraseñaAdministrador")){
             lbTitulo.setText("Digite la contraseña secreta de administración");
