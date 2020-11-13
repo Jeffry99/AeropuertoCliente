@@ -200,25 +200,27 @@ public class ServiciosInformacionController implements Initializable {
             servicio.setAvion(cbAviones.getValue());
             servicio.setDuracion(txtDuracion.getValue().floatValue());
             servicio.setEstadoCobro(estadoCobro);
-            servicio.setServicioTipo(cbTipoServicio.getValue());if(generarAlertaZonaDescarga()){
-                if(generarAlertaHora()){
-                    if(modalidad.equals("Modificar")){
+            servicio.setServicioTipo(cbTipoServicio.getValue());
+            
+            if(generarAlertaHora()){
+                if(modalidad.equals("Modificar")){
 
-                        Respuesta respuesta=servicioService.modificar(servicio.getId(), servicio);
-                        if(respuesta.getEstado()){
-                            GenerarTransacciones.crearTransaccion("Se modifica servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
-                            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de servicio registrado", "Se ha modificado el servicio registrado correctamente");
-                            volver();
-                        }else{
-                            Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de servicio registrado", respuesta.getMensaje());
-                        }
+                    Respuesta respuesta=servicioService.modificar(servicio.getId(), servicio);
+                    if(respuesta.getEstado()){
+                        GenerarTransacciones.crearTransaccion("Se modifica servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
+                        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Modificación de servicio registrado", "Se ha modificado el servicio registrado correctamente");
+                        volver();
                     }else{
-                        if(modalidad.equals("Agregar")){
+                        Mensaje.showAndWait(Alert.AlertType.ERROR, "Modificación de servicio registrado", respuesta.getMensaje());
+                    }
+                }else{
+                    if(modalidad.equals("Agregar")){
+                        if(generarAlertaZonaDescarga()){
                             servicio.setEstado(true);
                             Respuesta respuesta=servicioService.crear(servicio);
                             if(respuesta.getEstado()){
                                 servicio = (ServicioRegistradoDTO) respuesta.getResultado("ServicioAeropuerto");
-                                
+
                                 GenerarTransacciones.crearTransaccion("Se crea servicio registrado con id "+servicio.getId(), "AvionesServiciosInformacion");
                                 Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Registro de servicio registrado", "Se ha registrado el servicio registrado correctamente");
                                 volver();
@@ -226,15 +228,14 @@ public class ServiciosInformacionController implements Initializable {
                             }else{
                                 Mensaje.showAndWait(Alert.AlertType.ERROR, "Registro de servicio registrado", respuesta.getMensaje());
                             }
-                        }
+                        }else{
+                            Mensaje.showAndWait(Alert.AlertType.WARNING, "Registro de servicio", "El avion debe ir a zona de descarga antes de ir a "+servicio.getServicioTipo().getAreaTrabajo().getNombre());
+                        }   
                     }
-                }else{
-                    Mensaje.showAndWait(Alert.AlertType.WARNING, "Registro de servicio", "El avion se encuentra actualmente en otro servicio");
                 }
             }else{
-                Mensaje.showAndWait(Alert.AlertType.WARNING, "Registro de servicio", "El avion debe ir a zona de descarga antes de ir a "+servicio.getServicioTipo().getAreaTrabajo().getNombre());
+                Mensaje.showAndWait(Alert.AlertType.WARNING, "Registro de servicio", "El avion se encuentra actualmente en otro servicio");
             }
-            
         }
     }
 
@@ -344,15 +345,16 @@ public class ServiciosInformacionController implements Initializable {
     }
     
     private boolean generarAlertaZonaDescarga(){
-        String area= servicio.getServicioTipo().getAreaTrabajo().getNombre();
-        if(area.equals("Mantenimiento")||area.equals("Carga de combustible")||area.equals("Hangar")){
-            ServicioRegistradoDTO servicioM = getMayor();
-            if(servicioM!=null){
-                if(!servicioM.getServicioTipo().getAreaTrabajo().getNombre().equals("Zona de descarga")){
+        BitacoraAvionDTO bitacora = getBitacoraMayor();
+        if(bitacora!=null){
+            String area= servicio.getServicioTipo().getAreaTrabajo().getNombre();
+            if(area.equals("Mantenimiento")||area.equals("Carga de combustible")||area.equals("Hangar")){
+                if(bitacora.getTiempoTierra()==0 && bitacora.getUbicacion().equals("Pista")){
                     return false;
                 }
-            }
-        } 
+            } 
+        }
+        
         return true;
     }
     
