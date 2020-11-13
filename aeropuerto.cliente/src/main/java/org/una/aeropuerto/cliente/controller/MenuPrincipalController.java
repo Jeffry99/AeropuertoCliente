@@ -115,6 +115,7 @@ public class MenuPrincipalController implements Initializable {
             btnRegistrarMarcaje.setDisable(true);
             TituloEmpleados.setDisable(true);
             TituloVuelos.setDisable(true);
+            TituloReportes.setDisable(true);
             
             
             TituloAdministracion.setVisible(false);
@@ -122,6 +123,7 @@ public class MenuPrincipalController implements Initializable {
             btnRegistrarMarcaje.setVisible(false);
             TituloEmpleados.setVisible(false);
             TituloVuelos.setVisible(false);
+            TituloReportes.setVisible(false);
             registrarMarcaje("RolMarcaje");
         }
         
@@ -179,13 +181,17 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void actTransacciones(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(App.class.getResource("Transacciones" + ".fxml"));
-            Contenedor.getChildren().clear();
-            Contenedor.getChildren().add(root);
-            GenerarTransacciones.crearTransaccion("Se observan transacciones", "MenuPrincipal");
-        }catch(IOException ex){
-            Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+        if(UsuarioAutenticado.getInstance().getRol().equals("auditor")){
+            try{
+                Parent root = FXMLLoader.load(App.class.getResource("Transacciones" + ".fxml"));
+                Contenedor.getChildren().clear();
+                Contenedor.getChildren().add(root);
+                GenerarTransacciones.crearTransaccion("Se observan transacciones", "MenuPrincipal");
+            }catch(IOException ex){
+                Mensaje.showAndWait(Alert.AlertType.ERROR, "Opps :c", "Se ha producido un error inesperado en la aplicación");
+            }
+        }else{
+            Mensaje.showAndWait(Alert.AlertType.ERROR, "Transacciones", "Debe ser auditor para poder ingresar a este segmento");
         }
     }
 
