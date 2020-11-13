@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +53,7 @@ import org.una.aeropuerto.cliente.dto.ServicioTipoDTO;
 import org.una.aeropuerto.cliente.service.ServicioRegistradoService;
 import org.una.aeropuerto.cliente.service.ServicioTipoService;
 import org.una.aeropuerto.cliente.util.AppContext;
+import org.una.aeropuerto.cliente.util.Busqueda;
 import org.una.aeropuerto.cliente.util.GenerarTransacciones;
 import org.una.aeropuerto.cliente.util.Mensaje;
 import org.una.aeropuerto.cliente.util.ReporteServicioRegistradoDTO;
@@ -85,6 +87,7 @@ public class ReportesRecaudacionController implements Initializable {
     
     private String ruta = "";
 
+    Busqueda busquedas = new Busqueda();
     /**
      * Initializes the controller class.
      */
@@ -184,6 +187,7 @@ public class ReportesRecaudacionController implements Initializable {
         Respuesta respuesta = servicioService.getByTipoAproximate(cbServicio.getValue().getNombre());
         if(respuesta.getEstado()){
             servicios = (ArrayList<ServicioRegistradoDTO>) respuesta.getResultado("ServiciosAeropuerto");
+            servicios = busquedas.busquedaRangoFechas(Date.valueOf(dpInicio.getValue()), Date.valueOf(dpFinal.getValue()), servicios);
         }
         servicios.forEach(x -> {
             ReporteServicioRegistradoDTO s = new ReporteServicioRegistradoDTO();
