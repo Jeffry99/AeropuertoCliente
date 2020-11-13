@@ -22,23 +22,28 @@
       <Button fx:id="btnVolver" layoutX="305.0" layoutY="580.0" mnemonicParsing="false" onAction="#actVolver" text="Volver" />
       <Label layoutX="411.0" layoutY="47.0" text="INFORMACIÓN DE BITÁCORA" />
       <Label layoutX="303.0" layoutY="117.0" text="Avión:" />
-      <ComboBox fx:id="cbAvion" layoutX="472.0" layoutY="109.0" prefHeight="37.0" prefWidth="240.0" />
+      <ComboBox fx:id="cbAvion" layoutX="472.0" layoutY="109.0" onMouseClicked="#actcbxAvion" prefHeight="37.0" prefWidth="240.0" />
       <Label layoutX="303.0" layoutY="497.0" text="Fecha de Modificación:" />
       <Label fx:id="lblFechaModificacion" alignment="CENTER_RIGHT" layoutX="473.0" layoutY="497.0" prefHeight="21.0" prefWidth="240.0" text="Fecha de Modificación:" />
       <Label layoutX="303.0" layoutY="454.0" text="Fecha de Creación:" />
       <Label fx:id="lblFechaCreacion" alignment="CENTER_RIGHT" layoutX="473.0" layoutY="454.0" prefHeight="21.0" prefWidth="240.0" text="Fecha de Creación:" />
-      <Spinner fx:id="spDistancia" editable="true" layoutX="473.0" layoutY="169.0" prefHeight="37.0" prefWidth="240.0" />
+      <Spinner fx:id="spDistancia" editable="true" layoutX="473.0" layoutY="169.0" onMouseClicked="#actSpiRecorrido" prefHeight="37.0" prefWidth="240.0" />
       <Label layoutX="303.0" layoutY="177.0" text="Distancia Recorrida (km):" />
-      <Spinner fx:id="spCombustible" editable="true" layoutX="473.0" layoutY="354.0" prefHeight="37.0" prefWidth="240.0" />
-      <Spinner fx:id="spTiempo" editable="true" layoutX="473.0" layoutY="294.0" prefHeight="37.0" prefWidth="240.0" />
+      <Spinner fx:id="spCombustible" editable="true" layoutX="473.0" layoutY="354.0" onMouseClicked="#actSpiCombustible" prefHeight="37.0" prefWidth="240.0" />
+      <Spinner fx:id="spTiempo" editable="true" layoutX="473.0" layoutY="294.0" onMouseClicked="#actSpiTiempoTierra" prefHeight="37.0" prefWidth="240.0" />
       <Label layoutX="303.0" layoutY="302.0" text="Tiempo en Tierra (Horas):" />
       <Label layoutX="303.0" layoutY="239.0" text="Ubicación:" />
-      <TextField fx:id="txtUbicacion" layoutX="472.0" layoutY="231.0" prefHeight="37.0" prefWidth="240.0" />
+      <TextField fx:id="txtUbicacion" layoutX="472.0" layoutY="231.0" onMouseClicked="#acttxtUbicacion" prefHeight="37.0" prefWidth="240.0" />
       <Label layoutX="303.0" layoutY="408.0" text="Estado:">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
       <Label fx:id="txtEstado" layoutX="474.0" layoutY="408.0" prefHeight="17.0" prefWidth="149.0" />
+      <ImageView fx:id="btnInformacion" fitHeight="21.0" fitWidth="24.0" layoutX="621.0" layoutY="48.0" onMouseClicked="#actVerInformacion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../recursos/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
