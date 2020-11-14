@@ -265,7 +265,9 @@ public class TiposAvionController implements Initializable {
 
     @FXML
     private void actBuscarDist(ActionEvent event) {
-        if(spDistanciaMenos.getText().isBlank() || spDistanciaMas.getText().isBlank()){
+        System.out.println(spDistanciaMenos.getText());
+        System.out.println(spDistanciaMas.getText());
+        if(!spDistanciaMenos.getText().isBlank() || !spDistanciaMas.getText().isBlank()){
             ArrayList<TipoAvionDTO> tipoAviones = new ArrayList<TipoAvionDTO>();
             Respuesta respuesta = tipoAvionesService.getByDistanciaRango(Float.valueOf(spDistanciaMas.getText()), Float.valueOf(spDistanciaMenos.getText()));
             if(respuesta.getEstado().equals(true)){
