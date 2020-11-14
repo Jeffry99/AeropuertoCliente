@@ -256,8 +256,10 @@ public class BitacoraInformacionController implements Initializable {
 
     @FXML
     private void actcbxAvion(MouseEvent event) {
-        Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxAvion \n"+
+        if(rolUsuario.equals("administrador")){
+            Mensaje.showAndWait(Alert.AlertType.INFORMATION, "Información de combo box", "fxID: cbxAvion \n"+
                                                                                      "Acción: actSelAvion");
+        }
     }
 
     @FXML
